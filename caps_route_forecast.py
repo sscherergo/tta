@@ -89,16 +89,25 @@ ROUTE: list[Waypoint] = [
 # >>> VOR ABFLUG GEGEN CFS (Kanada) BZW. CHART SUPPLEMENT (Alaska) PRUEFEN <<<
 RUNWAY_TRUE: dict[str, float | None] = {
     "CYFB": 160.0,   # RWY 16T/34T
-    "CYIO": None,
+    "CYIO": 20.0,    # RWY 02T/20T
     "CYRB": 170.0,   # RWY 17T/35T
-    "CYHK": None,
+    "CYHK": 130.0,   # RWY 13/31 (NDA true)
     "CYCB": 130.0,   # RWY 13T/31T
-    "PABR": 80.0,    # RWY 07/25 mag + ~11E Var
-    "PAOM": 110.0,   # RWY 10/28 mag + ~9E Var
-    "CYCY": None, "CYAB": None, "CYYH": None, "CYBB": None,
-    "CYCO": None, "CYHI": None, "CYPC": None, "CYUB": None,
+    "PABR": 82.0,    # RWY 07/25 mag + ~12E Var
+    "PAOM": 119.0,   # RWY 10/28 mag + ~9E Var (zweite Piste 03/21 vorhanden)
+    "CYCY": 20.0,    # RWY 02/20 (NDA true)
+    "CYAB": 130.0,   # RWY 13/31 (NDA true)
+    "CYYH": 150.0,   # RWY 15/33 (NDA true)
+    "CYBB": 50.0,    # RWY 05/23 (NDA true)
+    "CYCO": 120.0,   # RWY 12/30 (NDA true)
+    "CYHI": 60.0,    # RWY 06T/24T
+    "CYPC": 20.0,    # RWY 02T/20T
+    "CYUB": 100.0,   # RWY 10/28 (NDA true)
     "CYEV": 60.0,    # RWY 06T/24T
-    "PASC": None, "PAWI": None, "PAPO": None, "PAOT": None,
+    "PASC": 65.0,    # RWY 05/23 mag + ~15E Var
+    "PAWI": 62.0,    # RWY 05/23 mag + ~12E Var (Gravel)
+    "PAPO": 20.0,    # RWY 01/19 mag + ~10E Var
+    "PAOT": 99.0,    # RWY 09/27 mag + ~9E Var (zweite Piste 18/36 Gravel)
 }
 
 # CAPS-Variablen. RH-Niedriglevels + Bodendruck fuer die Ceiling-Ableitung.
@@ -114,6 +123,7 @@ CAPS_VARIABLES: list[tuple[str, str]] = ([
     ("AirTemp",            "AGL-2m"),
     ("DewPointDepression", "IsbL-0700"),
     ("DewPointDepression", "IsbL-0850"),
+    ("DewPointDepression", "AGL-2m"),
     ("WindGust",           "AGL-10m"),
     ("WindSpeed",          "AGL-10m"),
     ("WindDir",            "AGL-10m"),
@@ -280,11 +290,57 @@ def ceiling_ft(data, fh, wi) -> float | None:
     return 99999.0
 
 
-def min_spread(data, fh, wi) -> float | None:
-    s7 = gv(data, fh, "DewPointDepression_IsbL-0700", wi)
-    s8 = gv(data, fh, "DewPointDepression_IsbL-0850", wi)
-    vals = [s for s in (s7, s8) if valid(s)]
-    return min(vals) if vals else None
+def fog_spread_2m(data, fh, wi) -> float | None:
+    """Taupunkt-Spread 2 m (°C) — Indikator Bodennebel."""
+    return gv(data, fh, "DewPointDepression_AGL-2m", wi)
+
+
+def fog_trend(data, fh, wi) -> tuple[float | None, str]:
+    """Trend des 2-m-Spreads: SP-Schwellen auf +6 h extrapoliert.
+
+    d      = Spread(fh) - Spread(fh-6) [erste Zeile: 2 x 3-h-Delta]
+    |d|<0.3 gilt als stabil (Modellrauschen).
+    Klasse = cls_sp(Spread + d), Anzeige = d (negativ = schliessend).
+    """
+    sp_now = fog_spread_2m(data, fh, wi)
+    if fh - 6 in data:
+        sp_prev, scale = fog_spread_2m(data, fh - 6, wi), 1.0
+    elif fh - 3 in data:
+        sp_prev, scale = fog_spread_2m(data, fh - 3, wi), 2.0
+    else:
+        return None, "?"
+    if not (valid(sp_now) and valid(sp_prev)):
+        return None, "?"
+    d6 = (sp_now - sp_prev) * scale
+    if abs(d6) < 0.3:
+        d6 = 0.0
+    return d6, cls_sp(max(sp_now + d6, 0.0))
+
+
+def icing_assess(data, fh, wi) -> tuple[float | None, str]:
+    """Vereisung: Spread UND Temperatur auf 850/700 hPa kombiniert.
+
+    NOGO: Spread <= 1.5 °C bei T <= 0 °C (in der Wolke, unterkuehlt)
+    WARN: Spread <= 3.0 °C bei T <= 0 °C
+    OK:   sonst (warme Schicht oder wolkenfrei)
+    Rueckgabe: (min. Spread der unterkuehlten Level oder None, Klasse).
+    """
+    worst, val, seen = "OK", None, False
+    for lvl in ("0850", "0700"):
+        t = gv(data, fh, f"AirTemp_IsbL-{lvl}", wi)
+        sp = gv(data, fh, f"DewPointDepression_IsbL-{lvl}", wi)
+        if not (valid(t) and valid(sp)):
+            continue
+        seen = True
+        if t <= 273.15:
+            val = sp if val is None else min(val, sp)
+            if sp <= 1.5:
+                worst = "NOGO"
+            elif sp <= 3.0 and worst != "NOGO":
+                worst = "WARN"
+    if not seen:
+        return None, "?"
+    return val, worst
 
 
 def cls_hw(v):  return "OK" if v < 10 else ("WARN" if v <= 20 else "NOGO")
@@ -307,7 +363,11 @@ def dashboard_block(data, date, run, waypoints) -> list[str]:
         "Gesamt = schlechteste Einzelwertung",
         "HW: Headwind 8000ft im Anflugkurs | XW: Crosswind aus Boeen "
         "(~ = Piste unbekannt, volle Boe) | CIG: Wolkenbasis ft AGL | "
-        "SP: min. Spread 850/700", ""]
+        "SP2m: Taupunkt-Spread 2m in °C (Bodennebel: NOGO<=1.5, WARN<=3) | "
+        "TRD: Spread-Trend °C/6h (Klasse = SP-Schwellen auf +6h "
+        "extrapoliert; negativ = schliessend) | "
+        "ICE: Spread+Temp 850/700 (nur unterkuehlte Level; '—' = alle "
+        "Level >0°C)", ""]
 
     for wi, wp in enumerate(waypoints):
         # Kurs vom Anflug-Ausgangspunkt
@@ -330,13 +390,16 @@ def dashboard_block(data, date, run, waypoints) -> list[str]:
             continue
 
         lines.append(f"{'VT (UTC)':<12}{'HW kt':>12}{'XW kt':>13}"
-                     f"{'CIG ft':>14}{'SP K':>12}   GESAMT")
+                     f"{'CIG ft':>14}{'SP2m °C':>12}{'TRD 6h':>12}"
+                     f"{'ICE °C':>12}   GESAMT")
         for fh in DASH_HOURS:
             hw = headwind_8000(data, fh, wi, course) \
                 if course is not None else None
             xw, exact = crosswind_gust(data, fh, wi, rwy)
             cig = ceiling_ft(data, fh, wi)
-            sp = min_spread(data, fh, wi)
+            sp = fog_spread_2m(data, fh, wi)
+            trd_val, trd_cls = fog_trend(data, fh, wi)
+            ice_val, ice_cls = icing_assess(data, fh, wi)
 
             parts, worst = [], 0
             def one(v, cls, fmt, mark=""):
@@ -354,6 +417,21 @@ def dashboard_block(data, date, run, waypoints) -> list[str]:
             one(cig, cls_cig,
                 lambda v: ("  >5000" if v >= 99999 else f"{v:7.0f}"))
             one(sp, cls_sp, lambda v: f"{v:5.1f}")
+            # TRD-Spalte: Klasse aus fog_trend (Projektion), Anzeige = Delta
+            if trd_cls == "?":
+                parts.append(f"{'?':>11}")
+                worst = max(worst, WORST["?"])
+            else:
+                worst = max(worst, WORST[trd_cls])
+                parts.append(f"{trd_val:+5.1f} {trd_cls:<4}")
+            # ICE-Spalte: Klasse kommt aus icing_assess, nicht aus Schwellen
+            if ice_cls == "?":
+                parts.append(f"{'?':>11}")
+                worst = max(worst, WORST["?"])
+            else:
+                worst = max(worst, WORST[ice_cls])
+                disp = f"{ice_val:5.1f}" if ice_val is not None else f"{'—':>5}"
+                parts.append(f"{disp} {ice_cls:<4}")
             vt = run_dt + timedelta(hours=fh)
             lines.append(f"{vt:%d. %H}Z     " + " ".join(parts)
                          + f"   [{LABEL[worst]}]")
@@ -501,8 +579,8 @@ async def main(waypoints) -> str:
             out += caps_block(data, date, run, waypoints)
             out += await fog_block(client, tmpdir, waypoints)
         out += await taf_metar_block(client, waypoints)
-    out.append("\nLegende Block 1: W700~FL100, W850~5000ft; Sp = Spread "
-               "(Vereisung bei Sp<3K und T<0°C).")
+    out.append("\nLegende Block 1: W700~FL100, W850~5000ft; Sp = Taupunkt-"
+               "Spread in °C (Zahlenwert identisch zu K).")
     return "\n".join(out)
 
 
