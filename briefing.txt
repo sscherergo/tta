@@ -1,22 +1,250 @@
-NWP-ROUTENBRIEFING — erzeugt 2026-07-06 21:26 UTC
+NWP-ROUTENBRIEFING — erzeugt 2026-07-06 21:52 UTC
 Plaetze: CYFB, CYIO, CYRB, CYHK, CYCB, PABR, PAOM, CYCY*, CYAB*, CYYH*, CYBB*, CYCO*, CYHI*, CYPC*, CYUB*, CYEV*, PASC*, PAWI*, PAPO*, PAOT*   (* = Ausweichplatz)
+HINWEIS: Automatisierte Auswertung als Planungshilfe — ersetzt kein amtliches Briefing und keine PIC-Entscheidung.
 
-BLOCK 1 — CAPS 3 km, Lauf 20260706 12Z (48 h)
+BLOCK 0 — MACHBARKEIT (personalisierte Bewertung, kein amtliches Produkt)
+======================================================================
+Bewertung je Parameter: OK / WARN / NOGO  (? = Daten fehlen)  |  Gesamt = schlechteste Einzelwertung
+HW: Headwind 8000ft im Anflugkurs | XW: Crosswind aus Boeen (~ = Piste unbekannt, volle Boe) | CIG: Wolkenbasis ft AGL | SP: min. Spread 850/700
+
+--- CYFB Iqaluit (kein Anflugkurs) RWY 160T ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z               —      4 OK     >5000 OK    12.0 OK     [OK]
+07. 00Z               —      2 OK     >5000 OK     7.3 OK     [OK]
+07. 06Z               —      2 OK     >5000 OK     7.9 OK     [OK]
+07. 12Z               —      2 OK     >5000 OK    12.1 OK     [OK]
+07. 18Z               —      1 OK     >5000 OK    15.3 OK     [OK]
+08. 00Z               —      1 OK     >5000 OK     9.0 OK     [OK]
+08. 06Z               —      7 OK     >5000 OK     0.8 NOGO   [NOGO]
+08. 12Z               —      1 OK     >5000 OK     2.7 WARN   [WARN]
+
+--- CYIO Pond Inlet (Anflug CYFB, TC 343) RWY unbek. ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z         -5 OK        4~ OK     >5000 OK     7.5 OK     [OK]
+07. 00Z         +4 OK        3~ OK       395 NOGO   0.3 NOGO   [NOGO]
+07. 06Z         +8 OK        2~ OK        80 NOGO   6.0 OK     [NOGO]
+07. 12Z         +8 OK        3~ OK       909 NOGO  13.9 OK     [NOGO]
+07. 18Z        +13 WARN      3~ OK     >5000 OK     4.0 OK     [WARN]
+08. 00Z        +14 WARN      2~ OK     >5000 OK     5.2 OK     [WARN]
+08. 06Z        +19 WARN      2~ OK        56 NOGO   7.9 OK     [NOGO]
+08. 12Z        +20 NOGO      3~ OK        73 NOGO   4.5 OK     [NOGO]
+
+--- CYRB Resolute Bay (Anflug CYIO, TC 301) RWY 170T ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z        +24 NOGO     10 OK        48 NOGO  10.1 OK     [NOGO]
+07. 00Z        +26 NOGO     10 WARN   >5000 OK     5.9 OK     [NOGO]
+07. 06Z        +29 NOGO     12 WARN   >5000 OK     2.1 WARN   [NOGO]
+07. 12Z        +38 NOGO     18 WARN      10 NOGO   4.9 OK     [NOGO]
+07. 18Z        +36 NOGO     13 WARN      66 NOGO  10.2 OK     [NOGO]
+08. 00Z        +35 NOGO     11 WARN     533 NOGO   6.3 OK     [NOGO]
+08. 06Z        +33 NOGO      8 OK       160 NOGO   5.6 OK     [NOGO]
+08. 12Z        +33 NOGO     13 WARN     126 NOGO   2.5 WARN   [NOGO]
+
+--- CYHK Gjoa Haven (Anflug CYRB, TC 183) RWY unbek. ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z         +2 OK       14~ WARN   >5000 OK    10.6 OK     [WARN]
+07. 00Z         -1 OK       17~ WARN   >5000 OK     8.7 OK     [WARN]
+07. 06Z         -6 OK       11~ WARN   >5000 OK     5.4 OK     [WARN]
+07. 12Z        -10 OK       10~ OK      3089 WARN   1.1 NOGO   [NOGO]
+07. 18Z        -14 OK       11~ WARN   >5000 OK    11.2 OK     [WARN]
+08. 00Z        -16 OK       19~ WARN   >5000 OK    12.0 OK     [WARN]
+08. 06Z        -16 OK       13~ WARN   >5000 OK     9.6 OK     [WARN]
+08. 12Z        -14 OK       15~ WARN   >5000 OK     9.9 OK     [WARN]
+
+--- CYCB Cambridge Bay (Anflug CYHK, TC 282) RWY 130T ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z         +7 OK        7 OK     >5000 OK     6.6 OK     [OK]
+07. 00Z         +6 OK        7 OK     >5000 OK     7.8 OK     [OK]
+07. 06Z         +5 OK        9 OK     >5000 OK     3.9 OK     [OK]
+07. 12Z         +3 OK        1 OK     >5000 OK     2.9 WARN   [WARN]
+07. 18Z         -1 OK        6 OK     >5000 OK    15.1 OK     [OK]
+08. 00Z         +1 OK        7 OK     >5000 OK    14.9 OK     [OK]
+08. 06Z         +3 OK        5 OK     >5000 OK     8.6 OK     [OK]
+08. 12Z         +7 OK        4 OK     >5000 OK    10.2 OK     [OK]
+
+--- PABR Utqiagvik (Anflug CYCB, TC 301) RWY 080T ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z         +7 OK        0 OK     >5000 OK     8.3 OK     [OK]
+07. 00Z         +1 OK        3 OK     >5000 OK    16.4 OK     [OK]
+07. 06Z         -0 OK        2 OK     >5000 OK     9.1 OK     [OK]
+07. 12Z         -1 OK        1 OK     >5000 OK     7.4 OK     [OK]
+07. 18Z         -9 OK        4 OK     >5000 OK     8.8 OK     [OK]
+08. 00Z        -11 OK        2 OK     >5000 OK     2.9 WARN   [WARN]
+08. 06Z         -9 OK        0 OK     >5000 OK     3.5 OK     [OK]
+08. 12Z         +1 OK        2 OK       136 NOGO   8.9 OK     [NOGO]
+
+--- PAOM Nome (Anflug PABR, TC 210) RWY 110T ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z         +8 OK        1 OK     >5000 OK    10.8 OK     [OK]
+07. 00Z         +8 OK        5 OK     >5000 OK    11.3 OK     [OK]
+07. 06Z         +5 OK        3 OK     >5000 OK    11.7 OK     [OK]
+07. 12Z         +6 OK        1 OK     >5000 OK     8.9 OK     [OK]
+07. 18Z         +3 OK        0 OK     >5000 OK     5.5 OK     [OK]
+08. 00Z         -2 OK        4 OK     >5000 OK     3.6 OK     [OK]
+08. 06Z         -4 OK        7 OK     >5000 OK     1.3 NOGO   [NOGO]
+08. 12Z         -3 OK        0 OK      4313 WARN   0.9 NOGO   [NOGO]
+
+--- CYCY Clyde River [ALT] (Anflug CYFB, TC 000) RWY unbek. ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z         -2 OK        4~ OK     >5000 OK     8.9 OK     [OK]
+07. 00Z         -1 OK       12~ WARN   >5000 OK     6.9 OK     [WARN]
+07. 06Z         -2 OK       21~ NOGO       7 NOGO   0.2 NOGO   [NOGO]
+07. 12Z         -1 OK       18~ WARN      68 NOGO   2.5 WARN   [NOGO]
+07. 18Z         -0 OK        8~ OK       839 NOGO   3.9 OK     [NOGO]
+08. 00Z         +2 OK        3~ OK       402 NOGO   3.9 OK     [NOGO]
+08. 06Z         +6 OK        1~ OK       363 NOGO   4.2 OK     [NOGO]
+08. 12Z         +4 OK       13~ WARN     391 NOGO   6.1 OK     [NOGO]
+
+--- CYAB Arctic Bay [ALT] (Anflug CYIO, TC 282) RWY unbek. ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z        +17 WARN      9~ OK     >5000 OK     2.7 WARN   [WARN]
+07. 00Z        +18 WARN     12~ WARN   >5000 OK     4.0 OK     [WARN]
+07. 06Z        +13 WARN      5~ OK     >5000 OK    12.2 OK     [WARN]
+07. 12Z        +15 WARN      2~ OK     >5000 OK     5.2 OK     [WARN]
+07. 18Z        +26 NOGO      4~ OK     >5000 OK     3.3 OK     [NOGO]
+08. 00Z        +27 NOGO     17~ WARN   >5000 OK     8.1 OK     [NOGO]
+08. 06Z        +22 NOGO      8~ OK      1392 NOGO   7.9 OK     [NOGO]
+08. 12Z        +26 NOGO     12~ WARN     847 NOGO   5.8 OK     [NOGO]
+
+--- CYYH Taloyoak [ALT] (Anflug CYRB, TC 175) RWY unbek. ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z         +0 OK        2~ OK     >5000 OK     8.9 OK     [OK]
+07. 00Z         -5 OK       11~ WARN   >5000 OK     2.0 WARN   [WARN]
+07. 06Z         -8 OK        6~ OK     >5000 OK     2.2 WARN   [WARN]
+07. 12Z        -11 OK        2~ OK     >5000 OK     4.9 OK     [OK]
+07. 18Z        -14 OK        2~ OK     >5000 OK    13.0 OK     [OK]
+08. 00Z        -17 OK        2~ OK     >5000 OK     5.6 OK     [OK]
+08. 06Z        -16 OK        4~ OK     >5000 OK    18.9 OK     [OK]
+08. 12Z        -16 OK        2~ OK     >5000 OK    15.7 OK     [OK]
+
+--- CYBB Kugaaruk [ALT] (Anflug CYRB, TC 163) RWY unbek. ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z         +1 OK       13~ WARN    3490 WARN   0.0 NOGO   [NOGO]
+07. 00Z         -1 OK       15~ WARN       9 NOGO   0.1 NOGO   [NOGO]
+07. 06Z         -6 OK       11~ WARN   >5000 OK     6.3 OK     [WARN]
+07. 12Z         -6 OK       16~ WARN   >5000 OK     9.4 OK     [WARN]
+07. 18Z        -10 OK       20~ WARN   >5000 OK     9.1 OK     [WARN]
+08. 00Z        -15 OK       17~ WARN   >5000 OK    18.5 OK     [WARN]
+08. 06Z        -19 OK        7~ OK     >5000 OK     8.2 OK     [OK]
+08. 12Z        -21 OK       20~ WARN   >5000 OK    13.7 OK     [WARN]
+
+--- CYCO Kugluktuk [ALT] (Anflug CYCB, TC 255) RWY unbek. ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z         +6 OK        7~ OK     >5000 OK     7.2 OK     [OK]
+07. 00Z        +10 OK       12~ WARN   >5000 OK     6.4 OK     [WARN]
+07. 06Z         +7 OK        6~ OK     >5000 OK     5.6 OK     [OK]
+07. 12Z         +3 OK        3~ OK     >5000 OK     7.3 OK     [OK]
+07. 18Z         +0 OK        6~ OK     >5000 OK    12.6 OK     [OK]
+08. 00Z         +3 OK       12~ WARN   >5000 OK    16.7 OK     [WARN]
+08. 06Z         +3 OK        7~ OK     >5000 OK     9.6 OK     [OK]
+08. 12Z         +6 OK        2~ OK     >5000 OK    12.4 OK     [OK]
+
+--- CYHI Ulukhaktok [ALT] (Anflug CYCB, TC 297) RWY unbek. ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z        +11 WARN      8~ OK       231 NOGO   8.1 OK     [NOGO]
+07. 00Z         +6 OK       10~ WARN    1606 NOGO  18.9 OK     [NOGO]
+07. 06Z         +5 OK        8~ OK     >5000 OK     9.9 OK     [OK]
+07. 12Z         +6 OK        4~ OK     >5000 OK     9.6 OK     [OK]
+07. 18Z         +1 OK        4~ OK     >5000 OK     7.6 OK     [OK]
+08. 00Z         -0 OK        2~ OK     >5000 OK    10.4 OK     [OK]
+08. 06Z         -1 OK        5~ OK     >5000 OK    11.6 OK     [OK]
+08. 12Z         +4 OK       11~ WARN   >5000 OK    15.6 OK     [WARN]
+
+--- CYPC Paulatuk [ALT] (Anflug CYCB, TC 281) RWY unbek. ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z         +9 OK        4~ OK       856 NOGO   9.3 OK     [NOGO]
+07. 00Z         +3 OK        6~ OK       477 NOGO  13.2 OK     [NOGO]
+07. 06Z         -2 OK        4~ OK     >5000 OK    11.4 OK     [OK]
+07. 12Z         -3 OK        2~ OK     >5000 OK    12.3 OK     [OK]
+07. 18Z         -5 OK        5~ OK     >5000 OK    14.5 OK     [OK]
+08. 00Z         +1 OK        3~ OK     >5000 OK    20.1 OK     [OK]
+08. 06Z         -0 OK        2~ OK     >5000 OK    14.0 OK     [OK]
+08. 12Z         -1 OK       15~ WARN   >5000 OK    15.0 OK     [WARN]
+
+--- CYUB Tuktoyaktuk [ALT] (Anflug CYCB, TC 285) RWY unbek. ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z         +1 OK        1~ OK        78 NOGO   8.9 OK     [NOGO]
+07. 00Z         +0 OK        4~ OK     >5000 OK    12.0 OK     [OK]
+07. 06Z         +1 OK        9~ OK     >5000 OK    14.2 OK     [OK]
+07. 12Z         -3 OK       10~ OK     >5000 OK     9.8 OK     [OK]
+07. 18Z         -6 OK        7~ OK     >5000 OK     9.9 OK     [OK]
+08. 00Z         -6 OK        9~ OK     >5000 OK    11.9 OK     [OK]
+08. 06Z         -5 OK       12~ WARN   >5000 OK    16.3 OK     [WARN]
+08. 12Z         -6 OK        8~ OK     >5000 OK     9.8 OK     [OK]
+
+--- CYEV Inuvik [ALT] (Anflug CYCB, TC 279) RWY 060T ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z         +1 OK        2 OK     >5000 OK    12.8 OK     [OK]
+07. 00Z         -3 OK        3 OK     >5000 OK     9.9 OK     [OK]
+07. 06Z         -5 OK        1 OK     >5000 OK    12.1 OK     [OK]
+07. 12Z         -5 OK        3 OK     >5000 OK    11.4 OK     [OK]
+07. 18Z         -9 OK       13 WARN   >5000 OK    14.3 OK     [WARN]
+08. 00Z         -8 OK       11 WARN   >5000 OK    15.5 OK     [WARN]
+08. 06Z         -9 OK        5 OK     >5000 OK    17.4 OK     [OK]
+08. 12Z         -5 OK        5 OK     >5000 OK    11.7 OK     [OK]
+
+--- PASC Deadhorse [ALT] (Anflug CYCB, TC 294) RWY unbek. ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z         +4 OK        4~ OK     >5000 OK    14.3 OK     [OK]
+07. 00Z         +1 OK       11~ WARN   >5000 OK    15.9 OK     [WARN]
+07. 06Z         -2 OK       13~ WARN   >5000 OK    14.4 OK     [WARN]
+07. 12Z         -1 OK        7~ OK     >5000 OK    15.9 OK     [OK]
+07. 18Z         -5 OK       10~ WARN   >5000 OK    12.2 OK     [WARN]
+08. 00Z         -3 OK       13~ WARN   >5000 OK    11.6 OK     [WARN]
+08. 06Z         -2 OK        9~ OK     >5000 OK     6.8 OK     [OK]
+08. 12Z         -1 OK        6~ OK     >5000 OK    12.3 OK     [OK]
+
+--- PAWI Wainwright [ALT] (Anflug PABR, TC 240) RWY unbek. ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z        +13 WARN      4~ OK     >5000 OK     9.2 OK     [WARN]
+07. 00Z        +17 WARN      1~ OK     >5000 OK     8.1 OK     [WARN]
+07. 06Z        +13 WARN      4~ OK     >5000 OK     6.9 OK     [WARN]
+07. 12Z        +11 WARN      4~ OK     >5000 OK     1.9 WARN   [WARN]
+07. 18Z         +3 OK        4~ OK     >5000 OK     5.7 OK     [OK]
+08. 00Z         +6 OK        5~ OK     >5000 OK     3.2 OK     [OK]
+08. 06Z         +8 OK        3~ OK     >5000 OK     8.0 OK     [OK]
+08. 12Z         +8 OK        5~ OK     >5000 OK    12.3 OK     [OK]
+
+--- PAPO Point Hope [ALT] (Anflug PABR, TC 234) RWY unbek. ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z         +8 OK       16~ WARN   >5000 OK    15.2 OK     [WARN]
+07. 00Z         +8 OK       14~ WARN   >5000 OK     4.5 OK     [WARN]
+07. 06Z        +10 WARN     15~ WARN   >5000 OK     6.4 OK     [WARN]
+07. 12Z        +14 WARN     15~ WARN     230 NOGO  18.9 OK     [NOGO]
+07. 18Z        +14 WARN     15~ WARN     191 NOGO  14.4 OK     [NOGO]
+08. 00Z        +11 WARN     16~ WARN     163 NOGO  16.4 OK     [NOGO]
+08. 06Z         +7 OK        8~ OK     >5000 OK    12.5 OK     [OK]
+08. 12Z         +5 OK        1~ OK     >5000 OK     6.3 OK     [OK]
+
+--- PAOT Kotzebue [ALT] (Anflug PABR, TC 208) RWY unbek. ---
+VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
+06. 18Z         +8 OK        2~ OK     >5000 OK     4.1 OK     [OK]
+07. 00Z        +10 WARN      4~ OK     >5000 OK     5.6 OK     [WARN]
+07. 06Z         +8 OK       10~ WARN   >5000 OK     7.5 OK     [WARN]
+07. 12Z        +11 WARN      6~ OK     >5000 OK     7.6 OK     [WARN]
+07. 18Z         +8 OK        5~ OK     >5000 OK     3.2 OK     [OK]
+08. 00Z         +6 OK        9~ OK     >5000 OK     4.5 OK     [OK]
+08. 06Z         -2 OK        9~ OK     >5000 OK     8.0 OK     [OK]
+08. 12Z         -5 OK        4~ OK     >5000 OK     0.1 NOGO   [NOGO]
+
+
+
+BLOCK 1 — CAPS 3 km Rohdaten, Lauf 20260706 12Z (48 h)
 ======================================================================
 
 === CYFB Iqaluit ===
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      305/13kt   318/24kt   +2/9K      +10/17K    +23°C  321/14kt   21kt   0%
 06. 18Z      302/14kt   298/23kt   +1/13K     +10/12K    +25°C  330/15kt   20kt   0%
-06. 21Z      309/17kt   306/18kt   +1/11K     +11/10K    +26°C  n/a        19kt   0%
+06. 21Z      309/17kt   306/18kt   +1/11K     +11/10K    +26°C  327/14kt   19kt   0%
 07. 00Z      309/15kt   298/15kt   +1/7K      +11/11K    +24°C  331/12kt   15kt   0%
 07. 03Z      298/10kt   286/9kt    +2/9K      +10/12K    +17°C  324/7kt    7kt    1%
 07. 06Z      270/8kt    248/9kt    +2/8K      +10/13K    +13°C  322/7kt    7kt    0%
 07. 09Z      259/8kt    260/9kt    +2/15K     +10/13K    +13°C  335/6kt    6kt    2%
 07. 12Z      240/8kt    268/4kt    +2/16K     +10/12K    +19°C  316/4kt    5kt    0%
-07. 15Z      n/a        232/6kt    +2/16K     +11/21K    +22°C  157/5kt    5kt    1%
+07. 15Z      213/10kt   232/6kt    +2/16K     +11/21K    +22°C  157/5kt    5kt    1%
 07. 18Z      210/11kt   213/11kt   +2/16K     +12/15K    +21°C  153/10kt   12kt   1%
-07. 21Z      213/13kt   196/13kt   +2         +13/15K    +20°C  143/13kt   n/a    28%
+07. 21Z      213/13kt   196/13kt   +2/11K     +13/15K    +20°C  143/13kt   17kt   28%
 08. 00Z      180/17kt   196/15kt   +1/9K      +12/14K    +11°C  148/7kt    7kt    99%
 08. 03Z      187/23kt   193/15kt   -1/3K      +11/10K    +9°C   133/4kt    4kt    67%
 08. 06Z      198/25kt   155/21kt   -1/1K      +11/9K     +12°C  089/8kt    8kt    95%
@@ -27,15 +255,15 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      247/26kt   250/14kt   -2/19K     +6/2K      +16°C  049/3kt    3kt    23%
 06. 18Z      242/24kt   231/17kt   -4/9K      +7/8K      +18°C  346/4kt    4kt    0%
-06. 21Z      241/24kt   245/16kt   -4/10K     +6/4K      +10°C  n/a        4kt    2%
+06. 21Z      241/24kt   245/16kt   -4/10K     +6/4K      +10°C  309/4kt    4kt    2%
 07. 00Z      263/20kt   271/11kt   -4/10K     +4/0K      +9°C   349/3kt    3kt    97%
 07. 03Z      272/20kt   274/11kt   -3/10K     +3/2K      +6°C   296/2kt    2kt    98%
 07. 06Z      285/19kt   274/9kt    -3/17K     +2/6K      +4°C   287/2kt    2kt    94%
 07. 09Z      293/15kt   277/9kt    -2/14K     +2/6K      +3°C   298/2kt    2kt    95%
 07. 12Z      295/14kt   287/10kt   -2/15K     +3/14K     +4°C   333/3kt    3kt    94%
-07. 15Z      n/a        298/12kt   -3/9K      +3/17K     +5°C   343/4kt    4kt    2%
+07. 15Z      301/15kt   298/12kt   -3/9K      +3/17K     +5°C   343/4kt    4kt    2%
 07. 18Z      295/19kt   308/16kt   -4/4K      +4/8K      +8°C   339/3kt    3kt    0%
-07. 21Z      294/22kt   291/18kt   -5         +4/5K      +9°C   336/3kt    n/a    0%
+07. 21Z      294/22kt   291/18kt   -5/4K      +4/5K      +9°C   336/3kt    3kt    0%
 08. 00Z      289/27kt   280/19kt   -4/14K     +3/5K      +9°C   357/2kt    2kt    0%
 08. 03Z      295/27kt   286/17kt   -5/12K     +1/1K      +3°C   268/2kt    2kt    0%
 08. 06Z      312/28kt   295/13kt   -5/10K     +1/8K      +2°C   295/0kt    2kt    23%
@@ -46,15 +274,15 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      279/27kt   302/16kt   -7/9K      -2/5K      +1°C   286/9kt    11kt   95%
 06. 18Z      293/29kt   312/15kt   -6/10K     -2/12K     +2°C   281/9kt    11kt   97%
-06. 21Z      298/28kt   303/15kt   -6/10K     -2/12K     +2°C   n/a        11kt   80%
+06. 21Z      298/28kt   303/15kt   -6/10K     -2/12K     +2°C   278/9kt    11kt   80%
 07. 00Z      310/32kt   300/16kt   -5/6K      -1/12K     +2°C   274/9kt    11kt   0%
 07. 03Z      313/28kt   287/21kt   -4/3K      +1/14K     +2°C   254/8kt    9kt    1%
 07. 06Z      286/30kt   275/31kt   -5/2K      +4/5K      +1°C   235/10kt   13kt   45%
 07. 09Z      294/37kt   263/32kt   -5/3K      +4/3K      +1°C   216/11kt   15kt   89%
 07. 12Z      282/42kt   272/40kt   -4/5K      +5/17K     +2°C   258/13kt   18kt   98%
-07. 15Z      n/a        289/35kt   -3/16K     +3/5K      +2°C   281/12kt   15kt   99%
+07. 15Z      298/43kt   289/35kt   -3/16K     +3/5K      +2°C   281/12kt   15kt   99%
 07. 18Z      307/42kt   314/27kt   -4/11K     +2/10K     +3°C   293/13kt   16kt   98%
-07. 21Z      311/41kt   311/25kt   -5         +1/9K      +3°C   295/12kt   n/a    97%
+07. 21Z      311/41kt   311/25kt   -5/6K      +1/9K      +3°C   295/12kt   15kt   97%
 08. 00Z      316/41kt   310/26kt   -5/6K      +2/7K      +3°C   296/11kt   14kt   98%
 08. 03Z      313/40kt   316/29kt   -5/6K      +2/6K      +2°C   295/11kt   14kt   97%
 08. 06Z      308/37kt   322/27kt   -6/8K      +3/6K      +1°C   289/9kt    9kt    98%
@@ -65,15 +293,15 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      240/17kt   262/15kt   -2/12K     +6/7K      +6°C   016/9kt    12kt   0%
 06. 18Z      256/15kt   278/8kt    -2/16K     +6/11K     +8°C   018/11kt   14kt   0%
-06. 21Z      266/10kt   347/4kt    -2/22K     +5/10K     +9°C   n/a        13kt   0%
+06. 21Z      266/10kt   347/4kt    -2/22K     +5/10K     +9°C   013/10kt   13kt   0%
 07. 00Z      264/5kt    026/4kt    -1/28K     +5/9K      +9°C   011/13kt   17kt   0%
 07. 03Z      314/6kt    033/5kt    -2/20K     +5/9K      +7°C   005/13kt   13kt   0%
 07. 06Z      348/8kt    050/5kt    -2/19K     +3/5K      +5°C   005/11kt   11kt   0%
 07. 09Z      009/9kt    023/8kt    -2/14K     +2/0K      +4°C   012/10kt   10kt   95%
 07. 12Z      010/11kt   006/8kt    -3/11K     +2/1K      +6°C   011/8kt    10kt   32%
-07. 15Z      n/a        357/11kt   -2/16K     +3/5K      +8°C   009/6kt    8kt    0%
+07. 15Z      017/13kt   357/11kt   -2/16K     +3/5K      +8°C   009/6kt    8kt    0%
 07. 18Z      025/17kt   352/12kt   -2/21K     +4/11K     +9°C   018/8kt    11kt   0%
-07. 21Z      025/18kt   003/15kt   -1         +6/12K     +11°C  359/12kt   n/a    0%
+07. 21Z      025/18kt   003/15kt   -1/14K     +6/12K     +11°C  359/12kt   16kt   0%
 08. 00Z      007/17kt   021/16kt   -1/12K     +7/22K     +10°C  346/15kt   19kt   0%
 08. 03Z      001/19kt   018/15kt   -1/12K     +7/9K      +8°C   344/15kt   15kt   0%
 08. 06Z      358/17kt   355/14kt   -1/14K     +7/10K     +6°C   339/13kt   13kt   0%
@@ -84,15 +312,15 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      316/11kt   291/11kt   -3/10K     +3/6K      +8°C   269/5kt    7kt    0%
 06. 18Z      329/8kt    295/8kt    -2/12K     +4/7K      +8°C   259/7kt    9kt    0%
-06. 21Z      332/9kt    323/9kt    -2/11K     +4/9K      +10°C  n/a        9kt    0%
+06. 21Z      332/9kt    323/9kt    -2/11K     +4/9K      +10°C  267/7kt    9kt    0%
 07. 00Z      321/11kt   354/7kt    -2/20K     +4/8K      +9°C   259/7kt    9kt    0%
 07. 03Z      334/12kt   041/6kt    -2/16K     +3/5K      +9°C   285/6kt    6kt    0%
 07. 06Z      359/11kt   311/11kt   -1/24K     +3/4K      +8°C   060/10kt   10kt   0%
 07. 09Z      006/13kt   326/12kt   -1/26K     +2/3K      +4°C   068/5kt    5kt    0%
 07. 12Z      013/13kt   334/12kt   -1/20K     +2/3K      +6°C   200/1kt    1kt    0%
-07. 15Z      n/a        342/9kt    -0/18K     +4/7K      +7°C   235/3kt    4kt    0%
+07. 15Z      016/14kt   342/9kt    -0/18K     +4/7K      +7°C   235/3kt    4kt    0%
 07. 18Z      020/11kt   016/9kt    -0/15K     +6/29K     +10°C  261/6kt    8kt    0%
-07. 21Z      008/9kt    016/7kt    -0         +7/30K     +11°C  262/7kt    n/a    0%
+07. 21Z      008/9kt    016/7kt    -0/14K     +7/30K     +11°C  262/7kt    8kt    0%
 08. 00Z      354/8kt    013/5kt    -1/15K     +7/24K     +12°C  261/7kt    9kt    0%
 08. 03Z      338/8kt    019/4kt    -0/14K     +7/12K     +10°C  258/6kt    6kt    0%
 08. 06Z      325/8kt    038/2kt    -0/14K     +7/9K      +5°C   253/6kt    6kt    1%
@@ -103,15 +331,15 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      236/19kt   267/22kt   +0/12K     +9/10K     +7°C   177/8kt    8kt    0%
 06. 18Z      234/19kt   233/18kt   +0/13K     +9/8K      +4°C   262/3kt    3kt    0%
-06. 21Z      226/19kt   208/19kt   -0/14K     +9/12K     +3°C   n/a        2kt    1%
+06. 21Z      226/19kt   208/19kt   -0/14K     +9/12K     +3°C   350/2kt    2kt    1%
 07. 00Z      221/18kt   204/21kt   -0/16K     +10/19K    +3°C   016/3kt    3kt    1%
 07. 03Z      218/17kt   208/14kt   -1/11K     +10/17K    +2°C   012/4kt    4kt    1%
 07. 06Z      208/21kt   220/11kt   -2/9K      +10/18K    +3°C   058/6kt    6kt    1%
 07. 09Z      220/26kt   207/7kt    -2/2K      +10/16K    +4°C   090/4kt    4kt    0%
 07. 12Z      217/20kt   168/11kt   -2/7K      +11/12K    +4°C   093/5kt    5kt    0%
-07. 15Z      n/a        162/13kt   -2/10K     +11/13K    +7°C   110/8kt    8kt    0%
+07. 15Z      207/18kt   162/13kt   -2/10K     +11/13K    +7°C   110/8kt    8kt    0%
 07. 18Z      188/14kt   137/14kt   -2/9K      +11/15K    +7°C   107/10kt   10kt   30%
-07. 21Z      155/14kt   132/19kt   -2         +12/15K    +5°C   102/9kt    n/a    42%
+07. 21Z      155/14kt   132/19kt   -2/10K     +12/15K    +5°C   102/9kt    9kt    42%
 08. 00Z      176/17kt   134/14kt   -2/3K      +12/17K    +4°C   094/9kt    9kt    100%
 08. 03Z      167/10kt   136/10kt   -2/3K      +12/18K    +3°C   093/8kt    8kt    96%
 08. 06Z      157/13kt   162/8kt    -2/4K      +12/18K    +3°C   082/7kt    7kt    3%
@@ -122,15 +350,15 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      187/6kt    205/11kt   -3/10K     +7/13K     +9°C   284/7kt    7kt    4%
 06. 18Z      192/7kt    204/10kt   -3/11K     +7/17K     +10°C  283/8kt    10kt   0%
-06. 21Z      188/7kt    205/9kt    -3/11K     +7/15K     +11°C  n/a        11kt   0%
+06. 21Z      188/7kt    205/9kt    -3/11K     +7/15K     +11°C  265/10kt   11kt   0%
 07. 00Z      188/8kt    204/10kt   -3/11K     +7/16K     +11°C  265/11kt   13kt   0%
 07. 03Z      196/7kt    228/9kt    -3/12K     +8/16K     +11°C  268/11kt   13kt   0%
 07. 06Z      184/6kt    236/5kt    -3/12K     +8/16K     +10°C  272/9kt    9kt    0%
 07. 09Z      158/9kt    178/4kt    -3/11K     +8/15K     +9°C   284/9kt    9kt    0%
 07. 12Z      160/10kt   184/5kt    -3/9K      +7/15K     +7°C   294/7kt    7kt    3%
-07. 15Z      n/a        165/5kt    -3/5K      +7/14K     +7°C   305/6kt    6kt    1%
+07. 15Z      151/10kt   165/5kt    -3/5K      +7/14K     +7°C   305/6kt    6kt    1%
 07. 18Z      144/9kt    140/5kt    -4/6K      +7/14K     +10°C  284/4kt    4kt    10%
-07. 21Z      120/11kt   127/8kt    -4         +7/11K     +13°C  250/5kt    n/a    14%
+07. 21Z      120/11kt   127/8kt    -4/5K      +7/11K     +13°C  250/5kt    5kt    14%
 08. 00Z      110/13kt   107/9kt    -4/4K      +7/4K      +13°C  260/8kt    8kt    51%
 08. 03Z      108/10kt   098/9kt    -3/5K      +8/4K      +16°C  283/9kt    11kt   1%
 08. 06Z      104/7kt    012/9kt    -4/1K      +7/3K      +15°C  036/7kt    7kt    86%
@@ -141,15 +369,15 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      255/9kt    298/6kt    -1/9K      +13/14K    +17°C  113/3kt    3kt    0%
 06. 18Z      253/11kt   291/4kt    -1/9K      +12/11K    +18°C  138/4kt    4kt    2%
-06. 21Z      255/11kt   281/4kt    -1/9K      +11/9K     +22°C  n/a        5kt    0%
+06. 21Z      255/11kt   281/4kt    -1/9K      +11/9K     +22°C  359/1kt    5kt    0%
 07. 00Z      266/12kt   270/6kt    -1/8K      +11/7K     +14°C  337/10kt   12kt   0%
 07. 03Z      262/14kt   279/7kt    -2/2K      +10/7K     +8°C   327/14kt   18kt   14%
 07. 06Z      261/16kt   272/6kt    -2/0K      +8/5K      +5°C   316/17kt   21kt   99%
 07. 09Z      265/18kt   265/5kt    -2/0K      +7/3K      +4°C   317/16kt   19kt   99%
 07. 12Z      264/17kt   270/6kt    -2/3K      +6/3K      +5°C   328/14kt   18kt   96%
-07. 15Z      n/a        272/6kt    -2/3K      +6/3K      +6°C   332/10kt   11kt   98%
+07. 15Z      268/17kt   272/6kt    -2/3K      +6/3K      +6°C   332/10kt   11kt   98%
 07. 18Z      269/17kt   274/8kt    -2/4K      +6/4K      +7°C   355/7kt    8kt    93%
-07. 21Z      271/14kt   279/9kt    -2         +6/4K      +6°C   036/5kt    n/a    92%
+07. 21Z      271/14kt   279/9kt    -2/18K     +6/4K      +6°C   036/5kt    5kt    92%
 08. 00Z      274/13kt   294/8kt    -2/19K     +6/4K      +5°C   113/3kt    3kt    97%
 08. 03Z      282/14kt   308/6kt    -2/15K     +5/6K      +5°C   146/3kt    3kt    99%
 08. 06Z      295/12kt   328/7kt    -3/15K     +4/4K      +4°C   077/1kt    1kt    99%
@@ -160,15 +388,15 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      252/22kt   272/13kt   -5/6K      +3/0K      +6°C   284/4kt    6kt    96%
 06. 18Z      268/20kt   283/13kt   -5/10K     +2/3K      +7°C   313/6kt    9kt    0%
-06. 21Z      281/22kt   288/15kt   -4/8K      +1/7K      +7°C   n/a        12kt   0%
+06. 21Z      281/22kt   288/15kt   -4/8K      +1/7K      +7°C   328/8kt    12kt   0%
 07. 00Z      290/21kt   309/14kt   -3/15K     +1/4K      +5°C   334/9kt    12kt   0%
 07. 03Z      301/22kt   323/13kt   -2/15K     +2/16K     +4°C   337/8kt    11kt   0%
 07. 06Z      313/17kt   326/13kt   -2/12K     +2/14K     +2°C   337/5kt    5kt    0%
 07. 09Z      319/14kt   332/15kt   -2/12K     +3/14K     +3°C   306/2kt    2kt    0%
 07. 12Z      305/19kt   330/15kt   -4/5K      +4/10K     +4°C   254/2kt    2kt    0%
-07. 15Z      n/a        305/17kt   -5/3K      +4/6K      +5°C   253/1kt    2kt    50%
+07. 15Z      300/26kt   305/17kt   -5/3K      +4/6K      +5°C   253/1kt    2kt    50%
 07. 18Z      290/28kt   287/25kt   -5/4K      +4/3K      +7°C   248/3kt    4kt    0%
-07. 21Z      296/33kt   299/21kt   -3         +1/3K      +9°C   274/9kt    n/a    1%
+07. 21Z      296/33kt   299/21kt   -3/14K     +1/3K      +9°C   274/9kt    13kt   1%
 08. 00Z      306/36kt   320/21kt   -4/11K     +2/8K      +6°C   338/12kt   17kt   0%
 08. 03Z      325/36kt   337/24kt   -4/10K     +1/10K     +4°C   338/9kt    15kt   0%
 08. 06Z      324/36kt   335/24kt   -4/8K      +1/9K      +3°C   331/8kt    8kt    4%
@@ -179,15 +407,15 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      244/23kt   266/14kt   -3/13K     +5/9K      +8°C   290/3kt    3kt    0%
 06. 18Z      258/20kt   292/7kt    -2/17K     +4/9K      +10°C  077/2kt    2kt    2%
-06. 21Z      284/9kt    336/5kt    -2/19K     +4/5K      +10°C  n/a        9kt    0%
+06. 21Z      284/9kt    336/5kt    -2/19K     +4/5K      +10°C  058/9kt    9kt    0%
 07. 00Z      283/6kt    347/9kt    -2/18K     +4/2K      +9°C   067/11kt   11kt   0%
 07. 03Z      328/6kt    000/10kt   -2/20K     +3/1K      +8°C   062/9kt    9kt    0%
 07. 06Z      350/6kt    004/11kt   -2/16K     +3/2K      +5°C   042/6kt    6kt    0%
 07. 09Z      005/8kt    358/10kt   -2/12K     +3/3K      +4°C   006/3kt    3kt    0%
 07. 12Z      012/11kt   354/11kt   -2/16K     +3/5K      +6°C   329/2kt    2kt    0%
-07. 15Z      n/a        347/12kt   -2/20K     +4/10K     +8°C   269/2kt    2kt    0%
+07. 15Z      015/13kt   347/12kt   -2/20K     +4/10K     +8°C   269/2kt    2kt    0%
 07. 18Z      021/15kt   358/14kt   -1/13K     +5/16K     +10°C  246/2kt    2kt    0%
-07. 21Z      000/15kt   001/19kt   -1         +5/8K      +5°C   138/4kt    n/a    0%
+07. 21Z      000/15kt   001/19kt   -1/12K     +5/8K      +5°C   138/4kt    4kt    0%
 08. 00Z      351/17kt   356/16kt   -2/9K      +5/6K      +7°C   151/2kt    2kt    0%
 08. 03Z      352/18kt   345/16kt   -2/14K     +6/7K      +10°C  070/1kt    1kt    0%
 08. 06Z      353/17kt   334/16kt   -2/21K     +7/19K     +10°C  322/4kt    4kt    0%
@@ -198,15 +426,15 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      233/20kt   201/7kt    -2/1K      +7/3K      +14°C  024/9kt    12kt   100%
 06. 18Z      246/16kt   254/3kt    -1/0K      +6/1K      +13°C  027/10kt   13kt   100%
-06. 21Z      243/12kt   355/5kt    -1/0K      +6/1K      +13°C  n/a        12kt   100%
+06. 21Z      243/12kt   355/5kt    -1/0K      +6/1K      +13°C  020/10kt   12kt   100%
 07. 00Z      247/6kt    011/5kt    -1/0K      +6/2K      +9°C   025/11kt   15kt   100%
 07. 03Z      262/7kt    005/8kt    -2/0K      +6/3K      +6°C   015/10kt   10kt   93%
 07. 06Z      302/6kt    358/9kt    -2/6K      +6/9K      +5°C   005/11kt   11kt   16%
 07. 09Z      326/4kt    014/8kt    -2/14K     +5/9K      +4°C   004/10kt   10kt   31%
 07. 12Z      330/3kt    010/12kt   -2/18K     +5/9K      +5°C   002/11kt   16kt   0%
-07. 15Z      n/a        013/12kt   -1/25K     +5/12K     +8°C   000/14kt   17kt   0%
+07. 15Z      008/8kt    013/12kt   -1/25K     +5/12K     +8°C   000/14kt   17kt   0%
 07. 18Z      021/13kt   015/12kt   -2/20K     +5/9K      +9°C   001/15kt   20kt   0%
-07. 21Z      025/18kt   014/16kt   -1         +6/25K     +10°C  001/15kt   n/a    0%
+07. 21Z      025/18kt   014/16kt   -1/19K     +6/25K     +10°C  001/15kt   19kt   0%
 08. 00Z      022/20kt   015/18kt   -1/20K     +7/18K     +9°C   002/13kt   17kt   0%
 08. 03Z      011/21kt   016/21kt   -2/11K     +7/10K     +7°C   360/10kt   13kt   0%
 08. 06Z      008/20kt   359/21kt   -1/19K     +7/8K      +5°C   349/7kt    7kt    0%
@@ -217,15 +445,15 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      328/16kt   298/15kt   -2/11K     +3/5K      +9°C   073/5kt    6kt    0%
 06. 18Z      330/15kt   306/16kt   -2/18K     +4/7K      +12°C  065/7kt    7kt    0%
-06. 21Z      323/13kt   290/21kt   -1/20K     +4/5K      +13°C  n/a        11kt   0%
+06. 21Z      323/13kt   290/21kt   -1/20K     +4/5K      +13°C  072/10kt   11kt   0%
 07. 00Z      315/11kt   286/21kt   -1/20K     +6/6K      +13°C  074/10kt   12kt   0%
 07. 03Z      313/12kt   309/17kt   -1/23K     +7/8K      +11°C  069/8kt    10kt   0%
 07. 06Z      327/11kt   302/17kt   -0/24K     +7/6K      +6°C   056/7kt    6kt    0%
 07. 09Z      342/9kt    295/16kt   -0/23K     +6/6K      +3°C   041/4kt    4kt    0%
 07. 12Z      353/8kt    298/14kt   +0/22K     +7/7K      +4°C   078/2kt    3kt    0%
-07. 15Z      n/a        302/12kt   +0/22K     +7/10K     +7°C   070/3kt    3kt    0%
+07. 15Z      019/6kt    302/12kt   +0/22K     +7/10K     +7°C   070/3kt    3kt    0%
 07. 18Z      050/4kt    294/9kt    +1/21K     +7/13K     +10°C  060/6kt    6kt    0%
-07. 21Z      115/2kt    285/8kt    +1         +8/12K     +11°C  065/9kt    n/a    0%
+07. 21Z      115/2kt    285/8kt    +1/21K     +8/12K     +11°C  065/9kt    10kt   0%
 08. 00Z      181/3kt    267/8kt    +1/21K     +9/17K     +11°C  066/10kt   12kt   0%
 08. 03Z      199/3kt    270/12kt   +2/22K     +10/20K    +8°C   049/8kt    10kt   0%
 08. 06Z      161/4kt    250/10kt   +2/23K     +10/10K    +2°C   041/7kt    7kt    4%
@@ -236,15 +464,15 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      324/17kt   311/16kt   +0/26K     +5/8K      +1°C   284/5kt    5kt    100%
 06. 18Z      337/16kt   336/13kt   +0/22K     +6/8K      +4°C   295/7kt    8kt    99%
-06. 21Z      344/14kt   008/14kt   +0/21K     +7/25K     +6°C   n/a        9kt    96%
+06. 21Z      344/14kt   008/14kt   +0/21K     +7/25K     +6°C   304/8kt    9kt    96%
 07. 00Z      350/14kt   013/13kt   +0/19K     +7/27K     +6°C   295/9kt    10kt   49%
 07. 03Z      356/11kt   013/15kt   -0/16K     +7/15K     +6°C   301/10kt   10kt   0%
 07. 06Z      344/8kt    012/13kt   -0/15K     +7/10K     +4°C   306/8kt    8kt    0%
 07. 09Z      321/7kt    358/10kt   -0/17K     +7/9K      +3°C   302/4kt    4kt    0%
 07. 12Z      303/7kt    355/8kt    -0/19K     +7/10K     +4°C   302/4kt    4kt    0%
-07. 15Z      n/a        015/7kt    -0/22K     +7/14K     +4°C   282/3kt    3kt    1%
+07. 15Z      310/6kt    015/7kt    -0/22K     +7/14K     +4°C   282/3kt    3kt    1%
 07. 18Z      292/3kt    051/6kt    -0/22K     +6/8K      +5°C   268/4kt    4kt    0%
-07. 21Z      244/4kt    094/5kt    -0         +7/8K      +8°C   277/3kt    n/a    0%
+07. 21Z      244/4kt    094/5kt    -0/23K     +7/8K      +8°C   277/3kt    3kt    0%
 08. 00Z      238/6kt    131/7kt    +0/24K     +7/10K     +12°C  278/2kt    2kt    0%
 08. 03Z      235/7kt    146/9kt    +1/23K     +8/13K     +13°C  175/2kt    3kt    0%
 08. 06Z      228/8kt    161/11kt   +1/23K     +8/12K     +12°C  110/5kt    5kt    0%
@@ -255,15 +483,15 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      332/17kt   310/18kt   +0/23K     +5/6K      +2°C   285/4kt    4kt    33%
 06. 18Z      341/15kt   329/17kt   +0/23K     +6/9K      +2°C   327/4kt    4kt    78%
-06. 21Z      345/12kt   359/15kt   +0/22K     +7/12K     +1°C   n/a        7kt    40%
+06. 21Z      345/12kt   359/15kt   +0/22K     +7/12K     +1°C   051/6kt    7kt    40%
 07. 00Z      346/10kt   012/13kt   +0/22K     +7/13K     +1°C   041/4kt    6kt    1%
 07. 03Z      001/8kt    025/13kt   +0/23K     +7/11K     +1°C   045/4kt    5kt    0%
 07. 06Z      010/5kt    046/11kt   +0/25K     +7/11K     +1°C   050/4kt    4kt    0%
 07. 09Z      016/3kt    068/9kt    +0/26K     +7/11K     +0°C   043/2kt    2kt    1%
 07. 12Z      019/1kt    084/8kt    +1/27K     +7/12K     +1°C   060/2kt    2kt    1%
-07. 15Z      n/a        096/8kt    +1/28K     +8/14K     +1°C   024/4kt    4kt    3%
+07. 15Z      099/1kt    096/8kt    +1/28K     +8/14K     +1°C   024/4kt    4kt    3%
 07. 18Z      148/5kt    118/9kt    +1/28K     +8/15K     +2°C   024/5kt    5kt    3%
-07. 21Z      177/8kt    166/10kt   +1         +9/18K     +2°C   011/4kt    n/a    2%
+07. 21Z      177/8kt    166/10kt   +1/27K     +9/18K     +2°C   011/4kt    4kt    2%
 08. 00Z      196/11kt   198/14kt   +2/29K     +10/20K    +2°C   329/3kt    3kt    1%
 08. 03Z      198/10kt   188/15kt   +2/29K     +11/14K    +3°C   296/2kt    3kt    1%
 08. 06Z      194/9kt    186/15kt   +1/27K     +12/14K    +4°C   288/2kt    2kt    1%
@@ -274,15 +502,15 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      348/8kt    006/5kt    -0/24K     +6/8K      +3°C   179/0kt    0kt    1%
 06. 18Z      336/4kt    036/2kt    +0/24K     +6/9K      +6°C   079/1kt    1kt    2%
-06. 21Z      308/4kt    150/3kt    +0/25K     +7/10K     +10°C  n/a        2kt    0%
+06. 21Z      308/4kt    150/3kt    +0/25K     +7/10K     +10°C  086/2kt    2kt    0%
 07. 00Z      318/2kt    163/5kt    +1/26K     +7/12K     +13°C  083/4kt    4kt    1%
 07. 03Z      239/1kt    188/7kt    +1/27K     +8/16K     +13°C  085/7kt    7kt    0%
 07. 06Z      232/1kt    199/10kt   +1/27K     +8/14K     +11°C  084/9kt    9kt    0%
 07. 09Z      153/2kt    197/12kt   +1/27K     +9/9K      +9°C   094/10kt   10kt   0%
 07. 12Z      156/5kt    182/9kt    +1/27K     +9/10K     +9°C   108/10kt   10kt   0%
-07. 15Z      n/a        155/9kt    +1/27K     +8/9K      +12°C  113/8kt    8kt    0%
+07. 15Z      163/7kt    155/9kt    +1/27K     +8/9K      +12°C  113/8kt    8kt    0%
 07. 18Z      158/8kt    147/12kt   +1/26K     +8/10K     +16°C  104/7kt    7kt    0%
-07. 21Z      163/10kt   165/15kt   +2         +9/12K     +18°C  074/7kt    n/a    0%
+07. 21Z      163/10kt   165/15kt   +2/26K     +9/12K     +18°C  074/7kt    7kt    0%
 08. 00Z      173/9kt    150/14kt   +2/26K     +10/12K    +18°C  067/9kt    9kt    0%
 08. 03Z      171/7kt    155/15kt   +2/28K     +12/14K    +18°C  065/10kt   10kt   0%
 08. 06Z      157/7kt    165/15kt   +2/30K     +13/16K    +16°C  074/12kt   12kt   0%
@@ -293,15 +521,15 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      356/6kt    323/11kt   -1/21K     +6/8K      +12°C  149/1kt    1kt    0%
 06. 18Z      012/5kt    346/5kt    -1/18K     +7/13K     +16°C  122/1kt    2kt    0%
-06. 21Z      032/3kt    121/3kt    -1/19K     +7/18K     +19°C  n/a        3kt    0%
+06. 21Z      032/3kt    121/3kt    -1/19K     +7/18K     +19°C  101/2kt    3kt    0%
 07. 00Z      080/3kt    158/6kt    +0/23K     +8/10K     +21°C  087/3kt    6kt    1%
 07. 03Z      116/3kt    146/6kt    +1/26K     +9/10K     +21°C  086/5kt    5kt    7%
 07. 06Z      123/4kt    138/9kt    +1/27K     +9/12K     +18°C  078/4kt    4kt    0%
 07. 09Z      127/6kt    147/11kt   +1/27K     +9/19K     +14°C  113/4kt    4kt    0%
 07. 12Z      144/9kt    172/10kt   +2/28K     +9/11K     +11°C  092/6kt    6kt    0%
-07. 15Z      n/a        147/10kt   +2/27K     +9/13K     +17°C  109/4kt    4kt    0%
+07. 15Z      151/9kt    147/10kt   +2/27K     +9/13K     +17°C  109/4kt    4kt    0%
 07. 18Z      140/11kt   137/13kt   +2/28K     +9/14K     +22°C  148/6kt    13kt   0%
-07. 21Z      146/13kt   139/11kt   +2         +10/13K    +23°C  134/7kt    n/a    0%
+07. 21Z      146/13kt   139/11kt   +2/28K     +10/13K    +23°C  134/7kt    11kt   0%
 08. 00Z      155/12kt   133/11kt   +1/28K     +12/16K    +25°C  135/7kt    12kt   0%
 08. 03Z      151/12kt   137/11kt   +1/26K     +13/19K    +25°C  136/7kt    7kt    0%
 08. 06Z      143/12kt   144/12kt   +0/23K     +13/17K    +22°C  127/5kt    5kt    0%
@@ -312,15 +540,15 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      288/3kt    276/5kt    +1/16K     +10/24K    +7°C   092/4kt    4kt    47%
 06. 18Z      266/4kt    301/5kt    +1/14K     +10/21K    +11°C  071/4kt    4kt    0%
-06. 21Z      272/3kt    297/3kt    +0/15K     +10/19K    +13°C  n/a        8kt    0%
+06. 21Z      272/3kt    297/3kt    +0/15K     +10/19K    +13°C  055/7kt    8kt    0%
 07. 00Z      234/2kt    297/2kt    +1/16K     +11/16K    +14°C  059/8kt    11kt   0%
 07. 03Z      179/2kt    356/2kt    +1/15K     +11/15K    +12°C  062/9kt    13kt   0%
 07. 06Z      180/4kt    071/4kt    +0/14K     +12/18K    +9°C   063/8kt    13kt   0%
 07. 09Z      193/4kt    137/3kt    +0/15K     +12/20K    +5°C   066/7kt    7kt    38%
 07. 12Z      200/5kt    185/5kt    -0/16K     +13/18K    +3°C   064/7kt    7kt    6%
-07. 15Z      n/a        178/7kt    -0/17K     +12/10K    +4°C   057/7kt    10kt   74%
+07. 15Z      181/4kt    178/7kt    -0/17K     +12/10K    +4°C   057/7kt    10kt   74%
 07. 18Z      172/7kt    160/8kt    -0/16K     +13/12K    +7°C   055/8kt    10kt   67%
-07. 21Z      175/9kt    163/10kt   -0         +13/11K    +9°C   050/9kt    n/a    0%
+07. 21Z      175/9kt    163/10kt   -0/9K      +13/11K    +9°C   050/9kt    12kt   0%
 08. 00Z      184/8kt    181/8kt    -0/12K     +13/12K    +10°C  055/9kt    13kt   0%
 08. 03Z      194/5kt    152/5kt    -0/6K      +14/15K    +10°C  058/10kt   13kt   1%
 08. 06Z      199/4kt    114/5kt    -0/7K      +14/17K    +8°C   062/9kt    9kt    3%
@@ -331,15 +559,15 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      208/18kt   206/19kt   -1/10K     +9/7K      +2°C   281/4kt    4kt    40%
 06. 18Z      205/17kt   188/18kt   -0/15K     +9/9K      +2°C   256/4kt    4kt    2%
-06. 21Z      208/18kt   192/18kt   -1/14K     +9/10K     +4°C   n/a        1kt    0%
+06. 21Z      208/18kt   192/18kt   -1/14K     +9/10K     +4°C   280/1kt    1kt    0%
 07. 00Z      206/20kt   217/18kt   -1/8K      +9/20K     +12°C  088/1kt    1kt    0%
 07. 03Z      196/21kt   228/20kt   -1/7K      +9/8K      +13°C  004/2kt    2kt    0%
 07. 06Z      189/20kt   219/14kt   -1/8K      +9/7K      +14°C  054/4kt    4kt    0%
 07. 09Z      192/32kt   183/13kt   -2/4K      +10/6K     +12°C  083/4kt    4kt    0%
 07. 12Z      185/28kt   168/12kt   -3/2K      +10/10K    +10°C  075/4kt    4kt    0%
-07. 15Z      n/a        168/13kt   -3/1K      +10/9K     +8°C   024/6kt    6kt    2%
+07. 15Z      172/23kt   168/13kt   -3/1K      +10/9K     +8°C   024/6kt    6kt    2%
 07. 18Z      161/24kt   160/9kt    -2/6K      +10/10K    +8°C   024/4kt    4kt    21%
-07. 21Z      158/17kt   190/6kt    -2         +10/8K     +3°C   304/5kt    n/a    1%
+07. 21Z      158/17kt   190/6kt    -2/5K      +10/8K     +3°C   304/5kt    5kt    1%
 08. 00Z      170/16kt   201/8kt    -2/3K      +10/7K     +3°C   309/5kt    5kt    3%
 08. 03Z      178/12kt   224/9kt    -2/5K      +10/16K    +3°C   337/5kt    5kt    1%
 08. 06Z      202/9kt    252/10kt   -2/8K      +10/20K    +3°C   354/3kt    3kt    1%
@@ -350,15 +578,15 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      176/10kt   201/13kt   +1/16K     +8/17K     +6°C   151/14kt   14kt   0%
 06. 18Z      184/9kt    215/12kt   -0/18K     +8/15K     +6°C   154/16kt   16kt   0%
-06. 21Z      171/11kt   221/11kt   -1/18K     +7/5K      +6°C   n/a        15kt   0%
+06. 21Z      171/11kt   221/11kt   -1/18K     +7/5K      +6°C   163/15kt   15kt   0%
 07. 00Z      184/13kt   184/11kt   -1/19K     +7/5K      +6°C   163/14kt   14kt   1%
 07. 03Z      185/13kt   196/14kt   -2/18K     +7/6K      +6°C   158/15kt   15kt   2%
 07. 06Z      187/15kt   200/12kt   -2/15K     +7/6K      +6°C   157/15kt   15kt   0%
 07. 09Z      189/17kt   176/13kt   -2/19K     +7/8K      +5°C   157/15kt   15kt   2%
 07. 12Z      190/19kt   187/19kt   -1/20K     +7/19K     +5°C   155/15kt   15kt   4%
-07. 15Z      n/a        203/18kt   -2/21K     +8/17K     +5°C   154/16kt   16kt   49%
+07. 15Z      199/21kt   203/18kt   -2/21K     +8/17K     +5°C   154/16kt   16kt   49%
 07. 18Z      198/18kt   199/17kt   -2/20K     +7/14K     +5°C   159/15kt   15kt   45%
-07. 21Z      194/17kt   197/18kt   -2         +8/18K     +5°C   166/14kt   n/a    13%
+07. 21Z      194/17kt   197/18kt   -2/18K     +8/18K     +5°C   166/14kt   18kt   13%
 08. 00Z      187/15kt   191/18kt   -2/16K     +8/19K     +5°C   164/12kt   16kt   58%
 08. 03Z      186/14kt   193/15kt   -1/15K     +9/18K     +6°C   161/10kt   10kt   47%
 08. 06Z      174/13kt   182/12kt   -2/12K     +9/18K     +6°C   160/8kt    8kt    29%
@@ -369,15 +597,15 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen   Bew.
 06. 15Z      200/5kt    208/8kt    -4/7K      +7/4K      +9°C   256/2kt    2kt    0%
 06. 18Z      202/8kt    216/9kt    -4/4K      +8/4K      +8°C   229/2kt    2kt    0%
-06. 21Z      207/10kt   190/10kt   -4/5K      +7/4K      +8°C   n/a        4kt    0%
+06. 21Z      207/10kt   190/10kt   -4/5K      +7/4K      +8°C   245/4kt    4kt    0%
 07. 00Z      210/10kt   184/12kt   -3/6K      +8/8K      +9°C   260/4kt    4kt    0%
 07. 03Z      201/7kt    206/12kt   -3/7K      +8/12K     +11°C  271/7kt    7kt    0%
 07. 06Z      175/9kt    204/11kt   -3/7K      +8/12K     +11°C  287/10kt   10kt   4%
 07. 09Z      172/11kt   195/13kt   -3/9K      +8/9K      +10°C  300/9kt    9kt    1%
 07. 12Z      191/11kt   205/12kt   -3/12K     +8/8K      +9°C   319/6kt    6kt    1%
-07. 15Z      n/a        201/10kt   -3/8K      +8/4K      +9°C   294/6kt    6kt    0%
+07. 15Z      201/11kt   201/10kt   -3/8K      +8/4K      +9°C   294/6kt    6kt    0%
 07. 18Z      194/8kt    181/8kt    -3/9K      +8/3K      +9°C   276/5kt    5kt    0%
-07. 21Z      173/10kt   169/8kt    -3         +8/5K      +9°C   277/7kt    n/a    0%
+07. 21Z      173/10kt   169/8kt    -3/10K     +8/5K      +9°C   277/7kt    7kt    0%
 08. 00Z      160/10kt   160/7kt    -3/4K      +9/8K      +10°C  286/9kt    9kt    0%
 08. 03Z      123/10kt   110/5kt    -3/4K      +9/8K      +12°C  286/10kt   10kt   1%
 08. 06Z      111/11kt   092/9kt    -3/8K      +10/8K     +16°C  300/9kt    9kt    10%
@@ -385,10 +613,9 @@ VT (UTC)     W700       W850       T700/Sp    T850/Sp    T2m    Wind10m    Böen
 08. 12Z      098/15kt   086/8kt    -3/0K      +9/4K      +12°C  001/4kt    4kt    97%
 
 
-BLOCK 2 — RDPS-WEonG Nebelsicht 10 km, Lauf 20260706 12Z (84 h)
+BLOCK 2 — RDPS-WEonG Nebelsicht 10 km, Lauf 20260706 12Z
 ======================================================================
-Werte in km; '>=10' = keine relevante Nebeleinschraenkung.
-Kritisch fuer VFR/Anflug: < 5 km, hart: < 1.6 km (1 SM).
+Werte km; '>=10' = keine Nebeleinschraenkung. Kritisch < 5 km, hart < 1.6 km.
 
 VT (UTC)      CYFB   CYIO   CYRB   CYHK   CYCB   PABR   PAOM   CYCY   CYAB   CYYH   CYBB   CYCO   CYHI   CYPC   CYUB   CYEV   PASC   PAWI   PAPO   PAOT
 06. 15Z       >=10   0.8k   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
@@ -397,7 +624,7 @@ VT (UTC)      CYFB   CYIO   CYRB   CYHK   CYCB   PABR   PAOM   CYCY   CYAB   CYY
 07. 00Z       >=10   0.8k   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   0.8k   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
 07. 03Z       >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
 07. 06Z       >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
-07. 09Z       >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
+07. 09Z        n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a
 07. 12Z       >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
 07. 15Z       >=10   >=10   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
 07. 18Z       >=10   >=10   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
@@ -412,31 +639,31 @@ VT (UTC)      CYFB   CYIO   CYRB   CYHK   CYCB   PABR   PAOM   CYCY   CYAB   CYY
 09. 06Z       >=10   >=10   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
 09. 12Z       >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
 09. 18Z       >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   0.8k   >=10   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10
-10. 00Z       >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
+10. 00Z        n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a
 
 
 BLOCK 3 — Amtliche Meldungen (aviationweather.gov)
 ======================================================================
 
 --- METAR ---
+METAR PAPO 062156Z AUTO 16015KT 10SM CLR 08/03 A2990 RMK AO2 SLP124 T00830033
+METAR PAOM 062153Z AUTO 25016KT 10SM CLR 13/04 A2996 RMK AO2 SLP146 T01280044 TSNO
+METAR PABR 062153Z AUTO 26003KT 10SM CLR 10/04 A2991 RMK AO2 SLP127 T01000039 TSNO $
+METAR PASC 062153Z 04012KT 10SM CLR 14/07 A2993 RMK AO2 SLP135 T01440067
+METAR PAOT 062153Z AUTO 24006KT 10SM CLR 16/08 A2992 RMK AO2 SLP130 T01610078 TSNO
 SPECI CYBB 062125Z 01008KT 12SM -RA BKN009 OVC040 08/07 A2983 RMK ST6SC2 SLP104
-METAR CYPC 062100Z 36005KT 15SM BKN013 04/02 A3010 RMK SC7 SLP194
+METAR CYRB 062100Z 28013KT 30SM FEW002 FEW013 SCT019 BKN220 03/01 A2986 RMK ST1ST1SC2CI2 ST TR SLP121
+METAR CYHK 062100Z 03012G19KT 10SM FEW140 FEW220 12/06 A2987 RMK AC1CI1 AC TR SLP121
+METAR CYIO 062100Z 26007KT 220V290 15SM BKN037 BKN260 11/08 A2970 RMK SC6CI1 SLP063
 METAR CYCB 062100Z 25005KT 240V320 15SM BKN050 10/04 A2994 RMK SC7 SLP142
 METAR CYCO 062100Z 05008KT 15SM FEW051 FEW240 16/06 A3002 RMK CU1CI1 CI TR SLP168
 METAR CYEV 062100Z VRB03KT 15SM FEW072 FEW270 21/03 A3002 RMK CU1CI2 CU TR SLP171 DENSITY ALT 900FT
 METAR CYYH 062100Z 10011KT 15SM FEW016 FEW022 BKN044 13/07 A2985 RMK CU1CU1SC7 CU TR CU TR SLP113
 METAR CYUB 062100Z 12006KT 15SM FEW240 18/07 A3004 RMK CI2 SLP175 DENSITY ALT 300FT
-METAR CYCY 062100Z 10005KT 10SM SCT190 10/05 A2965 RMK AC4 FU SLP043
-METAR CYHI 062100Z 32014KT 15SM SCT019 SCT037 10/04 A3000 RMK SC4SC1 SC TR SLP164
+METAR CYPC 062100Z 36005KT 15SM BKN013 04/02 A3010 RMK SC7 SLP194
 METAR CYFB 062100Z 32015G22KT 30SM SCT240 24/04 A2984 RMK CI3 SLP106 DENSITY ALT 1300FT
-METAR CYRB 062100Z 28013KT 30SM FEW002 FEW013 SCT019 BKN220 03/01 A2986 RMK ST1ST1SC2CI2 ST TR SLP121
-METAR CYHK 062100Z 03012G19KT 10SM FEW140 FEW220 12/06 A2987 RMK AC1CI1 AC TR SLP121
-METAR CYIO 062100Z 26007KT 220V290 15SM BKN037 BKN260 11/08 A2970 RMK SC6CI1 SLP063
-METAR PAPO 062056Z AUTO 15015KT 10SM CLR 08/03 A2991 RMK AO2 SLP126 T00780028 57004
-METAR PABR 062053Z AUTO 31003KT 10SM CLR 08/03 A2991 RMK AO2 SLP127 T00830028 53000 TSNO $
-METAR PAOM 062053Z AUTO 25016KT 10SM CLR 13/06 A2997 RMK AO2 SLP147 T01280056 56003 TSNO
-METAR PASC 062053Z 05010KT 10SM CLR 16/06 A2994 RMK AO2 SLP138 T01560061 56004
-METAR PAOT 062053Z AUTO 25006KT 10SM CLR 16/08 A2992 RMK AO2 SLP133 T01560083 56005 TSNO
+METAR CYHI 062100Z 32014KT 15SM SCT019 SCT037 10/04 A3000 RMK SC4SC1 SC TR SLP164
+METAR CYCY 062100Z 10005KT 10SM SCT190 10/05 A2965 RMK AC4 FU SLP043
 
 --- TAF ---
 TAF AMD CYRB 062106Z 0621/0718 28012KT P6SM FEW002 SCT012 
@@ -490,6 +717,6 @@ TAF PABR 061720Z 0618/0718 23008KT P6SM SKC
   FM070500 09008KT P6SM BKN070
 TAF PASC 061720Z 0618/0718 08008KT P6SM FEW200
 
-Legende: W700~FL100, W850~5000ft; Sp = Taupunkt-Spread (Vereisung bei Sp<3K und T<0°C); Nebel-Setup: Spread<1.5K + Wind<5kt + Bedeckung hoch.
+Legende Block 1: W700~FL100, W850~5000ft; Sp = Spread (Vereisung bei Sp<3K und T<0°C).
 
-Erzeugt: 2026-07-06 21:36 UTC
+Erzeugt: 2026-07-06 22:00 UTC
