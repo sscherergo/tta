@@ -1,0 +1,137 @@
+CAPS/HRDPS-North 3 km — Lauf 20260706 00Z (Gitterpunkt-Vorhersage, 48 h)
+
+
+=== CYFB Iqaluit (63.756, -68.556) ===
+VT (UTC)      700hPa Wind     850hPa Wind     T700   T850   T2m    Böen   Sicht
+06. 01:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 04:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 07:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 10:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 13:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 16:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 19:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 22:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 01:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 04:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 07:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 10:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 13:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 16:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 19:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 22:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+
+=== CYIO Pond Inlet (72.683, -77.967) ===
+VT (UTC)      700hPa Wind     850hPa Wind     T700   T850   T2m    Böen   Sicht
+06. 01:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 04:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 07:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 10:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 13:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 16:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 19:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 22:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 01:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 04:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 07:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 10:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 13:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 16:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 19:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 22:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+
+=== CYRB Resolute Bay (74.717, -94.969) ===
+VT (UTC)      700hPa Wind     850hPa Wind     T700   T850   T2m    Böen   Sicht
+06. 01:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 04:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 07:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 10:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 13:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 16:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 19:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 22:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 01:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 04:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 07:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 10:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 13:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 16:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 19:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 22:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+
+=== CYHK Gjoa Haven (68.636, -95.850) ===
+VT (UTC)      700hPa Wind     850hPa Wind     T700   T850   T2m    Böen   Sicht
+06. 01:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 04:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 07:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 10:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 13:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 16:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 19:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 22:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 01:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 04:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 07:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 10:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 13:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 16:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 19:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 22:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+
+=== CYCB Cambridge Bay (69.108, -105.138) ===
+VT (UTC)      700hPa Wind     850hPa Wind     T700   T850   T2m    Böen   Sicht
+06. 01:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 04:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 07:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 10:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 13:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 16:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 19:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 22:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 01:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 04:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 07:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 10:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 13:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 16:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 19:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 22:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+
+=== PABR Utqiagvik/Point Barrow (71.285, -156.766) ===
+VT (UTC)      700hPa Wind     850hPa Wind     T700   T850   T2m    Böen   Sicht
+06. 01:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 04:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 07:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 10:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 13:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 16:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 19:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 22:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 01:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 04:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 07:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 10:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 13:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 16:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 19:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 22:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+
+=== PAOM Nome (64.512, -165.445) ===
+VT (UTC)      700hPa Wind     850hPa Wind     T700   T850   T2m    Böen   Sicht
+06. 01:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 04:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 07:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 10:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 13:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 16:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 19:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+06. 22:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 01:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 04:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 07:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 10:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 13:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 16:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 19:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+07. 22:00Z    n/a             n/a             n/a    n/a    n/a    n/a    n/a
+
+Erzeugt: 2026-07-06 20:57 UTC
