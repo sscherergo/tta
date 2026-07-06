@@ -1,0 +1,54 @@
+# .github/workflows/fog-verification.yml
+#
+# Taegliche Verifikation der CAPS-Nebelvorhersage gegen METARs.
+# Ergebnis: verification/history.json + verification/fog_verification.png
+# Abruf: https://raw.githubusercontent.com/<USER>/<REPO>/main/verification/fog_verification.png
+
+name: Fog Verification
+
+on:
+  schedule:
+    - cron: "15 0,6,12,18 * * *"    # taeglich alle 6h
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fog-verification
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: ecCodes installieren
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y --no-install-recommends libeccodes0 libeccodes-data
+
+      - name: Python-Pakete installieren
+        run: pip install -r requirements.txt
+
+      - name: Verifikation ausfuehren
+        run: python fog_verification.py
+
+      - name: Ergebnisse committen
+        run: |
+          git config user.name  "fog-verify-bot"
+          git config user.email "actions@github.com"
+          git add verification/
+          git diff --cached --quiet && echo "Keine Aenderung." && exit 0
+          git commit -m "Nebel-Verifikation $(date -u '+%Y-%m-%d')"
+          git pull --rebase origin main
+          git push
