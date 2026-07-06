@@ -1,22 +1,22 @@
 # .github/workflows/caps-briefing.yml
 #
-# Erzeugt zweimal taeglich das CAPS/HRDPS-North-Briefing entlang der
-# NWP-Route und committet es als briefing.txt ins Repo.
-# Abruf vom iPad:
-#   https://raw.githubusercontent.com/<USER>/<REPO>/main/briefing.txt
+# Erzeugt zweimal taeglich das CAPS/NWP-Routenbriefing.
+# - briefing.txt                          = immer das neueste (iPad-Kurzbefehl)
+# - briefings/briefing_YYYYMMDDTHHMMZ.txt = Archiv, die 10 juengsten Laeufe
+#
+# Abruf neuestes:  https://raw.githubusercontent.com/<USER>/<REPO>/main/briefing.txt
+# Archiv-Ansicht:  https://github.com/<USER>/<REPO>/tree/main/briefings
 
 name: CAPS Route Briefing
 
 on:
   schedule:
-    # 00Z-Lauf ist ~05:00 UTC vollstaendig, 12Z-Lauf ~17:00 UTC.
-    # Puffer eingeplant; GitHub-Cron kann sich zusaetzlich um Minuten verspaeten.
-    - cron: "45 5 * * *"
-    - cron: "45 17 * * *"
-  workflow_dispatch: {}   # manueller Start ueber die GitHub-App/-Website
+    - cron: "45 5 * * *"    # nach dem 00Z-Lauf
+    - cron: "45 17 * * *"   # nach dem 12Z-Lauf
+  workflow_dispatch: {}
 
 permissions:
-  contents: write         # noetig, um briefing.txt zu committen
+  contents: write
 
 concurrency:
   group: caps-briefing
@@ -43,20 +43,32 @@ jobs:
           sudo apt-get install -y --no-install-recommends libeccodes0 libeccodes-data
 
       - name: Python-Pakete installieren
-        run: pip install httpx xarray cfgrib numpy
+        run: pip install -r requirements.txt
 
-      - name: Briefing erzeugen
+      - name: Briefing erzeugen und archivieren
         run: |
-          python caps_route_forecast.py > briefing.txt
-          echo "" >> briefing.txt
-          echo "Erzeugt: $(date -u '+%Y-%m-%d %H:%M UTC')" >> briefing.txt
+          mkdir -p briefings
+          STAMP=$(date -u '+%Y%m%dT%H%MZ')
+          OUT="briefings/briefing_${STAMP}.txt"
+          python caps_route_forecast.py > "$OUT"
+          echo "" >> "$OUT"
+          echo "Erzeugt: $(date -u '+%Y-%m-%d %H:%M UTC')" >> "$OUT"
+          cp "$OUT" briefing.txt
           tail -n 5 briefing.txt
 
-      - name: Briefing committen (nur bei Aenderung)
+      - name: Archiv auf 10 juengste Briefings begrenzen
+        run: |
+          cd briefings
+          ls -1 briefing_*.txt | sort | head -n -10 | xargs -r rm -v --
+          cd ..
+          ls -1 briefings/
+
+      - name: Briefings committen
         run: |
           git config user.name  "caps-bot"
           git config user.email "actions@github.com"
-          git add briefing.txt
+          git add -A briefing.txt briefings/
           git diff --cached --quiet && echo "Keine Aenderung." && exit 0
           git commit -m "CAPS-Briefing $(date -u '+%Y-%m-%d %H:%MZ')"
+          git pull --rebase origin main
           git push
