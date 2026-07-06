@@ -1,0 +1,104 @@
+{
+ "forecasts": [
+  {
+   "made": "2026-07-06T22:47:21+00:00",
+   "valid": "2026-07-07T23:00:00+00:00",
+   "icao": "CYFB",
+   "spread": 8.58,
+   "cat": "OK"
+  },
+  {
+   "made": "2026-07-06T22:47:21+00:00",
+   "valid": "2026-07-07T23:00:00+00:00",
+   "icao": "CYIO",
+   "spread": 6.55,
+   "cat": "OK"
+  },
+  {
+   "made": "2026-07-06T22:47:21+00:00",
+   "valid": "2026-07-07T23:00:00+00:00",
+   "icao": "CYRB",
+   "spread": 1.86,
+   "cat": "WARN"
+  },
+  {
+   "made": "2026-07-06T22:47:21+00:00",
+   "valid": "2026-07-07T23:00:00+00:00",
+   "icao": "CYHK",
+   "spread": 7.28,
+   "cat": "OK"
+  },
+  {
+   "made": "2026-07-06T22:47:21+00:00",
+   "valid": "2026-07-07T23:00:00+00:00",
+   "icao": "CYCB",
+   "spread": 10.1,
+   "cat": "OK"
+  },
+  {
+   "made": "2026-07-06T22:47:21+00:00",
+   "valid": "2026-07-07T23:00:00+00:00",
+   "icao": "PABR",
+   "spread": 3.41,
+   "cat": "OK"
+  },
+  {
+   "made": "2026-07-06T22:47:21+00:00",
+   "valid": "2026-07-07T23:00:00+00:00",
+   "icao": "PAOM",
+   "spread": 3.18,
+   "cat": "OK"
+  }
+ ],
+ "observations": [
+  {
+   "time": "2026-07-06T22:47:21+00:00",
+   "icao": "CYHK",
+   "vis_km": 16.09,
+   "cat": "OK",
+   "raw": "METAR CYHK 062200Z 36015KT 10SM FEW140 FEW220 12/06 A2987 RMK AC1CI1 SLP122"
+  },
+  {
+   "time": "2026-07-06T22:47:21+00:00",
+   "icao": "CYFB",
+   "vis_km": 48.269999999999996,
+   "cat": "OK",
+   "raw": "METAR CYFB 062200Z 33017KT 30SM SCT240 23/04 A2983 RMK CI3 SLP104 DENSITY ALT 1200FT"
+  },
+  {
+   "time": "2026-07-06T22:47:21+00:00",
+   "icao": "CYRB",
+   "vis_km": 48.269999999999996,
+   "cat": "OK",
+   "raw": "METAR CYRB 062200Z 29012KT 30SM SCT019 SCT220 02/01 A2987 RMK SC3CI1 SLP123"
+  },
+  {
+   "time": "2026-07-06T22:47:21+00:00",
+   "icao": "CYIO",
+   "vis_km": 19.308,
+   "cat": "OK",
+   "raw": "METAR CYIO 062200Z 25008KT 12SM FEW025 BKN080 BKN260 08/05 A2971 RMK SC2AC4CI1 LAST STAFD OBS/NXT 071500Z SLP067"
+  },
+  {
+   "time": "2026-07-06T22:47:21+00:00",
+   "icao": "CYCB",
+   "vis_km": 24.134999999999998,
+   "cat": "OK",
+   "raw": "METAR CYCB 062200Z 32004KT 220V350 15SM FEW015 BKN090 BKN200 12/04 A2994 RMK SC2AC3CI1 CU EMBDEDD SLP143"
+  },
+  {
+   "time": "2026-07-06T22:47:21+00:00",
+   "icao": "PABR",
+   "vis_km": 16.09,
+   "cat": "OK",
+   "raw": "METAR PABR 062153Z AUTO 26003KT 10SM CLR 10/04 A2991 RMK AO2 SLP127 T01000039 TSNO $"
+  },
+  {
+   "time": "2026-07-06T22:47:21+00:00",
+   "icao": "PAOM",
+   "vis_km": 16.09,
+   "cat": "OK",
+   "raw": "METAR PAOM 062153Z AUTO 25016KT 10SM CLR 13/04 A2996 RMK AO2 SLP146 T01280044 TSNO"
+  }
+ ]
+}
