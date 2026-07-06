@@ -1,231 +1,231 @@
-NWP-ROUTENBRIEFING — erzeugt 2026-07-06 21:52 UTC
+NWP-ROUTENBRIEFING — erzeugt 2026-07-06 22:30 UTC
 Plaetze: CYFB, CYIO, CYRB, CYHK, CYCB, PABR, PAOM, CYCY*, CYAB*, CYYH*, CYBB*, CYCO*, CYHI*, CYPC*, CYUB*, CYEV*, PASC*, PAWI*, PAPO*, PAOT*   (* = Ausweichplatz)
 HINWEIS: Automatisierte Auswertung als Planungshilfe — ersetzt kein amtliches Briefing und keine PIC-Entscheidung.
 
 BLOCK 0 — MACHBARKEIT (personalisierte Bewertung, kein amtliches Produkt)
 ======================================================================
 Bewertung je Parameter: OK / WARN / NOGO  (? = Daten fehlen)  |  Gesamt = schlechteste Einzelwertung
-HW: Headwind 8000ft im Anflugkurs | XW: Crosswind aus Boeen (~ = Piste unbekannt, volle Boe) | CIG: Wolkenbasis ft AGL | SP: min. Spread 850/700
+HW: Headwind 8000ft im Anflugkurs | XW: Crosswind aus Boeen (~ = Piste unbekannt, volle Boe) | CIG: Wolkenbasis ft AGL | SP2m: Taupunkt-Spread 2m in °C (Bodennebel: NOGO<=1.5, WARN<=3) | TRD: Spread-Trend °C/6h (Klasse = SP-Schwellen auf +6h extrapoliert; negativ = schliessend) | ICE: Spread+Temp 850/700 (nur unterkuehlte Level; '—' = alle Level >0°C)
 
 --- CYFB Iqaluit (kein Anflugkurs) RWY 160T ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z               —      4 OK     >5000 OK    12.0 OK     [OK]
-07. 00Z               —      2 OK     >5000 OK     7.3 OK     [OK]
-07. 06Z               —      2 OK     >5000 OK     7.9 OK     [OK]
-07. 12Z               —      2 OK     >5000 OK    12.1 OK     [OK]
-07. 18Z               —      1 OK     >5000 OK    15.3 OK     [OK]
-08. 00Z               —      1 OK     >5000 OK     9.0 OK     [OK]
-08. 06Z               —      7 OK     >5000 OK     0.8 NOGO   [NOGO]
-08. 12Z               —      1 OK     >5000 OK     2.7 WARN   [WARN]
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z               —      4 OK     >5000 OK    23.2 OK    +1.3 OK       — OK     [OK]
+07. 00Z               —      2 OK     >5000 OK    20.9 OK    -2.2 OK       — OK     [OK]
+07. 06Z               —      2 OK     >5000 OK    11.3 OK    -9.7 WARN     — OK     [WARN]
+07. 12Z               —      2 OK     >5000 OK    18.4 OK    +7.1 OK       — OK     [OK]
+07. 18Z               —      1 OK     >5000 OK    20.8 OK    +2.5 OK       — OK     [OK]
+08. 00Z               —      1 OK     >5000 OK     8.2 OK   -12.6 NOGO     — OK     [NOGO]
+08. 06Z               —      7 OK     >5000 OK     7.7 OK    -0.4 OK     0.8 NOGO   [NOGO]
+08. 12Z               —      1 OK     >5000 OK     6.4 OK    -1.3 OK     7.2 OK     [OK]
 
---- CYIO Pond Inlet (Anflug CYFB, TC 343) RWY unbek. ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z         -5 OK        4~ OK     >5000 OK     7.5 OK     [OK]
-07. 00Z         +4 OK        3~ OK       395 NOGO   0.3 NOGO   [NOGO]
-07. 06Z         +8 OK        2~ OK        80 NOGO   6.0 OK     [NOGO]
-07. 12Z         +8 OK        3~ OK       909 NOGO  13.9 OK     [NOGO]
-07. 18Z        +13 WARN      3~ OK     >5000 OK     4.0 OK     [WARN]
-08. 00Z        +14 WARN      2~ OK     >5000 OK     5.2 OK     [WARN]
-08. 06Z        +19 WARN      2~ OK        56 NOGO   7.9 OK     [NOGO]
-08. 12Z        +20 NOGO      3~ OK        73 NOGO   4.5 OK     [NOGO]
+--- CYIO Pond Inlet (Anflug CYFB, TC 343) RWY 020T ---
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z         -5 OK        2 OK     >5000 OK     6.0 OK    +2.7 OK     9.4 OK     [OK]
+07. 00Z         +4 OK        2 OK       395 NOGO   3.3 OK    -2.8 NOGO  10.1 OK     [NOGO]
+07. 06Z         +8 OK        2 OK        80 NOGO   2.5 WARN  -0.8 WARN  17.1 OK     [NOGO]
+07. 12Z         +8 OK        2 OK       909 NOGO   3.1 OK    +0.6 OK    15.1 OK     [NOGO]
+07. 18Z        +13 WARN      2 OK     >5000 OK     5.3 OK    +2.2 OK     4.0 OK     [WARN]
+08. 00Z        +14 WARN      1 OK     >5000 OK     6.5 OK    +1.2 OK    14.3 OK     [WARN]
+08. 06Z        +19 WARN      2 OK        56 NOGO   1.3 NOGO  -5.2 NOGO  10.4 OK     [NOGO]
+08. 12Z        +20 NOGO      3 OK        73 NOGO   2.0 WARN  +0.7 WARN   4.5 OK     [NOGO]
 
 --- CYRB Resolute Bay (Anflug CYIO, TC 301) RWY 170T ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z        +24 NOGO     10 OK        48 NOGO  10.1 OK     [NOGO]
-07. 00Z        +26 NOGO     10 WARN   >5000 OK     5.9 OK     [NOGO]
-07. 06Z        +29 NOGO     12 WARN   >5000 OK     2.1 WARN   [NOGO]
-07. 12Z        +38 NOGO     18 WARN      10 NOGO   4.9 OK     [NOGO]
-07. 18Z        +36 NOGO     13 WARN      66 NOGO  10.2 OK     [NOGO]
-08. 00Z        +35 NOGO     11 WARN     533 NOGO   6.3 OK     [NOGO]
-08. 06Z        +33 NOGO      8 OK       160 NOGO   5.6 OK     [NOGO]
-08. 12Z        +33 NOGO     13 WARN     126 NOGO   2.5 WARN   [NOGO]
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z        +24 NOGO     10 OK        48 NOGO   1.3 NOGO  +0.6 WARN  10.1 OK     [NOGO]
+07. 00Z        +26 NOGO     10 WARN   >5000 OK     2.6 WARN  +1.3 OK     5.9 OK     [NOGO]
+07. 06Z        +29 NOGO     12 WARN   >5000 OK     2.3 WARN  -0.3 WARN   2.1 WARN   [NOGO]
+07. 12Z        +38 NOGO     18 WARN      10 NOGO   1.0 NOGO  -1.3 NOGO   4.9 OK     [NOGO]
+07. 18Z        +36 NOGO     13 WARN      66 NOGO   1.3 NOGO  +0.0 NOGO  11.3 OK     [NOGO]
+08. 00Z        +35 NOGO     11 WARN     533 NOGO   1.8 WARN  +0.5 WARN   6.3 OK     [NOGO]
+08. 06Z        +33 NOGO      8 OK       160 NOGO   0.8 NOGO  -1.0 NOGO   7.6 OK     [NOGO]
+08. 12Z        +33 NOGO     13 WARN     126 NOGO   0.3 NOGO  -0.5 NOGO   2.5 WARN   [NOGO]
 
---- CYHK Gjoa Haven (Anflug CYRB, TC 183) RWY unbek. ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z         +2 OK       14~ WARN   >5000 OK    10.6 OK     [WARN]
-07. 00Z         -1 OK       17~ WARN   >5000 OK     8.7 OK     [WARN]
-07. 06Z         -6 OK       11~ WARN   >5000 OK     5.4 OK     [WARN]
-07. 12Z        -10 OK       10~ OK      3089 WARN   1.1 NOGO   [NOGO]
-07. 18Z        -14 OK       11~ WARN   >5000 OK    11.2 OK     [WARN]
-08. 00Z        -16 OK       19~ WARN   >5000 OK    12.0 OK     [WARN]
-08. 06Z        -16 OK       13~ WARN   >5000 OK     9.6 OK     [WARN]
-08. 12Z        -14 OK       15~ WARN   >5000 OK     9.9 OK     [WARN]
+--- CYHK Gjoa Haven (Anflug CYRB, TC 183) RWY 130T ---
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z         +2 OK       13 WARN   >5000 OK     2.9 WARN  +1.5 OK    15.9 OK     [WARN]
+07. 00Z         -1 OK       15 WARN   >5000 OK     5.6 OK    +2.7 OK    27.8 OK     [WARN]
+07. 06Z         -6 OK        9 OK     >5000 OK     3.5 OK    -2.1 NOGO  19.0 OK     [NOGO]
+07. 12Z        -10 OK        8 OK      3089 WARN   3.4 OK    +0.0 OK    11.3 OK     [WARN]
+07. 18Z        -14 OK       10 WARN   >5000 OK     6.3 OK    +2.9 OK    20.6 OK     [WARN]
+08. 00Z        -16 OK       11 WARN   >5000 OK    10.1 OK    +3.7 OK    12.0 OK     [WARN]
+08. 06Z        -16 OK        6 OK     >5000 OK     4.5 OK    -5.5 NOGO  14.0 OK     [NOGO]
+08. 12Z        -14 OK        7 OK     >5000 OK     3.0 OK    -1.5 WARN   9.9 OK     [WARN]
 
 --- CYCB Cambridge Bay (Anflug CYHK, TC 282) RWY 130T ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z         +7 OK        7 OK     >5000 OK     6.6 OK     [OK]
-07. 00Z         +6 OK        7 OK     >5000 OK     7.8 OK     [OK]
-07. 06Z         +5 OK        9 OK     >5000 OK     3.9 OK     [OK]
-07. 12Z         +3 OK        1 OK     >5000 OK     2.9 WARN   [WARN]
-07. 18Z         -1 OK        6 OK     >5000 OK    15.1 OK     [OK]
-08. 00Z         +1 OK        7 OK     >5000 OK    14.9 OK     [OK]
-08. 06Z         +3 OK        5 OK     >5000 OK     8.6 OK     [OK]
-08. 12Z         +7 OK        4 OK     >5000 OK    10.2 OK     [OK]
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z         +7 OK        7 OK     >5000 OK     7.4 OK    +0.0 OK    12.5 OK     [OK]
+07. 00Z         +6 OK        7 OK     >5000 OK     8.4 OK    +1.1 OK    19.6 OK     [OK]
+07. 06Z         +5 OK        9 OK     >5000 OK     7.1 OK    -1.4 OK    24.0 OK     [OK]
+07. 12Z         +3 OK        1 OK     >5000 OK     4.7 OK    -2.4 WARN  20.5 OK     [WARN]
+07. 18Z         -1 OK        6 OK     >5000 OK     8.2 OK    +3.5 OK    15.1 OK     [OK]
+08. 00Z         +1 OK        7 OK     >5000 OK    10.4 OK    +2.2 OK    14.9 OK     [OK]
+08. 06Z         +3 OK        5 OK     >5000 OK     3.7 OK    -6.7 NOGO  14.1 OK     [NOGO]
+08. 12Z         +7 OK        4 OK     >5000 OK     3.5 OK    +0.0 OK    13.6 OK     [OK]
 
---- PABR Utqiagvik (Anflug CYCB, TC 301) RWY 080T ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z         +7 OK        0 OK     >5000 OK     8.3 OK     [OK]
-07. 00Z         +1 OK        3 OK     >5000 OK    16.4 OK     [OK]
-07. 06Z         -0 OK        2 OK     >5000 OK     9.1 OK     [OK]
-07. 12Z         -1 OK        1 OK     >5000 OK     7.4 OK     [OK]
-07. 18Z         -9 OK        4 OK     >5000 OK     8.8 OK     [OK]
-08. 00Z        -11 OK        2 OK     >5000 OK     2.9 WARN   [WARN]
-08. 06Z         -9 OK        0 OK     >5000 OK     3.5 OK     [OK]
-08. 12Z         +1 OK        2 OK       136 NOGO   8.9 OK     [NOGO]
+--- PABR Utqiagvik (Anflug CYCB, TC 301) RWY 082T ---
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z         +7 OK        0 OK     >5000 OK     2.7 WARN  -6.0 NOGO     — OK     [NOGO]
+07. 00Z         +1 OK        3 OK     >5000 OK     1.3 NOGO  -1.4 NOGO  16.4 OK     [NOGO]
+07. 06Z         -0 OK        2 OK     >5000 OK     2.3 WARN  +1.0 OK     9.1 OK     [WARN]
+07. 12Z         -1 OK        1 OK     >5000 OK     4.0 OK    +1.8 OK     7.4 OK     [OK]
+07. 18Z         -9 OK        4 OK     >5000 OK     5.4 OK    +1.4 OK     8.8 OK     [OK]
+08. 00Z        -11 OK        2 OK     >5000 OK     3.1 OK    -2.3 NOGO   2.9 WARN   [NOGO]
+08. 06Z         -9 OK        0 OK     >5000 OK     2.0 WARN  -1.1 NOGO   3.5 OK     [NOGO]
+08. 12Z         +1 OK        2 OK       136 NOGO   0.6 NOGO  -1.4 NOGO   8.9 OK     [NOGO]
 
---- PAOM Nome (Anflug PABR, TC 210) RWY 110T ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z         +8 OK        1 OK     >5000 OK    10.8 OK     [OK]
-07. 00Z         +8 OK        5 OK     >5000 OK    11.3 OK     [OK]
-07. 06Z         +5 OK        3 OK     >5000 OK    11.7 OK     [OK]
-07. 12Z         +6 OK        1 OK     >5000 OK     8.9 OK     [OK]
-07. 18Z         +3 OK        0 OK     >5000 OK     5.5 OK     [OK]
-08. 00Z         -2 OK        4 OK     >5000 OK     3.6 OK     [OK]
-08. 06Z         -4 OK        7 OK     >5000 OK     1.3 NOGO   [NOGO]
-08. 12Z         -3 OK        0 OK      4313 WARN   0.9 NOGO   [NOGO]
+--- PAOM Nome (Anflug PABR, TC 210) RWY 119T ---
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z         +8 OK        3 OK     >5000 OK     3.9 OK    +2.3 OK    10.8 OK     [OK]
+07. 00Z         +8 OK        7 OK     >5000 OK     4.2 OK    +0.0 OK    11.3 OK     [OK]
+07. 06Z         +5 OK        4 OK     >5000 OK     3.5 OK    -0.6 WARN  11.7 OK     [WARN]
+07. 12Z         +6 OK        1 OK     >5000 OK     2.6 WARN  -0.9 WARN   8.9 OK     [WARN]
+07. 18Z         +3 OK        1 OK     >5000 OK     3.7 OK    +1.1 OK     5.5 OK     [OK]
+08. 00Z         -2 OK        5 OK     >5000 OK     4.0 OK    +0.0 OK     3.7 OK     [OK]
+08. 06Z         -4 OK        7 OK     >5000 OK     4.9 OK    +0.9 OK     1.3 NOGO   [NOGO]
+08. 12Z         -3 OK        1 OK      4313 WARN   3.1 OK    -1.8 NOGO   0.9 NOGO   [NOGO]
 
---- CYCY Clyde River [ALT] (Anflug CYFB, TC 000) RWY unbek. ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z         -2 OK        4~ OK     >5000 OK     8.9 OK     [OK]
-07. 00Z         -1 OK       12~ WARN   >5000 OK     6.9 OK     [WARN]
-07. 06Z         -2 OK       21~ NOGO       7 NOGO   0.2 NOGO   [NOGO]
-07. 12Z         -1 OK       18~ WARN      68 NOGO   2.5 WARN   [NOGO]
-07. 18Z         -0 OK        8~ OK       839 NOGO   3.9 OK     [NOGO]
-08. 00Z         +2 OK        3~ OK       402 NOGO   3.9 OK     [NOGO]
-08. 06Z         +6 OK        1~ OK       363 NOGO   4.2 OK     [NOGO]
-08. 12Z         +4 OK       13~ WARN     391 NOGO   6.1 OK     [NOGO]
+--- CYCY Clyde River [ALT] (Anflug CYFB, TC 000) RWY 020T ---
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z         -2 OK        4 OK     >5000 OK    15.3 OK    +1.8 OK     8.9 OK     [OK]
+07. 00Z         -1 OK        9 OK     >5000 OK     9.0 OK    -6.3 WARN   7.8 OK     [WARN]
+07. 06Z         -2 OK       19 WARN       7 NOGO   1.4 NOGO  -7.6 NOGO   0.2 NOGO   [NOGO]
+07. 12Z         -1 OK       14 WARN      68 NOGO   2.2 WARN  +0.8 WARN   2.5 WARN   [NOGO]
+07. 18Z         -0 OK        3 OK       839 NOGO   4.1 OK    +1.9 OK     4.4 OK     [NOGO]
+08. 00Z         +2 OK        3 OK       402 NOGO   2.7 WARN  -1.4 NOGO  19.5 OK     [NOGO]
+08. 06Z         +6 OK        1 OK       363 NOGO   2.8 WARN  +0.0 WARN  14.9 OK     [NOGO]
+08. 12Z         +4 OK        8 OK       391 NOGO   0.9 NOGO  -1.9 NOGO   6.1 OK     [NOGO]
 
---- CYAB Arctic Bay [ALT] (Anflug CYIO, TC 282) RWY unbek. ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z        +17 WARN      9~ OK     >5000 OK     2.7 WARN   [WARN]
-07. 00Z        +18 WARN     12~ WARN   >5000 OK     4.0 OK     [WARN]
-07. 06Z        +13 WARN      5~ OK     >5000 OK    12.2 OK     [WARN]
-07. 12Z        +15 WARN      2~ OK     >5000 OK     5.2 OK     [WARN]
-07. 18Z        +26 NOGO      4~ OK     >5000 OK     3.3 OK     [NOGO]
-08. 00Z        +27 NOGO     17~ WARN   >5000 OK     8.1 OK     [NOGO]
-08. 06Z        +22 NOGO      8~ OK      1392 NOGO   7.9 OK     [NOGO]
-08. 12Z        +26 NOGO     12~ WARN     847 NOGO   5.8 OK     [NOGO]
+--- CYAB Arctic Bay [ALT] (Anflug CYIO, TC 282) RWY 130T ---
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z        +17 WARN      0 OK     >5000 OK     5.1 OK    +6.9 OK     9.8 OK     [WARN]
+07. 00Z        +18 WARN      5 OK     >5000 OK     4.5 OK    -0.5 OK    15.0 OK     [WARN]
+07. 06Z        +13 WARN      2 OK     >5000 OK     3.3 OK    -1.2 WARN  12.2 OK     [WARN]
+07. 12Z        +15 WARN      2 OK     >5000 OK     3.7 OK    +0.3 OK     5.2 OK     [WARN]
+07. 18Z        +26 NOGO      4 OK     >5000 OK     5.6 OK    +1.9 OK     3.7 OK     [NOGO]
+08. 00Z        +27 NOGO      8 OK     >5000 OK     5.3 OK    +0.0 OK    10.6 OK     [NOGO]
+08. 06Z        +22 NOGO      3 OK      1392 NOGO   3.0 OK    -2.2 NOGO   7.9 OK     [NOGO]
+08. 12Z        +26 NOGO      4 OK       847 NOGO   2.8 WARN  +0.0 WARN   6.7 OK     [NOGO]
 
---- CYYH Taloyoak [ALT] (Anflug CYRB, TC 175) RWY unbek. ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z         +0 OK        2~ OK     >5000 OK     8.9 OK     [OK]
-07. 00Z         -5 OK       11~ WARN   >5000 OK     2.0 WARN   [WARN]
-07. 06Z         -8 OK        6~ OK     >5000 OK     2.2 WARN   [WARN]
-07. 12Z        -11 OK        2~ OK     >5000 OK     4.9 OK     [OK]
-07. 18Z        -14 OK        2~ OK     >5000 OK    13.0 OK     [OK]
-08. 00Z        -17 OK        2~ OK     >5000 OK     5.6 OK     [OK]
-08. 06Z        -16 OK        4~ OK     >5000 OK    18.9 OK     [OK]
-08. 12Z        -16 OK        2~ OK     >5000 OK    15.7 OK     [OK]
+--- CYYH Taloyoak [ALT] (Anflug CYRB, TC 175) RWY 150T ---
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z         +0 OK        2 OK     >5000 OK     4.9 OK    +5.0 OK    17.2 OK     [OK]
+07. 00Z         -5 OK       11 WARN   >5000 OK     5.1 OK    +0.0 OK    17.5 OK     [WARN]
+07. 06Z         -8 OK        6 OK     >5000 OK     4.2 OK    -0.9 OK    16.4 OK     [OK]
+07. 12Z        -11 OK        0 OK     >5000 OK     3.5 OK    -0.7 WARN  15.6 OK     [WARN]
+07. 18Z        -14 OK        2 OK     >5000 OK     6.0 OK    +2.5 OK    13.0 OK     [OK]
+08. 00Z        -17 OK        0 OK     >5000 OK     3.3 OK    -2.8 NOGO   9.5 OK     [NOGO]
+08. 06Z        -16 OK        0 OK     >5000 OK     5.3 OK    +2.1 OK    20.8 OK     [OK]
+08. 12Z        -16 OK        2 OK     >5000 OK     3.8 OK    -1.6 WARN  17.5 OK     [WARN]
 
---- CYBB Kugaaruk [ALT] (Anflug CYRB, TC 163) RWY unbek. ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z         +1 OK       13~ WARN    3490 WARN   0.0 NOGO   [NOGO]
-07. 00Z         -1 OK       15~ WARN       9 NOGO   0.1 NOGO   [NOGO]
-07. 06Z         -6 OK       11~ WARN   >5000 OK     6.3 OK     [WARN]
-07. 12Z         -6 OK       16~ WARN   >5000 OK     9.4 OK     [WARN]
-07. 18Z        -10 OK       20~ WARN   >5000 OK     9.1 OK     [WARN]
-08. 00Z        -15 OK       17~ WARN   >5000 OK    18.5 OK     [WARN]
-08. 06Z        -19 OK        7~ OK     >5000 OK     8.2 OK     [OK]
-08. 12Z        -21 OK       20~ WARN   >5000 OK    13.7 OK     [WARN]
+--- CYBB Kugaaruk [ALT] (Anflug CYRB, TC 163) RWY 050T ---
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z         +1 OK        5 OK      3490 WARN   3.8 OK    +0.5 OK     0.0 NOGO   [NOGO]
+07. 00Z         -1 OK        6 OK         9 NOGO   2.2 WARN  -1.7 NOGO   0.1 NOGO   [NOGO]
+07. 06Z         -6 OK        7 OK     >5000 OK     2.8 WARN  +0.7 OK     6.3 OK     [WARN]
+07. 12Z         -6 OK       12 WARN   >5000 OK     2.2 WARN  -0.6 WARN  18.1 OK     [WARN]
+07. 18Z        -10 OK       15 WARN   >5000 OK     6.8 OK    +4.6 OK    20.1 OK     [WARN]
+08. 00Z        -15 OK       13 WARN   >5000 OK     7.8 OK    +0.9 OK    19.9 OK     [WARN]
+08. 06Z        -19 OK        6 OK     >5000 OK     3.7 OK    -4.1 NOGO  18.6 OK     [NOGO]
+08. 12Z        -21 OK       16 WARN   >5000 OK     4.9 OK    +1.2 OK    19.0 OK     [WARN]
 
---- CYCO Kugluktuk [ALT] (Anflug CYCB, TC 255) RWY unbek. ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z         +6 OK        7~ OK     >5000 OK     7.2 OK     [OK]
-07. 00Z        +10 OK       12~ WARN   >5000 OK     6.4 OK     [WARN]
-07. 06Z         +7 OK        6~ OK     >5000 OK     5.6 OK     [OK]
-07. 12Z         +3 OK        3~ OK     >5000 OK     7.3 OK     [OK]
-07. 18Z         +0 OK        6~ OK     >5000 OK    12.6 OK     [OK]
-08. 00Z         +3 OK       12~ WARN   >5000 OK    16.7 OK     [WARN]
-08. 06Z         +3 OK        7~ OK     >5000 OK     9.6 OK     [OK]
-08. 12Z         +6 OK        2~ OK     >5000 OK    12.4 OK     [OK]
+--- CYCO Kugluktuk [ALT] (Anflug CYCB, TC 255) RWY 120T ---
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z         +6 OK        6 OK     >5000 OK    11.3 OK    +5.3 OK    17.8 OK     [OK]
+07. 00Z        +10 OK        9 OK     >5000 OK    11.2 OK    +0.0 OK    20.2 OK     [OK]
+07. 06Z         +7 OK        6 OK     >5000 OK     4.9 OK    -6.3 NOGO  24.4 OK     [NOGO]
+07. 12Z         +3 OK        2 OK     >5000 OK     3.5 OK    -1.4 WARN     — OK     [WARN]
+07. 18Z         +0 OK        6 OK     >5000 OK     8.7 OK    +5.2 OK       — OK     [OK]
+08. 00Z         +3 OK        9 OK     >5000 OK     8.4 OK    +0.0 OK       — OK     [OK]
+08. 06Z         +3 OK        7 OK     >5000 OK     1.2 NOGO  -7.2 NOGO     — OK     [NOGO]
+08. 12Z         +6 OK        2 OK     >5000 OK     1.4 NOGO  +0.0 NOGO     — OK     [NOGO]
 
---- CYHI Ulukhaktok [ALT] (Anflug CYCB, TC 297) RWY unbek. ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z        +11 WARN      8~ OK       231 NOGO   8.1 OK     [NOGO]
-07. 00Z         +6 OK       10~ WARN    1606 NOGO  18.9 OK     [NOGO]
-07. 06Z         +5 OK        8~ OK     >5000 OK     9.9 OK     [OK]
-07. 12Z         +6 OK        4~ OK     >5000 OK     9.6 OK     [OK]
-07. 18Z         +1 OK        4~ OK     >5000 OK     7.6 OK     [OK]
-08. 00Z         -0 OK        2~ OK     >5000 OK    10.4 OK     [OK]
-08. 06Z         -1 OK        5~ OK     >5000 OK    11.6 OK     [OK]
-08. 12Z         +4 OK       11~ WARN   >5000 OK    15.6 OK     [WARN]
+--- CYHI Ulukhaktok [ALT] (Anflug CYCB, TC 297) RWY 060T ---
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z        +11 WARN      7 OK       231 NOGO   1.4 NOGO  +1.7 OK       — OK     [NOGO]
+07. 00Z         +6 OK        8 OK      1606 NOGO   2.7 WARN  +1.3 OK       — OK     [NOGO]
+07. 06Z         +5 OK        7 OK     >5000 OK     2.2 WARN  -0.5 WARN  15.3 OK     [WARN]
+07. 12Z         +6 OK        3 OK     >5000 OK     1.8 WARN  -0.4 NOGO  18.8 OK     [NOGO]
+07. 18Z         +1 OK        2 OK     >5000 OK     1.8 WARN  +0.0 WARN  22.3 OK     [WARN]
+08. 00Z         -0 OK        1 OK     >5000 OK     3.4 OK    +1.6 OK       — OK     [OK]
+08. 06Z         -1 OK        4 OK     >5000 OK     6.2 OK    +2.8 OK       — OK     [OK]
+08. 12Z         +4 OK        9 OK     >5000 OK     6.8 OK    +0.6 OK       — OK     [OK]
 
---- CYPC Paulatuk [ALT] (Anflug CYCB, TC 281) RWY unbek. ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z         +9 OK        4~ OK       856 NOGO   9.3 OK     [NOGO]
-07. 00Z         +3 OK        6~ OK       477 NOGO  13.2 OK     [NOGO]
-07. 06Z         -2 OK        4~ OK     >5000 OK    11.4 OK     [OK]
-07. 12Z         -3 OK        2~ OK     >5000 OK    12.3 OK     [OK]
-07. 18Z         -5 OK        5~ OK     >5000 OK    14.5 OK     [OK]
-08. 00Z         +1 OK        3~ OK     >5000 OK    20.1 OK     [OK]
-08. 06Z         -0 OK        2~ OK     >5000 OK    14.0 OK     [OK]
-08. 12Z         -1 OK       15~ WARN   >5000 OK    15.0 OK     [WARN]
+--- CYPC Paulatuk [ALT] (Anflug CYCB, TC 281) RWY 020T ---
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z         +9 OK        3 OK       856 NOGO   1.3 NOGO  -1.7 NOGO     — OK     [NOGO]
+07. 00Z         +3 OK        2 OK       477 NOGO   1.3 NOGO  +0.0 NOGO     — OK     [NOGO]
+07. 06Z         -2 OK        2 OK     >5000 OK     0.9 NOGO  -0.3 NOGO     — OK     [NOGO]
+07. 12Z         -3 OK        1 OK     >5000 OK     0.9 NOGO  +0.0 NOGO     — OK     [NOGO]
+07. 18Z         -5 OK        0 OK     >5000 OK     1.5 NOGO  +0.5 WARN     — OK     [NOGO]
+08. 00Z         +1 OK        2 OK     >5000 OK     1.5 NOGO  +0.0 NOGO     — OK     [NOGO]
+08. 06Z         -0 OK        2 OK     >5000 OK     2.2 WARN  +0.8 OK       — OK     [WARN]
+08. 12Z         -1 OK        6 OK     >5000 OK     9.5 OK    +7.3 OK       — OK     [OK]
 
---- CYUB Tuktoyaktuk [ALT] (Anflug CYCB, TC 285) RWY unbek. ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z         +1 OK        1~ OK        78 NOGO   8.9 OK     [NOGO]
-07. 00Z         +0 OK        4~ OK     >5000 OK    12.0 OK     [OK]
-07. 06Z         +1 OK        9~ OK     >5000 OK    14.2 OK     [OK]
-07. 12Z         -3 OK       10~ OK     >5000 OK     9.8 OK     [OK]
-07. 18Z         -6 OK        7~ OK     >5000 OK     9.9 OK     [OK]
-08. 00Z         -6 OK        9~ OK     >5000 OK    11.9 OK     [OK]
-08. 06Z         -5 OK       12~ WARN   >5000 OK    16.3 OK     [WARN]
-08. 12Z         -6 OK        8~ OK     >5000 OK     9.8 OK     [OK]
+--- CYUB Tuktoyaktuk [ALT] (Anflug CYCB, TC 285) RWY 100T ---
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z         +1 OK        0 OK        78 NOGO   1.4 NOGO  +0.0 NOGO     — OK     [NOGO]
+07. 00Z         +0 OK        1 OK     >5000 OK     6.4 OK    +5.1 OK       — OK     [OK]
+07. 06Z         +1 OK        3 OK     >5000 OK     6.0 OK    -0.4 OK       — OK     [OK]
+07. 12Z         -3 OK        1 OK     >5000 OK     5.7 OK    -0.3 OK       — OK     [OK]
+07. 18Z         -6 OK        0 OK     >5000 OK    10.1 OK    +4.4 OK       — OK     [OK]
+08. 00Z         -6 OK        5 OK     >5000 OK    12.8 OK    +2.7 OK       — OK     [OK]
+08. 06Z         -5 OK        5 OK     >5000 OK    12.6 OK    +0.0 OK       — OK     [OK]
+08. 12Z         -6 OK        1 OK     >5000 OK     7.6 OK    -5.0 WARN   9.8 OK     [WARN]
 
 --- CYEV Inuvik [ALT] (Anflug CYCB, TC 279) RWY 060T ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z         +1 OK        2 OK     >5000 OK    12.8 OK     [OK]
-07. 00Z         -3 OK        3 OK     >5000 OK     9.9 OK     [OK]
-07. 06Z         -5 OK        1 OK     >5000 OK    12.1 OK     [OK]
-07. 12Z         -5 OK        3 OK     >5000 OK    11.4 OK     [OK]
-07. 18Z         -9 OK       13 WARN   >5000 OK    14.3 OK     [WARN]
-08. 00Z         -8 OK       11 WARN   >5000 OK    15.5 OK     [WARN]
-08. 06Z         -9 OK        5 OK     >5000 OK    17.4 OK     [OK]
-08. 12Z         -5 OK        5 OK     >5000 OK    11.7 OK     [OK]
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z         +1 OK        2 OK     >5000 OK    17.2 OK   +13.6 OK    18.0 OK     [OK]
+07. 00Z         -3 OK        3 OK     >5000 OK    17.8 OK    +0.6 OK       — OK     [OK]
+07. 06Z         -5 OK        1 OK     >5000 OK    12.9 OK    -4.8 OK       — OK     [OK]
+07. 12Z         -5 OK        3 OK     >5000 OK     8.9 OK    -4.0 OK       — OK     [OK]
+07. 18Z         -9 OK       13 WARN   >5000 OK    19.9 OK   +11.0 OK       — OK     [WARN]
+08. 00Z         -8 OK       11 WARN   >5000 OK    24.7 OK    +4.8 OK       — OK     [WARN]
+08. 06Z         -9 OK        5 OK     >5000 OK    22.2 OK    -2.5 OK       — OK     [OK]
+08. 12Z         -5 OK        5 OK     >5000 OK    13.5 OK    -8.8 OK       — OK     [OK]
 
---- PASC Deadhorse [ALT] (Anflug CYCB, TC 294) RWY unbek. ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z         +4 OK        4~ OK     >5000 OK    14.3 OK     [OK]
-07. 00Z         +1 OK       11~ WARN   >5000 OK    15.9 OK     [WARN]
-07. 06Z         -2 OK       13~ WARN   >5000 OK    14.4 OK     [WARN]
-07. 12Z         -1 OK        7~ OK     >5000 OK    15.9 OK     [OK]
-07. 18Z         -5 OK       10~ WARN   >5000 OK    12.2 OK     [WARN]
-08. 00Z         -3 OK       13~ WARN   >5000 OK    11.6 OK     [WARN]
-08. 06Z         -2 OK        9~ OK     >5000 OK     6.8 OK     [OK]
-08. 12Z         -1 OK        6~ OK     >5000 OK    12.3 OK     [OK]
+--- PASC Deadhorse [ALT] (Anflug CYCB, TC 294) RWY 065T ---
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z         +4 OK        0 OK     >5000 OK     3.9 OK    +2.2 OK       — OK     [OK]
+07. 00Z         +1 OK        1 OK     >5000 OK     8.9 OK    +5.0 OK       — OK     [OK]
+07. 06Z         -2 OK        0 OK     >5000 OK     7.1 OK    -1.8 OK       — OK     [OK]
+07. 12Z         -1 OK        0 OK     >5000 OK     2.7 WARN  -4.4 NOGO  15.9 OK     [NOGO]
+07. 18Z         -5 OK        2 OK     >5000 OK     3.1 OK    +0.5 OK    16.4 OK     [OK]
+08. 00Z         -3 OK        2 OK     >5000 OK     6.0 OK    +2.8 OK    11.6 OK     [OK]
+08. 06Z         -2 OK        0 OK     >5000 OK     4.5 OK    -1.5 OK     6.8 OK     [OK]
+08. 12Z         -1 OK        2 OK     >5000 OK     2.6 WARN  -1.9 NOGO     — OK     [NOGO]
 
---- PAWI Wainwright [ALT] (Anflug PABR, TC 240) RWY unbek. ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z        +13 WARN      4~ OK     >5000 OK     9.2 OK     [WARN]
-07. 00Z        +17 WARN      1~ OK     >5000 OK     8.1 OK     [WARN]
-07. 06Z        +13 WARN      4~ OK     >5000 OK     6.9 OK     [WARN]
-07. 12Z        +11 WARN      4~ OK     >5000 OK     1.9 WARN   [WARN]
-07. 18Z         +3 OK        4~ OK     >5000 OK     5.7 OK     [OK]
-08. 00Z         +6 OK        5~ OK     >5000 OK     3.2 OK     [OK]
-08. 06Z         +8 OK        3~ OK     >5000 OK     8.0 OK     [OK]
-08. 12Z         +8 OK        5~ OK     >5000 OK    12.3 OK     [OK]
+--- PAWI Wainwright [ALT] (Anflug PABR, TC 240) RWY 062T ---
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z        +13 WARN      1 OK     >5000 OK     1.1 NOGO  +0.9 WARN  15.1 OK     [NOGO]
+07. 00Z        +17 WARN      0 OK     >5000 OK     9.9 OK    +8.8 OK     8.1 OK     [WARN]
+07. 06Z        +13 WARN      1 OK     >5000 OK    11.1 OK    +1.2 OK     8.0 OK     [WARN]
+07. 12Z        +11 WARN      1 OK     >5000 OK     6.8 OK    -4.3 WARN   1.9 WARN   [WARN]
+07. 18Z         +3 OK        2 OK     >5000 OK     4.8 OK    -1.9 WARN   5.7 OK     [WARN]
+08. 00Z         +6 OK        5 OK     >5000 OK     0.8 NOGO  -4.1 NOGO   3.2 OK     [NOGO]
+08. 06Z         +8 OK        2 OK     >5000 OK     2.0 WARN  +1.3 OK     8.0 OK     [WARN]
+08. 12Z         +8 OK        4 OK     >5000 OK     1.2 NOGO  -0.8 NOGO  15.7 OK     [NOGO]
 
---- PAPO Point Hope [ALT] (Anflug PABR, TC 234) RWY unbek. ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z         +8 OK       16~ WARN   >5000 OK    15.2 OK     [WARN]
-07. 00Z         +8 OK       14~ WARN   >5000 OK     4.5 OK     [WARN]
-07. 06Z        +10 WARN     15~ WARN   >5000 OK     6.4 OK     [WARN]
-07. 12Z        +14 WARN     15~ WARN     230 NOGO  18.9 OK     [NOGO]
-07. 18Z        +14 WARN     15~ WARN     191 NOGO  14.4 OK     [NOGO]
-08. 00Z        +11 WARN     16~ WARN     163 NOGO  16.4 OK     [NOGO]
-08. 06Z         +7 OK        8~ OK     >5000 OK    12.5 OK     [OK]
-08. 12Z         +5 OK        1~ OK     >5000 OK     6.3 OK     [OK]
+--- PAPO Point Hope [ALT] (Anflug PABR, TC 234) RWY 020T ---
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z         +8 OK       12 WARN   >5000 OK     2.2 WARN  +0.0 WARN  17.6 OK     [WARN]
+07. 00Z         +8 OK        9 OK     >5000 OK     1.6 WARN  -0.7 NOGO  19.3 OK     [NOGO]
+07. 06Z        +10 WARN     10 WARN   >5000 OK     1.9 WARN  +0.4 WARN  14.7 OK     [WARN]
+07. 12Z        +14 WARN     11 WARN     230 NOGO   1.2 NOGO  -0.8 NOGO  19.7 OK     [NOGO]
+07. 18Z        +14 WARN     10 OK       191 NOGO   1.1 NOGO  +0.0 NOGO  19.9 OK     [NOGO]
+08. 00Z        +11 WARN      9 OK       163 NOGO   1.1 NOGO  +0.0 NOGO  16.4 OK     [NOGO]
+08. 06Z         +7 OK        5 OK     >5000 OK     1.4 NOGO  +0.0 NOGO  12.5 OK     [NOGO]
+08. 12Z         +5 OK        1 OK     >5000 OK     1.1 NOGO  -0.3 NOGO   6.3 OK     [NOGO]
 
---- PAOT Kotzebue [ALT] (Anflug PABR, TC 208) RWY unbek. ---
-VT (UTC)           HW kt        XW kt        CIG ft        SP K   GESAMT
-06. 18Z         +8 OK        2~ OK     >5000 OK     4.1 OK     [OK]
-07. 00Z        +10 WARN      4~ OK     >5000 OK     5.6 OK     [WARN]
-07. 06Z         +8 OK       10~ WARN   >5000 OK     7.5 OK     [WARN]
-07. 12Z        +11 WARN      6~ OK     >5000 OK     7.6 OK     [WARN]
-07. 18Z         +8 OK        5~ OK     >5000 OK     3.2 OK     [OK]
-08. 00Z         +6 OK        9~ OK     >5000 OK     4.5 OK     [OK]
-08. 06Z         -2 OK        9~ OK     >5000 OK     8.0 OK     [OK]
-08. 12Z         -5 OK        4~ OK     >5000 OK     0.1 NOGO   [NOGO]
+--- PAOT Kotzebue [ALT] (Anflug PABR, TC 208) RWY 099T ---
+VT (UTC)           HW kt        XW kt        CIG ft     SP2m °C      TRD 6h      ICE °C   GESAMT
+06. 18Z         +8 OK        2 OK     >5000 OK     2.6 WARN  -0.3 WARN   4.4 OK     [WARN]
+07. 00Z        +10 WARN      1 OK     >5000 OK     3.6 OK    +1.0 OK     5.6 OK     [WARN]
+07. 06Z         +8 OK        1 OK     >5000 OK     4.8 OK    +1.3 OK     7.5 OK     [OK]
+07. 12Z        +11 WARN      4 OK     >5000 OK     5.2 OK    +0.3 OK    12.1 OK     [WARN]
+07. 18Z         +8 OK        0 OK     >5000 OK     3.8 OK    -1.4 WARN   9.1 OK     [WARN]
+08. 00Z         +6 OK        1 OK     >5000 OK     4.4 OK    +0.6 OK     4.5 OK     [OK]
+08. 06Z         -2 OK        3 OK     >5000 OK     8.1 OK    +3.7 OK     8.0 OK     [OK]
+08. 12Z         -5 OK        4 OK     >5000 OK     3.1 OK    -5.0 NOGO   0.1 NOGO   [NOGO]
 
 
 
@@ -624,7 +624,7 @@ VT (UTC)      CYFB   CYIO   CYRB   CYHK   CYCB   PABR   PAOM   CYCY   CYAB   CYY
 07. 00Z       >=10   0.8k   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   0.8k   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
 07. 03Z       >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
 07. 06Z       >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
-07. 09Z        n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a
+07. 09Z       >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
 07. 12Z       >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
 07. 15Z       >=10   >=10   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
 07. 18Z       >=10   >=10   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
@@ -639,33 +639,36 @@ VT (UTC)      CYFB   CYIO   CYRB   CYHK   CYCB   PABR   PAOM   CYCY   CYAB   CYY
 09. 06Z       >=10   >=10   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
 09. 12Z       >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
 09. 18Z       >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   0.8k   >=10   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10
-10. 00Z        n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a    n/a
+10. 00Z       >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10   0.8k   >=10   >=10   >=10   >=10   >=10   >=10   >=10   >=10
 
 
 BLOCK 3 — Amtliche Meldungen (aviationweather.gov)
 ======================================================================
 
 --- METAR ---
+METAR CYCO 062200Z 06010KT 15SM FEW040 16/06 A3001 RMK CU1 SLP167
+METAR CYEV 062200Z 12006KT 050V190 15SM FEW076 SCT260 22/02 A3001 RMK CU1CI3 CU TR SLP167 DENSITY ALT 1000FT
+METAR CYCY 062200Z 08004KT 10SM SCT190 09/04 A2964 RMK AC3 FU SLP042
+METAR CYFB 062200Z 33017KT 30SM SCT240 23/04 A2983 RMK CI3 SLP104 DENSITY ALT 1200FT
+METAR CYRB 062200Z 29012KT 30SM SCT019 SCT220 02/01 A2987 RMK SC3CI1 SLP123
+METAR CYYH 062200Z 10011KT 15SM FEW019 SCT044 BKN220 13/07 A2986 RMK CU1SC4CS1 CU TR SLP114
+METAR CYPC 062200Z 05005KT 010V080 15SM SCT010 05/02 A3010 RMK SC4 SLP196
+METAR CYUB 062200Z 14007KT 15SM FEW240 18/08 A3003 RMK CI2 SLP172 DENSITY ALT 300FT
+METAR CYHI 062200Z 32014KT 15SM SCT021 10/04 A3002 RMK SC3 SLP169
+METAR CYHK 062200Z 36015KT 10SM FEW140 FEW220 12/06 A2987 RMK AC1CI1 SLP122
+METAR CYIO 062200Z 25008KT 12SM FEW025 BKN080 BKN260 08/05 A2971 RMK SC2AC4CI1 LAST STAFD OBS/NXT 071500Z SLP067
+METAR CYBB 062200Z 02008KT 12SM -RA OVC007 09/08 A2983 RMK ST8 SLP105
+METAR CYCB 062200Z 32004KT 220V350 15SM FEW015 BKN090 BKN200 12/04 A2994 RMK SC2AC3CI1 CU EMBDEDD SLP143
 METAR PAPO 062156Z AUTO 16015KT 10SM CLR 08/03 A2990 RMK AO2 SLP124 T00830033
-METAR PAOM 062153Z AUTO 25016KT 10SM CLR 13/04 A2996 RMK AO2 SLP146 T01280044 TSNO
 METAR PABR 062153Z AUTO 26003KT 10SM CLR 10/04 A2991 RMK AO2 SLP127 T01000039 TSNO $
-METAR PASC 062153Z 04012KT 10SM CLR 14/07 A2993 RMK AO2 SLP135 T01440067
+METAR PAOM 062153Z AUTO 25016KT 10SM CLR 13/04 A2996 RMK AO2 SLP146 T01280044 TSNO
 METAR PAOT 062153Z AUTO 24006KT 10SM CLR 16/08 A2992 RMK AO2 SLP130 T01610078 TSNO
-SPECI CYBB 062125Z 01008KT 12SM -RA BKN009 OVC040 08/07 A2983 RMK ST6SC2 SLP104
-METAR CYRB 062100Z 28013KT 30SM FEW002 FEW013 SCT019 BKN220 03/01 A2986 RMK ST1ST1SC2CI2 ST TR SLP121
-METAR CYHK 062100Z 03012G19KT 10SM FEW140 FEW220 12/06 A2987 RMK AC1CI1 AC TR SLP121
-METAR CYIO 062100Z 26007KT 220V290 15SM BKN037 BKN260 11/08 A2970 RMK SC6CI1 SLP063
-METAR CYCB 062100Z 25005KT 240V320 15SM BKN050 10/04 A2994 RMK SC7 SLP142
-METAR CYCO 062100Z 05008KT 15SM FEW051 FEW240 16/06 A3002 RMK CU1CI1 CI TR SLP168
-METAR CYEV 062100Z VRB03KT 15SM FEW072 FEW270 21/03 A3002 RMK CU1CI2 CU TR SLP171 DENSITY ALT 900FT
-METAR CYYH 062100Z 10011KT 15SM FEW016 FEW022 BKN044 13/07 A2985 RMK CU1CU1SC7 CU TR CU TR SLP113
-METAR CYUB 062100Z 12006KT 15SM FEW240 18/07 A3004 RMK CI2 SLP175 DENSITY ALT 300FT
-METAR CYPC 062100Z 36005KT 15SM BKN013 04/02 A3010 RMK SC7 SLP194
-METAR CYFB 062100Z 32015G22KT 30SM SCT240 24/04 A2984 RMK CI3 SLP106 DENSITY ALT 1300FT
-METAR CYHI 062100Z 32014KT 15SM SCT019 SCT037 10/04 A3000 RMK SC4SC1 SC TR SLP164
-METAR CYCY 062100Z 10005KT 10SM SCT190 10/05 A2965 RMK AC4 FU SLP043
+METAR PASC 062153Z 04012KT 10SM CLR 14/07 A2993 RMK AO2 SLP135 T01440067
 
 --- TAF ---
+TAF PASC 062214Z 0622/0718 06010KT P6SM FEW200
+TAF AMD CYPC 062204Z 0622/0623 05006KT 2SM BR BKN006 
+  TEMPO 0622/0623 P6SM NSW SCT006 SCT012 RMK NXT FCST BY 071500Z
 TAF AMD CYRB 062106Z 0621/0718 28012KT P6SM FEW002 SCT012 
   TEMPO 0621/0703 3SM BR SCT003 BKN012 
   FM070300 25012KT 2SM BR BKN005 
@@ -674,19 +677,17 @@ TAF AMD CYRB 062106Z 0621/0718 28012KT P6SM FEW002 SCT012
 TAF AMD CYHI 061928Z 0619/0624 35008KT P6SM FEW008 SCT015 BKN030 
   TEMPO 0619/0624 SCT008 BKN015 
   PROB30 0619/0624 BKN006 OVC015 RMK NXT FCST BY 071600Z
-TAF AMD CYPC 061848Z 0619/0623 36008KT 1SM -DZ BR OVC002 
-  TEMPO 0619/0621 P6SM NSW OVC008 
-  FM062100 03008KT 2SM BR BKN006 
-  TEMPO 0621/0623 P6SM NSW SCT006 BKN015 RMK NXT FCST BY 071500Z
 TAF CYBB 061843Z 0619/0624 02010KT P6SM -SHRA SCT015 OVC050 
   TEMPO 0619/0624 P6SM NSW FEW008 BKN015 OVC050 RMK NXT FCST BY 071400Z
-TAF CYCO 061842Z 0619/0707 07008KT P6SM SCT040 SCT070 
-  TEMPO 0619/0707 BKN030 RMK NXT FCST BY 070100Z
 TAF CYEV 061842Z 0619/0707 VRB03KT P6SM SCT070 SCT250 
   BECMG 0619/0621 11005KT RMK NXT FCST BY 070100Z
+TAF CYCO 061842Z 0619/0707 07008KT P6SM SCT040 SCT070 
+  TEMPO 0619/0707 BKN030 RMK NXT FCST BY 070100Z
 TAF CYCB 061842Z 0619/0707 27008KT P6SM SCT050 
   TEMPO 0619/0707 BKN050 
   BECMG 0703/0705 07008KT RMK NXT FCST BY 070100Z
+TAF CYIO 061840Z 0619/0707 VRB03KT P6SM SCT003 BKN025 OVC050 
+  TEMPO 0619/0707 2SM -RA BR BKN003 OVC040 RMK NXT FCST BY 070100Z
 TAF CYCY 061840Z 0619/0707 09006KT P6SM BKN180 
   BECMG 0619/0621 36010KT 
   FM070300 33012KT P6SM SCT080 BKN140 
@@ -694,8 +695,6 @@ TAF CYCY 061840Z 0619/0707 09006KT P6SM BKN180
   BECMG 0703/0705 31015G25KT RMK FCST BASED ON AUTO OBS. NXT FCST BY 070100Z
 TAF CYUB 061840Z 0619/0705 VRB03KT P6SM SCT250 
   BECMG 0620/0622 12010KT RMK NXT FCST BY 070100Z
-TAF CYIO 061840Z 0619/0707 VRB03KT P6SM SCT003 BKN025 OVC050 
-  TEMPO 0619/0707 2SM -RA BR BKN003 OVC040 RMK NXT FCST BY 070100Z
 TAF CYFB 061740Z 0618/0718 33015G25KT P6SM FEW240 
   BECMG 0623/0701 32010KT 
   FM070600 34005KT P6SM SCT250 
@@ -715,8 +714,7 @@ TAF PABR 061720Z 0618/0718 23008KT P6SM SKC
   FM062000 33006KT P6SM SKC 
   FM070200 03007KT P6SM SCT070 
   FM070500 09008KT P6SM BKN070
-TAF PASC 061720Z 0618/0718 08008KT P6SM FEW200
 
-Legende Block 1: W700~FL100, W850~5000ft; Sp = Spread (Vereisung bei Sp<3K und T<0°C).
+Legende Block 1: W700~FL100, W850~5000ft; Sp = Taupunkt-Spread in °C (Zahlenwert identisch zu K).
 
-Erzeugt: 2026-07-06 22:00 UTC
+Erzeugt: 2026-07-06 22:36 UTC
