@@ -287,13 +287,13 @@ def min_spread(data, fh, wi) -> float | None:
     return min(vals) if vals else None
 
 
-def cls_hw(v):  return "G" if v < 10 else ("O" if v <= 20 else "R")
-def cls_xw(v):  return "G" if v <= 10 else ("O" if v <= 20 else "R")
-def cls_cig(v): return "G" if v >= 5000 else ("O" if v >= 2000 else "R")
-def cls_sp(v):  return "R" if v <= 1.5 else ("O" if v <= 3.0 else "G")
+def cls_hw(v):  return "OK" if v < 10 else ("WARN" if v <= 20 else "NOGO")
+def cls_xw(v):  return "OK" if v <= 10 else ("WARN" if v <= 20 else "NOGO")
+def cls_cig(v): return "OK" if v >= 5000 else ("WARN" if v >= 2000 else "NOGO")
+def cls_sp(v):  return "NOGO" if v <= 1.5 else ("WARN" if v <= 3.0 else "OK")
 
-WORST = {"G": 0, "O": 1, "R": 2, "?": 1}
-LETTER = {0: "G", 1: "O", 2: "R"}
+WORST = {"OK": 0, "WARN": 1, "NOGO": 2, "?": 1}
+LABEL = {0: "OK", 1: "WARN", 2: "NOGO"}
 
 
 def dashboard_block(data, date, run, waypoints) -> list[str]:
@@ -303,8 +303,8 @@ def dashboard_block(data, date, run, waypoints) -> list[str]:
     lines = [
         "BLOCK 0 — MACHBARKEIT (personalisierte Bewertung, kein amtliches "
         "Produkt)", "=" * 70,
-        "G=gruen O=orange R=rot ?=Daten fehlen  |  Gesamt = schlechteste "
-        "Einzelwertung",
+        "Bewertung je Parameter: OK / WARN / NOGO  (? = Daten fehlen)  |  "
+        "Gesamt = schlechteste Einzelwertung",
         "HW: Headwind 8000ft im Anflugkurs | XW: Crosswind aus Boeen "
         "(~ = Piste unbekannt, volle Boe) | CIG: Wolkenbasis ft AGL | "
         "SP: min. Spread 850/700", ""]
@@ -329,8 +329,8 @@ def dashboard_block(data, date, run, waypoints) -> list[str]:
                          "moeglich (siehe Block 2/3)\n")
             continue
 
-        lines.append(f"{'VT (UTC)':<12}{'HW kt':>9}{'XW kt':>9}"
-                     f"{'CIG ft':>10}{'SP K':>7}   GESAMT")
+        lines.append(f"{'VT (UTC)':<12}{'HW kt':>12}{'XW kt':>13}"
+                     f"{'CIG ft':>14}{'SP K':>12}   GESAMT")
         for fh in DASH_HOURS:
             hw = headwind_8000(data, fh, wi, course) \
                 if course is not None else None
@@ -342,21 +342,21 @@ def dashboard_block(data, date, run, waypoints) -> list[str]:
             def one(v, cls, fmt, mark=""):
                 nonlocal worst
                 if not valid(v):
-                    parts.append(f"{'?':>8}")
+                    parts.append(f"{'?':>11}")
                     worst = max(worst, WORST["?"])
                 else:
                     c = cls(v)
                     worst = max(worst, WORST[c])
-                    parts.append(f"{fmt(v)}{mark}{c:>2}")
+                    parts.append(f"{fmt(v)}{mark} {c:<4}")
             one(hw, cls_hw, lambda v: f"{v:+6.0f}") if course is not None \
-                else (parts.append(f"{'—':>8}"))
+                else (parts.append(f"{'—':>11}"))
             one(xw, cls_xw, lambda v: f"{v:6.0f}", "" if exact else "~")
             one(cig, cls_cig,
                 lambda v: ("  >5000" if v >= 99999 else f"{v:7.0f}"))
             one(sp, cls_sp, lambda v: f"{v:5.1f}")
             vt = run_dt + timedelta(hours=fh)
             lines.append(f"{vt:%d. %H}Z     " + " ".join(parts)
-                         + f"     [{LETTER[worst]}]")
+                         + f"   [{LABEL[worst]}]")
         lines.append("")
     return lines
 
