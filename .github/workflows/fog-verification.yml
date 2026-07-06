@@ -1,14 +1,21 @@
 # .github/workflows/fog-verification.yml
 #
-# Taegliche Verifikation der CAPS-Nebelvorhersage gegen METARs.
-# Ergebnis: verification/history.json + verification/fog_verification.png
-# Abruf: https://raw.githubusercontent.com/<USER>/<REPO>/main/verification/fog_verification.png
+# Verifikation der Briefing-Vorhersagen gegen METARs.
+# - verification/fog_verification.png       = immer die neueste Nebel-Zeitreihe
+# - verification/briefing_verification.png  = immer die neueste Trefferquoten-Grafik
+# - verification/archive/*_YYYYMMDDTHHMMZ.png = je Grafiktyp die 10 juengsten Staende
+# - verification/history.json               = vollstaendige Datenhistorie
+#
+# Abruf neueste:
+#   https://raw.githubusercontent.com/<USER>/<REPO>/main/verification/briefing_verification.png
+# Archiv-Ansicht:
+#   https://github.com/<USER>/<REPO>/tree/main/verification/archive
 
 name: Fog Verification
 
 on:
   schedule:
-    - cron: "15 0,6,12,18 * * *"    # taeglich alle 6h
+    - cron: "15 0,6,12,18 * * *"   # 4x taeglich (siehe Empfehlung: 6-h-Raster)
   workflow_dispatch: {}
 
 permissions:
@@ -43,12 +50,25 @@ jobs:
       - name: Verifikation ausfuehren
         run: python fog_verification.py
 
+      - name: Grafiken archivieren (10 juengste je Typ)
+        run: |
+          STAMP=$(date -u '+%Y%m%dT%H%MZ')
+          mkdir -p verification/archive
+          for f in fog_verification briefing_verification; do
+            if [ -f "verification/${f}.png" ]; then
+              cp "verification/${f}.png" "verification/archive/${f}_${STAMP}.png"
+            fi
+            ls -1 verification/archive/${f}_*.png 2>/dev/null \
+              | sort | head -n -10 | xargs -r rm -v --
+          done
+          ls -1 verification/archive/ || true
+
       - name: Ergebnisse committen
         run: |
           git config user.name  "fog-verify-bot"
           git config user.email "actions@github.com"
-          git add verification/
+          git add -A verification/
           git diff --cached --quiet && echo "Keine Aenderung." && exit 0
-          git commit -m "Nebel-Verifikation $(date -u '+%Y-%m-%d')"
+          git commit -m "Nebel-Verifikation $(date -u '+%Y-%m-%d %H:%MZ')"
           git pull --rebase origin main
           git push
