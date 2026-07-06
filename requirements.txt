@@ -2,3 +2,4 @@ httpx
 xarray
 cfgrib
 numpy
+matplotlib
