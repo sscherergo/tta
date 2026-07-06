@@ -1,0 +1,62 @@
+# .github/workflows/caps-briefing.yml
+#
+# Erzeugt zweimal taeglich das CAPS/HRDPS-North-Briefing entlang der
+# NWP-Route und committet es als briefing.txt ins Repo.
+# Abruf vom iPad:
+#   https://raw.githubusercontent.com/<USER>/<REPO>/main/briefing.txt
+
+name: CAPS Route Briefing
+
+on:
+  schedule:
+    # 00Z-Lauf ist ~05:00 UTC vollstaendig, 12Z-Lauf ~17:00 UTC.
+    # Puffer eingeplant; GitHub-Cron kann sich zusaetzlich um Minuten verspaeten.
+    - cron: "45 5 * * *"
+    - cron: "45 17 * * *"
+  workflow_dispatch: {}   # manueller Start ueber die GitHub-App/-Website
+
+permissions:
+  contents: write         # noetig, um briefing.txt zu committen
+
+concurrency:
+  group: caps-briefing
+  cancel-in-progress: true
+
+jobs:
+  briefing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: ecCodes installieren
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y --no-install-recommends libeccodes0 libeccodes-data
+
+      - name: Python-Pakete installieren
+        run: pip install httpx xarray cfgrib numpy
+
+      - name: Briefing erzeugen
+        run: |
+          python caps_route_forecast.py > briefing.txt
+          echo "" >> briefing.txt
+          echo "Erzeugt: $(date -u '+%Y-%m-%d %H:%M UTC')" >> briefing.txt
+          tail -n 5 briefing.txt
+
+      - name: Briefing committen (nur bei Aenderung)
+        run: |
+          git config user.name  "caps-bot"
+          git config user.email "actions@github.com"
+          git add briefing.txt
+          git diff --cached --quiet && echo "Keine Aenderung." && exit 0
+          git commit -m "CAPS-Briefing $(date -u '+%Y-%m-%d %H:%MZ')"
+          git push
