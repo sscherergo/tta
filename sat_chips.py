@@ -127,12 +127,14 @@ async def chip_for_airport(client, icao, name, lat, lon,
                      outline=(255, 60, 60), width=3)
         draw.line([cx - 18, cy, cx - 10, cy], fill=(255, 60, 60), width=3)
         draw.line([cx + 10, cy, cx + 18, cy], fill=(255, 60, 60), width=3)
-        note = f" (Bild {used_date})" if used_date != date0.strftime("%Y-%m-%d") else ""
-        draw.text((x0 + 6, 8), f"{label}{note}", font=f_cap,
-                  fill=(235, 235, 235))
+        stale = used_date != date0.strftime("%Y-%m-%d")
+        draw.text((x0 + 6, 8), f"{label} — Bild vom {used_date}"
+                  + (" (VORTAG!)" if stale else ""), font=f_cap,
+                  fill=(255, 170, 60) if stale else (235, 235, 235))
 
     draw.text((w - 6, 8),
-              f"{icao} {name} — VIIRS ~250x250 km — {date0:%Y-%m-%d}",
+              f"{icao} {name} — VIIRS ~250x250 km — abgerufen "
+              f"{datetime.now(timezone.utc):%Y-%m-%d %H:%M}Z",
               font=f_cap, fill=(235, 235, 235), anchor="ra")
 
     OUT_DIR.mkdir(exist_ok=True)
