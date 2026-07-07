@@ -11,8 +11,8 @@ name: CAPS Route Briefing
 
 on:
   schedule:
-    - cron: "45 5 * * *"    # nach dem 00Z-Lauf
-    - cron: "45 17 * * *"   # nach dem 12Z-Lauf
+    - cron: "3 6 * * *"     # 06:03 UTC — 00Z-Lauf, Publikation ~05:30 + 33 min
+    - cron: "3 18 * * *"    # 18:03 UTC — 12Z-Lauf, Publikation ~17:30 + 33 min
   workflow_dispatch: {}
 
 permissions:
