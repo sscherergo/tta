@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import asyncio
 import math
+import re
 import sys
 import tempfile
 from dataclasses import dataclass
@@ -352,7 +353,8 @@ WORST = {"OK": 0, "WARN": 1, "NOGO": 2, "?": 1}
 LABEL = {0: "OK", 1: "WARN", 2: "NOGO"}
 
 
-def dashboard_block(data, date, run, waypoints) -> list[str]:
+def dashboard_block(data, date, run, waypoints, obs=None) -> list[str]:
+    obs = obs or {}
     run_dt = datetime.strptime(date + run, "%Y%m%d%H").replace(
         tzinfo=timezone.utc)
     coords = {w.icao: w for w in waypoints}
@@ -367,7 +369,9 @@ def dashboard_block(data, date, run, waypoints) -> list[str]:
         "TRD: Spread-Trend °C/6h (Klasse = SP-Schwellen auf +6h "
         "extrapoliert; negativ = schliessend) | "
         "ICE: Spread+Temp 850/700 (nur unterkuehlte Level; '—' = alle "
-        "Level >0°C)", ""]
+        "Level >0°C)",
+        "* = durch aktuelles METAR herabgestuft (Persistenz: voll bis +6h, "
+        "abgeschwaecht bis +12h ab Beobachtung; nur verschaerfend)", ""]
 
     for wi, wp in enumerate(waypoints):
         # Kurs vom Anflug-Ausgangspunkt
@@ -392,7 +396,11 @@ def dashboard_block(data, date, run, waypoints) -> list[str]:
         lines.append(f"{'VT (UTC)':<12}{'HW kt':>12}{'XW kt':>13}"
                      f"{'CIG ft':>14}{'SP2m °C':>12}{'TRD 6h':>12}"
                      f"{'ICE °C':>12}   GESAMT")
+        entry = obs.get(wp.icao)
+        downgraded = False
         for fh in DASH_HOURS:
+            vt = run_dt + timedelta(hours=fh)
+            fog_floor, cig_floor = persistence_floor(entry, vt)
             hw = headwind_8000(data, fh, wi, course) \
                 if course is not None else None
             xw, exact = crosswind_gust(data, fh, wi, rwy)
@@ -402,21 +410,26 @@ def dashboard_block(data, date, run, waypoints) -> list[str]:
             ice_val, ice_cls = icing_assess(data, fh, wi)
 
             parts, worst = [], 0
-            def one(v, cls, fmt, mark=""):
-                nonlocal worst
+            def one(v, cls, fmt, mark="", floor=None):
+                nonlocal worst, downgraded
                 if not valid(v):
                     parts.append(f"{'?':>11}")
                     worst = max(worst, WORST["?"])
                 else:
                     c = cls(v)
+                    if floor is not None and WORST[floor] > WORST[c]:
+                        c = floor
+                        mark += "*"
+                        downgraded = True
                     worst = max(worst, WORST[c])
                     parts.append(f"{fmt(v)}{mark} {c:<4}")
             one(hw, cls_hw, lambda v: f"{v:+6.0f}") if course is not None \
                 else (parts.append(f"{'—':>11}"))
             one(xw, cls_xw, lambda v: f"{v:6.0f}", "" if exact else "~")
             one(cig, cls_cig,
-                lambda v: ("  >5000" if v >= 99999 else f"{v:7.0f}"))
-            one(sp, cls_sp, lambda v: f"{v:5.1f}")
+                lambda v: ("  >5000" if v >= 99999 else f"{v:7.0f}"),
+                floor=cig_floor)
+            one(sp, cls_sp, lambda v: f"{v:5.1f}", floor=fog_floor)
             # TRD-Spalte: Klasse aus fog_trend (Projektion), Anzeige = Delta
             if trd_cls == "?":
                 parts.append(f"{'?':>11}")
@@ -432,9 +445,12 @@ def dashboard_block(data, date, run, waypoints) -> list[str]:
                 worst = max(worst, WORST[ice_cls])
                 disp = f"{ice_val:5.1f}" if ice_val is not None else f"{'—':>5}"
                 parts.append(f"{disp} {ice_cls:<4}")
-            vt = run_dt + timedelta(hours=fh)
             lines.append(f"{vt:%d. %H}Z     " + " ".join(parts)
                          + f"   [{LABEL[worst]}]")
+        if downgraded and entry is not None:
+            lines.append(f"  * Persistenz-Korrektur aktiv — METAR "
+                         f"{entry['time']:%d. %H:%M}Z: "
+                         f"{entry['raw'][:70]}")
         lines.append("")
     return lines
 
@@ -540,22 +556,120 @@ async def fog_block(client, tmpdir: Path, waypoints) -> list[str]:
     return lines
 
 
-async def taf_metar_block(client, waypoints) -> list[str]:
+# ---------------------------------------------------------------------------
+# Stufe 2: Persistenz-Abgleich — aktuelle METARs korrigieren die Kurzfrist.
+# Regel: Ist die Beobachtung JETZT schlechter als das Modell, wird die
+# Ampel fuer die naechsten Stunden angehoben (nur verschaerfend, nie
+# entwarnend): volle Uebernahme bis +6 h, eine Stufe abgeschwaecht bis
+# +12 h ab Beobachtungszeit. Nur METARs juenger als 90 min zaehlen.
+# ---------------------------------------------------------------------------
+
+METAR_TIME_RE = re.compile(r"\b(\d{2})(\d{2})(\d{2})Z\b")
+OBS_MAX_AGE_MIN = 90
+OBS_FULL_H, OBS_TAPER_H = 6.0, 12.0
+STEP_DOWN = {"NOGO": "WARN", "WARN": "OK", "OK": "OK"}
+
+
+def parse_metar_obs(raw: str, now: datetime) -> dict | None:
+    """Beobachtungszeit, Nebel- und Ceiling-Kategorie aus rohem METAR."""
+    m = METAR_TIME_RE.search(raw)
+    if not m:
+        return None
+    day, hh, mm = int(m.group(1)), int(m.group(2)), int(m.group(3))
+    obs_time = None
+    for k in (0, 1):                       # dieser oder vorheriger Monat
+        y = now.year - (1 if now.month == 1 and k else 0)
+        mo = now.month - k if now.month - k >= 1 else 12
+        try:
+            cand = now.replace(year=y, month=mo, day=day, hour=hh,
+                               minute=mm, second=0, microsecond=0)
+        except ValueError:
+            continue
+        if -1.5 * 3600 <= (now - cand).total_seconds() <= 32 * 86400:
+            obs_time = cand
+            break
+    if obs_time is None:
+        return None
+
+    vis_km = None
+    v = re.search(r"\b(?:M)?(\d+)?(?:\s+)?(\d)/(\d)SM\b", raw)
+    if v:
+        vis_km = ((int(v.group(1)) if v.group(1) else 0)
+                  + int(v.group(2)) / int(v.group(3))) * 1.609
+    else:
+        v = re.search(r"\b(\d+)SM\b", raw)
+        if v:
+            vis_km = int(v.group(1)) * 1.609
+    fog = re.search(r"\b(?:\+|-)?(?:FZ)?FG\b", raw) is not None
+    mist = re.search(r"\bBR\b", raw) is not None
+    if fog or (vis_km is not None and vis_km < 1.6):
+        fog_cat = "NOGO"
+    elif mist or (vis_km is not None and vis_km < 5.0):
+        fog_cat = "WARN"
+    else:
+        fog_cat = "OK"
+
+    layers = [int(h) * 100 for _t, h in
+              re.findall(r"\b(VV|BKN|OVC)(\d{3})\b", raw)]
+    cig_cat = cls_cig(min(layers)) if layers else "OK"
+    return {"time": obs_time, "fog_cat": fog_cat, "cig_cat": cig_cat,
+            "raw": raw.strip()}
+
+
+async def fetch_awc(client, kind: str, ids: str) -> str:
+    try:
+        r = await client.get(f"{AWC_API}/{kind}",
+                             params={"ids": ids, "format": "raw"},
+                             headers={"User-Agent":
+                                      "caps-route-briefing/1.0"},
+                             timeout=45.0)
+        return r.text.strip() if r.status_code == 200 else ""
+    except httpx.HTTPError:
+        return ""
+
+
+async def fetch_current_obs(client, waypoints, now: datetime
+                            ) -> tuple[dict, str, str]:
+    """(obs je ICAO fuer den Persistenz-Abgleich, METAR-Rohtext, TAF-Rohtext)."""
     ids = ",".join(w.icao for w in waypoints)
+    metar_raw = await fetch_awc(client, "metar", ids)
+    taf_raw = await fetch_awc(client, "taf", ids)
+    obs: dict[str, dict] = {}
+    icaos = {w.icao for w in waypoints}
+    for line in metar_raw.splitlines():
+        line = line.strip()
+        for icao in icaos:
+            if line.startswith((icao, f"METAR {icao}", f"SPECI {icao}")):
+                parsed = parse_metar_obs(line, now)
+                if parsed:
+                    age_min = (now - parsed["time"]).total_seconds() / 60
+                    if age_min <= OBS_MAX_AGE_MIN:
+                        cur = obs.get(icao)
+                        if cur is None or parsed["time"] > cur["time"]:
+                            obs[icao] = parsed
+                break
+    return obs, metar_raw, taf_raw
+
+
+def persistence_floor(entry: dict | None, vt: datetime
+                      ) -> tuple[str | None, str | None]:
+    """(Nebel-Mindestklasse, Ceiling-Mindestklasse) fuer Vorhersagezeit vt."""
+    if entry is None:
+        return None, None
+    dt_h = (vt - entry["time"]).total_seconds() / 3600
+    if dt_h < 0 or dt_h > OBS_TAPER_H:
+        return None, None
+    if dt_h <= OBS_FULL_H:
+        return entry["fog_cat"], entry["cig_cat"]
+    return STEP_DOWN[entry["fog_cat"]], STEP_DOWN[entry["cig_cat"]]
+
+
+def metar_taf_lines(metar_raw: str, taf_raw: str) -> list[str]:
     lines = ["\n\nBLOCK 3 — Amtliche Meldungen (aviationweather.gov)",
              "=" * 70]
-    for kind in ("metar", "taf"):
-        try:
-            r = await client.get(f"{AWC_API}/{kind}",
-                                 params={"ids": ids, "format": "raw"},
-                                 headers={"User-Agent":
-                                          "caps-route-briefing/1.0"},
-                                 timeout=45.0)
-            body = r.text.strip() if r.status_code == 200 else ""
-        except httpx.HTTPError:
-            body = ""
-        lines += [f"\n--- {kind.upper()} ---",
-                  body or f"({kind.upper()} derzeit nicht abrufbar)"]
+    for kind, body in (("METAR", metar_raw), ("TAF", taf_raw)):
+        lines += [f"\n--- {kind} ---",
+                  body or f"({kind} derzeit nicht abrufbar)"]
     return lines
 
 
@@ -572,6 +686,9 @@ async def main(waypoints) -> str:
            "HINWEIS: Automatisierte Auswertung als Planungshilfe — ersetzt "
            "kein amtliches Briefing und keine PIC-Entscheidung.", ""]
     async with httpx.AsyncClient(follow_redirects=True) as client:
+        now = datetime.now(timezone.utc)
+        obs, metar_raw, taf_raw = await fetch_current_obs(
+            client, waypoints, now)
         with tempfile.TemporaryDirectory() as tmp:
             tmpdir = Path(tmp)
             data, date, run = await load_caps(client, tmpdir, waypoints)
@@ -582,10 +699,10 @@ async def main(waypoints) -> str:
                           f"(Alter {age_h:.1f} h) — gueltig "
                           f"{run_dt + timedelta(hours=CAPS_HOURS[0]):%d.%m. %H}Z "
                           f"bis {run_dt + timedelta(hours=CAPS_HOURS[-1]):%d.%m. %H}Z")
-            out += dashboard_block(data, date, run, waypoints)
+            out += dashboard_block(data, date, run, waypoints, obs=obs)
             out += caps_block(data, date, run, waypoints)
             out += await fog_block(client, tmpdir, waypoints)
-        out += await taf_metar_block(client, waypoints)
+        out += metar_taf_lines(metar_raw, taf_raw)
     out.append("\nLegende Block 1: W700~FL100, W850~5000ft; Sp = Taupunkt-"
                "Spread in °C (Zahlenwert identisch zu K).")
     return "\n".join(out)
