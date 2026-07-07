@@ -135,6 +135,8 @@ CAPS_VARIABLES: list[tuple[str, str]] = ([
 CAPS_HOURS = range(3, 49, 3)
 DASH_HOURS = range(6, 49, 6)
 FOG_HOURS = list(range(3, 49, 3)) + list(range(54, 85, 6))
+TRD_DELTA_CAP = 5.0     # max. Delta °C/6h in der Trend-Projektion (Tagesgang)
+TRD_DRY_SPREAD = 5.0    # Spread darueber: TRD hoechstens WARN, nie NOGO
 
 
 # ---------------------------------------------------------------------------
@@ -301,7 +303,14 @@ def fog_trend(data, fh, wi) -> tuple[float | None, str]:
 
     d      = Spread(fh) - Spread(fh-6) [erste Zeile: 2 x 3-h-Delta]
     |d|<0.3 gilt als stabil (Modellrauschen).
-    Klasse = cls_sp(Spread + d), Anzeige = d (negativ = schliessend).
+    Klasse = cls_sp(Spread + d_gedaempft), Anzeige = ungedaempftes d.
+
+    Daempfer gegen Tagesgang-Fehlalarme:
+      1. In die Projektion geht hoechstens ±TRD_DELTA_CAP °C/6h ein —
+         groessere Spruenge sind Tagesgang, nicht Nebelentwicklung.
+      2. Liegt der aktuelle Spread ueber TRD_DRY_SPREAD, ist die Klasse
+         auf WARN gedeckelt: aus sehr trockener Luft ist ein Nebel-NOGO
+         binnen 6 h physikalisch unglaubwuerdig.
     """
     sp_now = fog_spread_2m(data, fh, wi)
     if fh - 6 in data:
@@ -315,7 +324,13 @@ def fog_trend(data, fh, wi) -> tuple[float | None, str]:
     d6 = (sp_now - sp_prev) * scale
     if abs(d6) < 0.3:
         d6 = 0.0
-    return d6, cls_sp(max(sp_now + d6, 0.0))
+    d6_proj = max(min(d6, TRD_DELTA_CAP), -TRD_DELTA_CAP)
+    cls = cls_sp(max(sp_now + d6_proj, 0.0))
+    if d6 < -TRD_DELTA_CAP and cls == "OK":
+        cls = "WARN"            # extremer Kollaps: mindestens beobachten
+    if sp_now > TRD_DRY_SPREAD and cls == "NOGO":
+        cls = "WARN"
+    return d6, cls
 
 
 def icing_assess(data, fh, wi) -> tuple[float | None, str]:
