@@ -146,6 +146,55 @@
    "icao": "PAOM",
    "spread": 3.18,
    "cat": "OK"
+  },
+  {
+   "made": "2026-07-07T11:26:24+00:00",
+   "valid": "2026-07-08T11:00:00+00:00",
+   "icao": "CYFB",
+   "spread": 5.95,
+   "cat": "OK"
+  },
+  {
+   "made": "2026-07-07T11:26:24+00:00",
+   "valid": "2026-07-08T11:00:00+00:00",
+   "icao": "CYIO",
+   "spread": 1.3,
+   "cat": "NOGO"
+  },
+  {
+   "made": "2026-07-07T11:26:24+00:00",
+   "valid": "2026-07-08T11:00:00+00:00",
+   "icao": "CYRB",
+   "spread": 0.36,
+   "cat": "NOGO"
+  },
+  {
+   "made": "2026-07-07T11:26:24+00:00",
+   "valid": "2026-07-08T11:00:00+00:00",
+   "icao": "CYHK",
+   "spread": 3.14,
+   "cat": "OK"
+  },
+  {
+   "made": "2026-07-07T11:26:24+00:00",
+   "valid": "2026-07-08T11:00:00+00:00",
+   "icao": "CYCB",
+   "spread": 2.93,
+   "cat": "WARN"
+  },
+  {
+   "made": "2026-07-07T11:26:24+00:00",
+   "valid": "2026-07-08T11:00:00+00:00",
+   "icao": "PABR",
+   "spread": 0.63,
+   "cat": "NOGO"
+  },
+  {
+   "made": "2026-07-07T11:26:24+00:00",
+   "valid": "2026-07-08T11:00:00+00:00",
+   "icao": "PAOM",
+   "spread": 2.51,
+   "cat": "WARN"
   }
  ],
  "observations": [
@@ -351,6 +400,83 @@
    "gust_kt": null,
    "ceiling_ft": null,
    "raw": "METAR PAOM 062253Z AUTO 25017KT 10SM CLR 13/03 A2995 RMK AO2 SLP142 T01280033 TSNO"
+  },
+  {
+   "time": "2026-07-07T11:26:24+00:00",
+   "icao": "CYIO",
+   "vis_km": 14.481,
+   "cat": "OK",
+   "wind_dir": 270,
+   "wind_kt": 4,
+   "gust_kt": null,
+   "ceiling_ft": null,
+   "raw": "SPECI CYIO 071119Z AUTO 27004KT 9SM SCT001 02/02 A2982 RMK SLP107"
+  },
+  {
+   "time": "2026-07-07T11:26:24+00:00",
+   "icao": "CYRB",
+   "vis_km": 32.18,
+   "cat": "OK",
+   "wind_dir": 230,
+   "wind_kt": 17,
+   "gust_kt": null,
+   "ceiling_ft": 1500,
+   "raw": "METAR CYRB 071100Z 23017KT 20SM FEW003 OVC015 03/01 A2979 RMK ST2ST6 SLP095"
+  },
+  {
+   "time": "2026-07-07T11:26:24+00:00",
+   "icao": "CYFB",
+   "vis_km": 48.269999999999996,
+   "cat": "OK",
+   "wind_dir": 320,
+   "wind_kt": 4,
+   "gust_kt": null,
+   "ceiling_ft": null,
+   "raw": "METAR CYFB 071100Z 32004KT 290V360 30SM FEW200 SCT250 17/07 A2979 RMK CC1CI3 CC TR SLP090 DENSITY ALT 500FT"
+  },
+  {
+   "time": "2026-07-07T11:26:24+00:00",
+   "icao": "CYHK",
+   "vis_km": 14.481,
+   "cat": "OK",
+   "wind_dir": 20,
+   "wind_kt": 10,
+   "gust_kt": null,
+   "ceiling_ft": 2600,
+   "raw": "METAR CYHK 071100Z AUTO 02010KT 9SM OVC026 07/04 A2995 RMK SLP148"
+  },
+  {
+   "time": "2026-07-07T11:26:24+00:00",
+   "icao": "CYCB",
+   "vis_km": 24.134999999999998,
+   "cat": "OK",
+   "wind_dir": 110,
+   "wind_kt": 6,
+   "gust_kt": null,
+   "ceiling_ft": 5000,
+   "raw": "METAR CYCB 071100Z 11006KT 15SM BKN050 09/06 A3002 RMK SC7 SLP169"
+  },
+  {
+   "time": "2026-07-07T11:26:24+00:00",
+   "icao": "PABR",
+   "vis_km": 16.09,
+   "cat": "OK",
+   "wind_dir": 110,
+   "wind_kt": 8,
+   "gust_kt": null,
+   "ceiling_ft": null,
+   "raw": "METAR PABR 071053Z AUTO 11008KT 10SM CLR 08/05 A2982 RMK AO2 SLP098 T00830050 TSNO $"
+  },
+  {
+   "time": "2026-07-07T11:26:24+00:00",
+   "icao": "PAOM",
+   "vis_km": 16.09,
+   "cat": "OK",
+   "wind_dir": 290,
+   "wind_kt": 6,
+   "gust_kt": null,
+   "ceiling_ft": null,
+   "raw": "METAR PAOM 071053Z AUTO 29006KT 10SM CLR 05/03 A2982 RMK AO2 SLP097 T00500033 TSNO"
   }
  ],
  "briefing_forecasts": [
