@@ -78,6 +78,7 @@ TOKEN_RE = re.compile(
     r"(>5000|[+\-]?\d+(?:\.\d+)?|—|\?)(~?)(?:\s+(OK|WARN|NOGO))?")
 STAMP_RE = re.compile(r"briefing_(\d{8})T(\d{4})Z\.txt$")
 MADE_RE = re.compile(r"erzeugt (\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}) UTC")
+RUN_RE = re.compile(r"VORHERSAGE: CAPS-Modelllauf (\d{8}) (\d{2}):00 UTC")
 
 
 def resolve_valid(made: datetime, day: int, hour: int) -> datetime | None:
@@ -190,7 +191,8 @@ def draw_panel(draw: ImageDraw.ImageDraw, xy: tuple[int, int], icao: str,
 
 
 def draw_map(map_path: Path, out_path: Path, picked: dict[str, dict],
-             made: datetime, target: datetime) -> None:
+             made: datetime, target: datetime,
+             run_dt: datetime | None) -> None:
     base = Image.open(map_path).convert("RGBA")
     ov = Image.new("RGBA", base.size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(ov)
@@ -228,8 +230,12 @@ def draw_map(map_path: Path, out_path: Path, picked: dict[str, dict],
         draw_panel(draw, (x + ox, y + oy), icao, row, f_hdr, f_txt)
 
     # Titelzeile
-    title = (f"NWP-Dashboard  |  Briefing {made:%Y-%m-%d %H:%M}Z  |  "
-             f"gueltig ~{target:%d.%m. %H}Z  |  OK/WARN/NOGO")
+    valid = next(iter(picked.values()))["valid"]
+    run_part = (f"Vorhersage: CAPS-Lauf {run_dt:%d.%m. %H:%M}Z  |  "
+                if run_dt else "")
+    title = (f"NWP-Dashboard  |  {run_part}"
+             f"Briefing erzeugt {made:%d.%m. %H:%M}Z  |  "
+             f"gueltig {valid:%d.%m. %H:00}Z  |  OK/WARN/NOGO")
     tw = draw.textlength(title, font=f_title)
     draw.rounded_rectangle([10, 10, 30 + tw, 44], radius=7, fill=PANEL_BG)
     draw.text((20, 16), title, font=f_title, fill=(240, 240, 240))
@@ -253,6 +259,9 @@ def main() -> None:
     rows = parse_block0(text, made)
     if not rows:
         sys.exit("Keine Block-0-Zeilen im Briefing gefunden.")
+    m = RUN_RE.search(text)
+    run_dt = (datetime.strptime(m.group(1) + m.group(2), "%Y%m%d%H")
+              .replace(tzinfo=timezone.utc) if m else None)
     target = made + timedelta(hours=args.lead)
     picked = pick_rows(rows, target)
     missing = [i for i in MAP_AIRPORTS if i not in picked]
@@ -260,7 +269,7 @@ def main() -> None:
         print(f"Hinweis: keine Daten fuer {', '.join(missing)}",
               file=sys.stderr)
     out = Path(args.out)
-    draw_map(Path(args.map), out, picked, made, target)
+    draw_map(Path(args.map), out, picked, made, target, run_dt)
 
     # Archiv: Zeitstempel-Kopie, die ARCHIVE_KEEP juengsten behalten
     ARCHIVE_DIR.mkdir(exist_ok=True)
