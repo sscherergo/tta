@@ -207,7 +207,7 @@ def valid(v) -> bool:
 
 async def load_caps(client, tmpdir: Path, waypoints
                     ) -> tuple[dict, str, str]:
-    date, run = latest_expected_run(6)
+    date, run = latest_expected_run(7)   # Publikation gemessen: Lauf + ~6.6 h
     probe = (f"{CAPS_BASE}/{run}/{CAPS_HOURS[-1]:03d}/{date}T{run}Z_MSC_CAPS_"
              f"AirTemp_AGL-2m_RLatLon0.03_PT{CAPS_HOURS[-1]:03d}H.grib2")
     if (await client.head(probe, timeout=30.0)).status_code != 200:
@@ -575,6 +575,13 @@ async def main(waypoints) -> str:
         with tempfile.TemporaryDirectory() as tmp:
             tmpdir = Path(tmp)
             data, date, run = await load_caps(client, tmpdir, waypoints)
+            run_dt = datetime.strptime(date + run, "%Y%m%d%H").replace(
+                tzinfo=timezone.utc)
+            age_h = (datetime.now(timezone.utc) - run_dt).total_seconds() / 3600
+            out.insert(1, f"VORHERSAGE: CAPS-Modelllauf {date} {run}:00 UTC "
+                          f"(Alter {age_h:.1f} h) — gueltig "
+                          f"{run_dt + timedelta(hours=CAPS_HOURS[0]):%d.%m. %H}Z "
+                          f"bis {run_dt + timedelta(hours=CAPS_HOURS[-1]):%d.%m. %H}Z")
             out += dashboard_block(data, date, run, waypoints)
             out += caps_block(data, date, run, waypoints)
             out += await fog_block(client, tmpdir, waypoints)
