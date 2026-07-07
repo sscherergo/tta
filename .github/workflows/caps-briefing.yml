@@ -70,11 +70,14 @@ jobs:
       - name: Karten-Dashboard rendern (Archiv-Rotation im Skript)
         run: python map_dashboard.py --lead 12
 
-      - name: Briefings und Karte committen
+      - name: Satellitenbilder abrufen (Archiv-Rotation im Skript)
+        run: python sat_chips.py || echo "Satellitenabruf fehlgeschlagen — nicht fatal"
+
+      - name: Briefings, Karte und Satellitenbilder committen
         run: |
           git config user.name  "caps-bot"
           git config user.email "actions@github.com"
-          git add -A briefing.txt briefings/ dashboard_map.png maps/
+          git add -A briefing.txt briefings/ dashboard_map.png maps/ sat/
           git diff --cached --quiet && echo "Keine Aenderung." && exit 0
           git commit -m "CAPS-Briefing $(date -u '+%Y-%m-%d %H:%MZ')"
           git pull --rebase origin main
