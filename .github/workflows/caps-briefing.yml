@@ -3,9 +3,13 @@
 # Erzeugt zweimal taeglich das CAPS/NWP-Routenbriefing.
 # - briefing.txt                          = immer das neueste (iPad-Kurzbefehl)
 # - briefings/briefing_YYYYMMDDTHHMMZ.txt = Archiv, die 10 juengsten Laeufe
+# - dashboard_map.png                     = immer die neueste Ampel-Karte
+# - maps/dashboard_map_YYYYMMDDTHHMMZ.png = Archiv, die 10 juengsten Karten
 #
 # Abruf neuestes:  https://raw.githubusercontent.com/<USER>/<REPO>/main/briefing.txt
+#                  https://raw.githubusercontent.com/<USER>/<REPO>/main/dashboard_map.png
 # Archiv-Ansicht:  https://github.com/<USER>/<REPO>/tree/main/briefings
+#                  https://github.com/<USER>/<REPO>/tree/main/maps
 
 name: CAPS Route Briefing
 
@@ -63,11 +67,14 @@ jobs:
           cd ..
           ls -1 briefings/
 
-      - name: Briefings committen
+      - name: Karten-Dashboard rendern (Archiv-Rotation im Skript)
+        run: python map_dashboard.py --lead 12
+
+      - name: Briefings und Karte committen
         run: |
           git config user.name  "caps-bot"
           git config user.email "actions@github.com"
-          git add -A briefing.txt briefings/
+          git add -A briefing.txt briefings/ dashboard_map.png maps/
           git diff --cached --quiet && echo "Keine Aenderung." && exit 0
           git commit -m "CAPS-Briefing $(date -u '+%Y-%m-%d %H:%MZ')"
           git pull --rebase origin main
