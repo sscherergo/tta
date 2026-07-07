@@ -15,7 +15,7 @@ name: Fog Verification
 
 on:
   schedule:
-    - cron: "15 0,6,12,18 * * *"   # 4x taeglich (siehe Empfehlung: 6-h-Raster)
+    - cron: "9 0,6,12,18 * * *"   # 4x taeglich (siehe Empfehlung: 6-h-Raster)
   workflow_dispatch: {}
 
 permissions:
