@@ -172,7 +172,7 @@ async def fetch_observations(client: httpx.AsyncClient, now: datetime) -> list[d
 
 
 def latest_run(now: datetime) -> tuple[str, str, datetime]:
-    c = now - timedelta(hours=6)
+    c = now - timedelta(hours=7)   # Publikation gemessen: Lauf + ~6.6 h
     run = "12" if c.hour >= 12 else "00"
     run_dt = c.replace(hour=int(run), minute=0, second=0, microsecond=0)
     return c.strftime("%Y%m%d"), run, run_dt
