@@ -42,6 +42,8 @@ LAYERS = [
 FALLBACK_SAT = [("NOAA20", "NOAA21"), ("NOAA20", "SNPP")]  # bei Bildluecken
 OVERLAY = "Coastlines_15m"
 OUT_DIR = Path("sat")
+ARCHIVE_DIR = OUT_DIR / "archive"
+ARCHIVE_KEEP = 10               # juengste Staende je Platz
 CHIP_PX = 512                   # Pixel je Teilbild
 HALF_LAT = 1.1                  # halbe Boxhoehe in Grad (~122 km)
 BLANK_STDDEV = 8.0              # darunter gilt das Bild als leer
@@ -136,6 +138,14 @@ async def chip_for_airport(client, icao, name, lat, lon,
     OUT_DIR.mkdir(exist_ok=True)
     out = OUT_DIR / f"{icao}.jpg"
     sheet.save(out, quality=82)
+
+    # Archiv: Zeitstempel-Kopie je Platz, die ARCHIVE_KEEP juengsten behalten
+    ARCHIVE_DIR.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%MZ")
+    (ARCHIVE_DIR / f"{icao}_{stamp}.jpg").write_bytes(out.read_bytes())
+    for p in sorted(ARCHIVE_DIR.glob(f"{icao}_*.jpg"))[:-ARCHIVE_KEEP]:
+        p.unlink()
+        print(f"  Archiv geloescht: {p.name}")
     return out
 
 
