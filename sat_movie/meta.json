@@ -1,7 +1,7 @@
 {
- "updated": "2026-07-08T17:39:23.421405+00:00",
+ "updated": "2026-07-08T18:33:32.644727+00:00",
  "wms": "https://gibs.earthdata.nasa.gov/wms/epsg3413/best/wms.cgi",
- "mode": "hybrid",
+ "mode": "granule-only",
  "frame": {
   "w": 2408,
   "panel_w": 800,
@@ -29,15 +29,13 @@
     1684333.5876814257
    ],
    "h": 752,
-   "mode": "daily",
-   "granules": [
-    "2026-07-08"
-   ],
+   "mode": "none",
+   "granules": [],
    "zoom": {
-    "time": "2026-07-08",
+    "time": null,
     "layers": [
-     "VIIRS_NOAA20_CorrectedReflectance_TrueColor",
-     "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11"
+     "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
+     "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11_Granule"
     ]
    }
   },
@@ -74,12 +72,12 @@
    "h": 823,
    "mode": "granule",
    "granules": [
-    "2026-07-08T12:24:00Z",
     "2026-07-08T14:00:00Z",
-    "2026-07-08T14:06:00Z"
+    "2026-07-08T14:06:00Z",
+    "2026-07-08T15:36:00Z"
    ],
    "zoom": {
-    "time": "2026-07-08T14:06:00Z",
+    "time": "2026-07-08T15:36:00Z",
     "layers": [
      "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
      "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11_Granule"
