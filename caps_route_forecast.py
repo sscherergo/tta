@@ -278,18 +278,32 @@ def crosswind_gust(data, fh, wi, rwy_true) -> tuple[float | None, bool]:
 
 
 def ceiling_ft(data, fh, wi) -> float | None:
-    """Basis niedrigste Druckflaeche mit RH>=90%, barometrisch in ft AGL.
-    Rueckgabe: ft AGL; 99999 = keine Basis unterhalb ~5000 ft."""
+    """Wolkenbasis: 90%-RH-Durchgang zwischen Druckflaechen interpoliert,
+    barometrisch in ft AGL. Bedeckungs-Veto: TotalCloudCover < 50% kann
+    kein BKN/OVC tragen -> kein Ceiling. 99999 = frei unterhalb ~5000 ft.
+    Ausgabe ist eine Schaetzung (Anzeige gerundet auf 100 ft)."""
     p_sfc = gv(data, fh, "Pressure_Sfc", wi)          # Pa
     if not valid(p_sfc):
         return None
+    prev_p, prev_rh = None, None
     for lvl in CEILING_LEVELS:                        # hoechster Druck zuerst
         p_lvl = float(lvl) * 100.0
         if p_lvl >= p_sfc:
             continue                                  # Level "unter Grund"
         rh = gv(data, fh, f"RelativeHumidity_IsbL-{lvl}", wi)
-        if valid(rh) and rh >= 90.0:
-            return 8000.0 * math.log(p_sfc / p_lvl) * 3.281
+        if not valid(rh):
+            continue
+        if rh >= 90.0:
+            tcc = gv(data, fh, "TotalCloudCover_Sfc", wi)
+            if valid(tcc) and tcc < 50.0:
+                return 99999.0        # gesaettigte Flaeche, aber kein Deck
+            if prev_rh is not None and prev_rh < 90.0:
+                f = (90.0 - prev_rh) / (rh - prev_rh)
+                p_base = prev_p + f * (p_lvl - prev_p)
+            else:
+                p_base = p_lvl        # schon unterste Flaeche gesaettigt
+            return 8000.0 * math.log(p_sfc / p_base) * 3.281
+        prev_p, prev_rh = p_lvl, rh
     return 99999.0
 
 
@@ -379,7 +393,8 @@ def dashboard_block(data, date, run, waypoints, obs=None) -> list[str]:
         "Bewertung je Parameter: OK / WARN / NOGO  (? = Daten fehlen)  |  "
         "Gesamt = schlechteste Einzelwertung",
         "HW: Headwind 8000ft im Anflugkurs | XW: Crosswind aus Boeen "
-        "(~ = Piste unbekannt, volle Boe) | CIG: Wolkenbasis ft AGL | "
+        "(~ = Piste unbekannt, volle Boe) | CIG: Wolkenbasis ft AGL "
+        "(RH-Interpolation, auf 100 ft gerundet; nur bei Bedeckung >=50%) | "
         "SP2m: Taupunkt-Spread 2m in °C (Bodennebel: NOGO<=1.5, WARN<=3) | "
         "TRD: Spread-Trend °C/6h (Klasse = SP-Schwellen auf +6h "
         "extrapoliert; negativ = schliessend) | "
@@ -442,7 +457,8 @@ def dashboard_block(data, date, run, waypoints, obs=None) -> list[str]:
                 else (parts.append(f"{'—':>11}"))
             one(xw, cls_xw, lambda v: f"{v:6.0f}", "" if exact else "~")
             one(cig, cls_cig,
-                lambda v: ("  >5000" if v >= 99999 else f"{v:7.0f}"),
+                lambda v: ("  >5000" if v >= 99999
+                           else f"~{round(v / 100) * 100:5.0f}"),
                 floor=cig_floor)
             one(sp, cls_sp, lambda v: f"{v:5.1f}", floor=fog_floor)
             # TRD-Spalte: Klasse aus fog_trend (Projektion), Anzeige = Delta
