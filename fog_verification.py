@@ -277,12 +277,15 @@ def parse_briefing(text: str, made: datetime, source: str) -> list[dict]:
         if not m:
             continue
         toks = TOKEN_RE.findall(m.group(3))
-        if len(toks) != 6:                 # HW XW CIG SP TRD ICE erwartet
+        if len(toks) == 7:          # neues TRD-Format: Delta -> Projektion
+            hw, xw, cig, sp, _trd_d, trd, ice = toks
+        elif len(toks) == 6:        # altes Format (Archiv-Briefings)
+            hw, xw, cig, sp, trd, ice = toks
+        else:
             continue
         valid = resolve_valid(made, int(m.group(1)), int(m.group(2)))
         if valid is None:
             continue
-        hw, xw, cig, sp, trd, ice = toks
         rows.append({
             "source": source, "made": made.isoformat(),
             "valid": valid.isoformat(), "icao": icao,
