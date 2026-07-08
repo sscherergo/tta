@@ -1,0 +1,67 @@
+# .github/workflows/leg-briefing.yml
+#
+# Fokussiertes Leg-Briefing auf Knopfdruck (GitHub-App: Run workflow).
+# Eingabefelder: Leg (CYHK-CYCB), ETD (HHMM UTC), optional Alternates.
+# Laufzeit ~1 min — Modelldaten aus dem juengsten Briefing, METAR/TAF live.
+# Ergebnis: leg.txt  ->  https://raw.githubusercontent.com/<USER>/<REPO>/main/leg.txt
+
+name: Leg Briefing
+
+on:
+  workflow_dispatch:
+    inputs:
+      leg:
+        description: "Leg, z.B. CYHK-CYCB"
+        required: true
+        type: string
+      etd:
+        description: "ETD in UTC, HHMM, z.B. 1300"
+        required: true
+        type: string
+      alt:
+        description: "Alternates (optional), z.B. CYYH,CYBB"
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: leg-briefing
+  cancel-in-progress: true
+
+jobs:
+  leg:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: httpx installieren
+        run: pip install httpx
+
+      - name: Leg-Briefing erzeugen
+        run: |
+          python leg_briefing.py \
+            --leg "${{ inputs.leg }}" \
+            --etd "${{ inputs.etd }}" \
+            --alt "${{ inputs.alt }}"
+          head -n 12 leg.txt
+
+      - name: Committen
+        run: |
+          git config user.name  "leg-bot"
+          git config user.email "actions@github.com"
+          git add -A leg.txt legs/
+          git diff --cached --quiet && echo "Keine Aenderung." && exit 0
+          git commit -m "Leg-Briefing ${{ inputs.leg }} ETD ${{ inputs.etd }}Z"
+          git pull --rebase origin main
+          git push
