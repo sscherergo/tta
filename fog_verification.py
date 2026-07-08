@@ -284,8 +284,8 @@ def parse_briefing(text: str, made: datetime, source: str) -> list[dict]:
         else:
             continue
         valid = resolve_valid(made, int(m.group(1)), int(m.group(2)))
-        if valid is None:
-            continue
+        if valid is None or valid < made:
+            continue                    # Hindcast-Zeilen nicht verifizieren
         rows.append({
             "source": source, "made": made.isoformat(),
             "valid": valid.isoformat(), "icao": icao,
