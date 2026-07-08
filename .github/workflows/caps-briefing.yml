@@ -1,36 +1,85 @@
 # .github/workflows/caps-briefing.yml
 #
-# Erzeugt zweimal taeglich das CAPS/NWP-Routenbriefing.
-# - briefing.txt                          = immer das neueste (iPad-Kurzbefehl)
-# - briefings/briefing_YYYYMMDDTHHMMZ.txt = Archiv, die 10 juengsten Laeufe
-# - dashboard_map.png                     = immer die neueste Ampel-Karte
-# - maps/dashboard_map_YYYYMMDDTHHMMZ.png = Archiv, die 10 juengsten Karten
+# Polling-Architektur: In den Publikationsfenstern wird alle 15 min
+# geprueft, ob der neue CAPS-Lauf VOLLSTAENDIG auf dem Datamart liegt
+# (letzte Datei PT048H). Erst dann laeuft das Briefing — typ. 5-15 min
+# nach Publikationsende statt fester Pufferzeiten. state/last_run.txt
+# stellt sicher, dass jeder Modelllauf genau einmal verarbeitet wird;
+# alle anderen Ticks enden nach Sekunden ("Kein neuer Lauf").
 #
-# Abruf neuestes:  https://raw.githubusercontent.com/<USER>/<REPO>/main/briefing.txt
-#                  https://raw.githubusercontent.com/<USER>/<REPO>/main/dashboard_map.png
-# Archiv-Ansicht:  https://github.com/<USER>/<REPO>/tree/main/briefings
-#                  https://github.com/<USER>/<REPO>/tree/main/maps
+# Manueller Start: force=true erzwingt ein Briefing (z.B. fuer frische
+# METAR/TAF/Satellit), auch wenn der Lauf schon verarbeitet wurde.
 
 name: CAPS Route Briefing
 
 on:
   schedule:
-    - cron: "10 7 * * *"     # 07:10 UTC — 00Z komplett ~06:37 + 33 min
-    - cron: "10 19 * * *"    # 19:10 UTC — 12Z komplett ~18:37 + 33 min
-  workflow_dispatch: {}
+    # 00Z-Lauf: Publikation gemessen ~06:07-06:37, Reserve bis 08:xx
+    - cron: "7,22,37,52 6,7,8 * * *"
+    # 12Z-Lauf: Publikation gemessen ~18:07-18:37, Reserve bis 20:xx
+    - cron: "7,22,37,52 18,19,20 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Briefing erzwingen (auch ohne neuen Modelllauf)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
 
 concurrency:
   group: caps-briefing
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      proceed: ${{ steps.gate.outputs.proceed }}
+      candidate: ${{ steps.gate.outputs.candidate }}
+    steps:
+      - name: Checkout (nur state/)
+        uses: actions/checkout@v4
+
+      - name: Neuen vollstaendigen Lauf pruefen
+        id: gate
+        run: |
+          set -u
+          CAND_DATE=$(date -u -d '-5 hours' +%Y%m%d)
+          H=$(date -u -d '-5 hours' +%H)
+          CAND_RUN=$([ "$H" -ge 12 ] && echo 12 || echo 00)
+          CAND="${CAND_DATE}${CAND_RUN}"
+          LAST=$(cat state/last_run.txt 2>/dev/null || echo none)
+          echo "Kandidat: $CAND — zuletzt verarbeitet: $LAST"
+          FORCE="${{ inputs.force }}"
+          if [ "$CAND" = "$LAST" ] && [ "$FORCE" != "true" ]; then
+            echo "Kein neuer Lauf — Tick beendet."
+            echo "proceed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          FNAME="${CAND_DATE}T${CAND_RUN}Z_MSC_CAPS_AirTemp_AGL-2m_RLatLon0.03_PT048H.grib2"
+          OK=false
+          for BASE in https://dd.weather.gc.ca/today/model_caps/3km \
+                      https://hpfx.collab.science.gc.ca/today/model_caps/3km; do
+            if curl -sfI --max-time 25 "$BASE/$CAND_RUN/048/$FNAME" >/dev/null; then
+              OK=true; echo "Vollstaendig auf $BASE"; break
+            fi
+          done
+          if [ "$OK" = "true" ] || [ "$FORCE" = "true" ]; then
+            echo "proceed=true" >> "$GITHUB_OUTPUT"
+            echo "candidate=$CAND" >> "$GITHUB_OUTPUT"
+          else
+            echo "Lauf $CAND noch nicht vollstaendig — Tick beendet."
+            echo "proceed=false" >> "$GITHUB_OUTPUT"
+          fi
+
   briefing:
+    needs: check
+    if: needs.check.outputs.proceed == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -65,19 +114,25 @@ jobs:
           cd briefings
           ls -1 briefing_*.txt | sort | head -n -10 | xargs -r rm -v --
           cd ..
-          ls -1 briefings/
+
+      - name: Verarbeiteten Lauf in state/ festhalten
+        run: |
+          mkdir -p state
+          RUN=$(grep -oP 'CAPS-Modelllauf \K\d{8} \d{2}' briefing.txt | tr -d ' ')
+          echo "${RUN:-${{ needs.check.outputs.candidate }}}" > state/last_run.txt
+          echo "State: $(cat state/last_run.txt)"
 
       - name: Karten-Dashboard rendern (Archiv-Rotation im Skript)
-        run: python map_dashboard.py --lead 12
+        run: python map_dashboard.py --lead 12 || echo "Karte fehlgeschlagen — nicht fatal"
 
       - name: Satellitenbilder abrufen (Archiv-Rotation im Skript)
-        run: python sat_chips.py --lead 12 || echo "Satellitenabruf fehlgeschlagen — nicht fatal"
+        run: python sat_chips.py || echo "Satellitenabruf fehlgeschlagen — nicht fatal"
 
-      - name: Briefings, Karte und Satellitenbilder committen
+      - name: Committen
         run: |
           git config user.name  "caps-bot"
           git config user.email "actions@github.com"
-          git add -A briefing.txt briefings/ dashboard_map.png maps/ sat/
+          git add -A briefing.txt briefings/ dashboard_map.png maps/ sat/ state/
           git diff --cached --quiet && echo "Keine Aenderung." && exit 0
           git commit -m "CAPS-Briefing $(date -u '+%Y-%m-%d %H:%MZ')"
           git pull --rebase origin main
