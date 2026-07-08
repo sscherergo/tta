@@ -45,7 +45,7 @@ OUT_DIR = Path("sat_movie")
 LATEST = OUT_DIR / "latest.jpg"
 META = OUT_DIR / "meta.json"
 SLOT_MIN = 6
-MAX_SLOTS = 30                  # 30 x 6 min = 3 h Suchtiefe
+MAX_SLOTS = 80                  # 80 x 6 min = 8 h Suchtiefe (Orbit + Latenz)
 TARGET_PER_SECTOR = 3           # Granulen je Sektor (2-3 Ueberfluege)
 GRANULE_MEAN = 2.0
 DIFF_MEAN = 3.0
@@ -128,25 +128,32 @@ def _mean(img: Image.Image) -> float:
 
 
 async def find_granules(client) -> dict[str, list[str]]:
-    """Je Sektor die juengsten Slots mit Ueberflug (kleine Probebilder)."""
+    """Je Sektor die juengsten Slots mit Ueberflug (kleine Probebilder).
+    Die Sektor-Proben eines Slots laufen parallel; je Sektor endet die
+    Suche bei TARGET_PER_SECTOR Treffern."""
     t0 = datetime.now(timezone.utc) - timedelta(minutes=LATENCY_MIN)
     t0 = t0.replace(minute=(t0.minute // SLOT_MIN) * SLOT_MIN,
                     second=0, microsecond=0)
     hits: dict[str, list[str]] = {name: [] for name, *_ in SECTORS}
+
+    async def probe(name: str, stamp: str) -> tuple[str, str, bool]:
+        bb = SECTOR_BOX[name]
+        img = await fetch_wms(client, PROBE_LAYER, stamp, bb, 160,
+                              max(1, round(160 * (bb[3]-bb[1])
+                                           / (bb[2]-bb[0]))))
+        ok = img is not None and _mean(img.convert("RGB")) >= GRANULE_MEAN
+        return name, stamp, ok
+
     for k in range(MAX_SLOTS):
-        if all(len(v) >= TARGET_PER_SECTOR for v in hits.values()):
+        lacking = [n for n, v in hits.items() if len(v) < TARGET_PER_SECTOR]
+        if not lacking:
             break
         stamp = (t0 - timedelta(minutes=SLOT_MIN * k)) \
             .strftime("%Y-%m-%dT%H:%M:%SZ")
-        for name, *_ in SECTORS:
-            if len(hits[name]) >= TARGET_PER_SECTOR:
-                continue
-            bb = SECTOR_BOX[name]
-            probe = await fetch_wms(client, PROBE_LAYER, stamp, bb, 160,
-                                    max(1, round(160 * (bb[3]-bb[1])
-                                                 / (bb[2]-bb[0]))))
-            if probe is not None and _mean(probe.convert("RGB")) >= GRANULE_MEAN:
-                hits[name].append(stamp)
+        for name, s, ok in await asyncio.gather(
+                *(probe(n, stamp) for n in lacking)):
+            if ok:
+                hits[name].append(s)
     return hits
 
 
@@ -180,39 +187,53 @@ def changed_vs_latest(row: Image.Image) -> bool:
     return diff >= DIFF_MEAN
 
 
+async def daily_date_for(client, name: str, now: datetime) -> str | None:
+    """Juengstes nicht-leeres Tageskomposit (heute, sonst gestern)."""
+    bb = SECTOR_BOX[name]
+    for back in (0, 1):
+        d = (now - timedelta(days=back)).strftime("%Y-%m-%d")
+        probe = await fetch_wms(client, DAILY_LAYERS[0][1], d, bb, 160, 160)
+        if probe is not None and _mean(probe.convert("RGB")) >= GRANULE_MEAN:
+            return d
+    return None
+
+
 async def main() -> None:
     now = datetime.now(timezone.utc)
     async with httpx.AsyncClient(follow_redirects=True) as client:
         hits = await find_granules(client)
-        n_total = sum(len(v) for v in hits.values())
         print("Granulen je Sektor: " + ", ".join(
             f"{k}={len(v)}" for k, v in hits.items()))
-        layers_used, mode = LAYERS, "granule"
-        if n_total == 0:
-            # Fallback: Tageskomposit (heute, sonst gestern), damit die
-            # Seite nie ohne Bild bleibt. Beschriftung sagt es ehrlich.
-            print("Keine Ueberfluege gefunden — Fallback auf Tageskomposit.")
-            layers_used, mode = DAILY_LAYERS, "daily"
-            for back in (0, 1):
-                d = (now - timedelta(days=back)).strftime("%Y-%m-%d")
-                bb = SECTOR_BOX[SECTORS[1][0]]
-                probe = await fetch_wms(client, DAILY_LAYERS[0][1], d, bb,
-                                        160, 160)
-                if probe is not None and \
-                        _mean(probe.convert("RGB")) >= GRANULE_MEAN:
-                    hits = {name: [d] for name, *_r in SECTORS}
-                    n_total = len(SECTORS)
-                    break
-            if n_total == 0:
-                print("Auch Tageskomposit leer — kein Frame.")
-                return
+
+        # Je Sektor: Granulen-Mosaik, sonst Tageskomposit als Rueckfall
+        sector_info: dict[str, dict] = {}
+        for name, *_r in SECTORS:
+            if hits[name]:
+                sector_info[name] = {"mode": "granule",
+                                     "times": sorted(hits[name])}
+            else:
+                d = await daily_date_for(client, name, now)
+                sector_info[name] = {"mode": "daily",
+                                     "times": [d] if d else []}
+                print(f"Sektor {name}: kein Ueberflug im Fenster — "
+                      + (f"Tageskomposit {d}" if d else "auch Komposit leer"))
+        if all(not v["times"] for v in sector_info.values()):
+            print("Keine Daten in keinem Sektor — kein Frame.")
+            return
 
         rows: list[tuple[str, Image.Image]] = []
-        for label, layer in layers_used:
+        for idx, (label, _lyr) in enumerate(LAYERS):
             row = Image.new("RGB", (FRAME_W, PH), (12, 12, 12))
             x0 = 0
-            for name, *_ in SECTORS:
-                panel = await build_sector(client, layer, name, hits[name])
+            for name, *_r in SECTORS:
+                info = sector_info[name]
+                if info["mode"] == "granule":
+                    layer = LAYERS[idx][1]
+                    stamps = info["times"]
+                else:
+                    layer = DAILY_LAYERS[idx][1]
+                    stamps = info["times"]           # [] oder [Datum]
+                panel = await build_sector(client, layer, name, stamps)
                 row.paste(panel, (x0, (PH - panel.height) // 2))
                 x0 += PW + GAP
             rows.append((label, row))
@@ -228,25 +249,29 @@ async def main() -> None:
         f_small = ImageFont.truetype(FONT_BOLD, 14)
     except OSError:
         f = f_small = ImageFont.load_default()
-    all_stamps = sorted(set(s for v in hits.values() for s in v))
-    if mode == "granule":
-        span = (all_stamps[0][11:16] + "-" + all_stamps[-1][11:16] + "Z"
-                if all_stamps else "?")
-        title = (f"VIIRS NOAA-20 Ueberfluege {span} ({n_total} Granulen) — "
-                 f"abgerufen {now:%Y-%m-%d %H:%M}Z")
-    else:
-        span = all_stamps[0] if all_stamps else "?"
-        title = (f"VIIRS NOAA-20 TAGESKOMPOSIT {span} (keine Einzel-"
-                 f"Ueberfluege verfuegbar) — abgerufen {now:%Y-%m-%d %H:%M}Z")
 
-    def times_label(stamps: list[str]) -> str:
-        """Tag + UTC jedes Ueberflugs, z.B. '08.07. 10:54Z · 12:36Z'."""
-        if not stamps:
-            return "kein Ueberflug im Fenster"
-        if mode == "daily":
-            return f"Tageskomposit {stamps[0]}"
+    gran_stamps = sorted(set(
+        s for v in sector_info.values() if v["mode"] == "granule"
+        for s in v["times"]))
+    n_gran = len(gran_stamps)
+    daily_sectors = [n for n, v in sector_info.items() if v["mode"] == "daily"]
+    if gran_stamps:
+        span = gran_stamps[0][11:16] + "-" + gran_stamps[-1][11:16] + "Z"
+        title = f"VIIRS NOAA-20 Ueberfluege {span} ({n_gran} Granulen)"
+        if daily_sectors:
+            title += f" | {'/'.join(daily_sectors)}: Tageskomposit"
+    else:
+        title = "VIIRS NOAA-20 TAGESKOMPOSIT (keine Einzel-Ueberfluege)"
+    title += f" — abgerufen {now:%Y-%m-%d %H:%M}Z"
+
+    def times_label(name: str) -> str:
+        info = sector_info[name]
+        if not info["times"]:
+            return "keine Daten"
+        if info["mode"] == "daily":
+            return f"Tageskomposit {info['times'][0]} (kein Pass im Fenster)"
         by_day: dict[str, list[str]] = {}
-        for s in sorted(stamps):
+        for s in info["times"]:
             day = f"{s[8:10]}.{s[5:7]}."
             by_day.setdefault(day, []).append(s[11:16] + "Z")
         return "  ".join(d + " " + " · ".join(ts) for d, ts in by_day.items())
@@ -259,7 +284,7 @@ async def main() -> None:
         for j, (name, *_r) in enumerate(SECTORS):
             x0 = j * (PW + GAP)
             draw.text((x0 + 6, y0 + CAP + PH - 22),
-                      f"{name}: {times_label(hits[name])}", font=f_small,
+                      f"{name}: {times_label(name)}", font=f_small,
                       fill=(255, 235, 140), stroke_width=2,
                       stroke_fill=(0, 0, 0))
     for j, (name, *_r) in enumerate(SECTORS):
@@ -273,21 +298,30 @@ async def main() -> None:
         p.unlink()                          # Altbestand des Archiv-Modus
     (OUT_DIR / "manifest.json").unlink(missing_ok=True)
     sheet.save(LATEST, quality=80)
+    overall = ("granule" if not daily_sectors
+               else ("daily" if not gran_stamps else "hybrid"))
     META.write_text(json.dumps({
         "updated": now.isoformat(),
         "wms": WMS,
-        "mode": mode,
+        "mode": overall,
         "frame": {"w": FRAME_W, "panel_w": PW, "panel_h": PH,
                   "gap": GAP, "cap": CAP},
-        "layers": [{"label": lbl, "layer": lyr} for lbl, lyr in layers_used],
+        "layers": [{"label": lbl, "layer": lyr} for lbl, lyr in LAYERS],
         "sectors": [{"name": name,
                      "bbox": SECTOR_BOX[name],
                      "h": SECTOR_H[name],
-                     "granules": sorted(hits[name])}
+                     "mode": sector_info[name]["mode"],
+                     "granules": sector_info[name]["times"],
+                     "zoom": {
+                         "time": (sector_info[name]["times"][-1]
+                                  if sector_info[name]["times"] else None),
+                         "layers": [lyr for _l, lyr in
+                                    (LAYERS if sector_info[name]["mode"]
+                                     == "granule" else DAILY_LAYERS)]}}
                     for name, *_r in SECTORS],
     }, indent=1))
     print(f"Aktualisiert: {LATEST} ({LATEST.stat().st_size // 1024} KB) — "
-          f"Ueberfluege {span}")
+          f"{title}")
 
 
 if __name__ == "__main__":
