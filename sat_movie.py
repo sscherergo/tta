@@ -158,14 +158,13 @@ async def find_granules(client) -> dict[str, list[str]]:
     return hits
 
 
-EDGE_GRANULE = (255, 160, 0)     # orange: Grenze aktueller Ueberflug-Daten
-EDGE_TODAY = (145, 145, 145)     # grau: Grenze heutiges Komposit (aussen: Vortag)
+EDGE_GRANULE = (255, 160, 0)     # orange: Naht/Rand einzelner Ueberfluege
 
 
 def coverage_paste(base: Image.Image, img: Image.Image) -> Image.Image:
     """img dort einfuegen, wo es Daten hat (Abdeckungsmaske statt
     Helligkeit): Neuestes liegt oben, auch wenn es dunkler ist.
-    Rueckgabe: die Abdeckungsmaske (fuer Schichtgrenzen)."""
+    Rueckgabe: die Abdeckungsmaske (fuer Nahtlinien)."""
     mask = img.convert("L").point(lambda v: 255 if v > 3 else 0)
     # Nadelloecher schliessen (dunkle JPEG-Pixel im Bildinneren wuerden
     # sonst als kleine orange Rahmen-Artefakte konturiert), dann Rand
@@ -186,35 +185,20 @@ def draw_edge(mosaic: Image.Image, edge: Image.Image, color) -> None:
     mosaic.paste(Image.new("RGB", mosaic.size, color), (0, 0), edge)
 
 
-async def build_sector(client, idx: int, name: str, stamps: list[str],
-                       daily_dates: list[str]) -> Image.Image:
-    """Panel: Tageskomposite (alt -> neu) als Basis, Granulen obenauf.
-    Schichtgrenzen werden als Konturen markiert, damit alte und frische
-    Wolken-/Nebelkanten nicht verwechselt werden."""
+async def build_sector(client, idx: int, name: str,
+                       stamps: list[str]) -> Image.Image:
+    """Panel: AUSSCHLIESSLICH aktuelle Ueberfluege — kein Komposit-
+    Unterbau, Rest bleibt schwarz (bewusst: alte Daten wuerden zu
+    Fehlinterpretationen einladen). Orange Konturen markieren Rand und
+    Naehte der einzelnen Passes; Kuestenlinien zur Orientierung."""
     bb = SECTOR_BOX[name]
     h = SECTOR_H[name]
     mosaic = Image.new("RGB", (PW, h), (0, 0, 0))
-    m_today = Image.new("L", (PW, h), 0)
-    m_gran = Image.new("L", (PW, h), 0)
-    for k, d in enumerate(daily_dates):            # gestern, dann heute
-        img = await fetch_wms(client, DAILY_LAYERS[idx][1], d, bb, PW, h)
-        if img is not None:
-            m = coverage_paste(mosaic, img.convert("RGB"))
-            if k == len(daily_dates) - 1:          # heutiges Komposit
-                m_today = m
-    for stamp in sorted(stamps):                   # Ueberfluege, neu oben
+    for stamp in sorted(stamps):                   # alt -> neu, neu oben
         img = await fetch_wms(client, LAYERS[idx][1], stamp, bb, PW, h)
         if img is not None:
             m = coverage_paste(mosaic, img.convert("RGB"))
-            m_gran = ImageChops.lighter(m_gran, m)
-
-    # Schichtgrenzen: grau = heutiges Komposit (nur ausserhalb der
-    # Ueberflug-Flaeche relevant), orange = aktuelle Ueberflug-Daten
-    inv_gran = ImageChops.invert(m_gran)
-    edge_today = ImageChops.multiply(mask_edge(m_today), inv_gran)
-    draw_edge(mosaic, edge_today, EDGE_TODAY)
-    draw_edge(mosaic, mask_edge(m_gran), EDGE_GRANULE)
-
+            draw_edge(mosaic, mask_edge(m), EDGE_GRANULE)
     coast = await fetch_wms(client, OVERLAY, None, bb, PW, h,
                             fmt="image/png", transparent=True)
     if coast is not None:
@@ -243,30 +227,29 @@ async def main() -> None:
         print("Granulen je Sektor: " + ", ".join(
             f"{k}={len(v)}" for k, v in hits.items()))
 
-        # Basis fuer ALLE Sektoren: Komposite gestern + heute (alt -> neu);
-        # Granulen-Sektoren bekommen ihre Ueberfluege obenauf.
-        daily_dates = [(now - timedelta(days=1)).strftime("%Y-%m-%d"),
-                       now.strftime("%Y-%m-%d")]
+        # NUR aktuelle Ueberfluege — Sektoren ohne Pass bleiben schwarz
+        # (bewusste Entscheidung: kein Komposit-Unterbau, keine
+        # Verwechslung alter mit aktuellen Wolken-/Nebelkanten).
         sector_info: dict[str, dict] = {}
         for name, *_r in SECTORS:
             if hits[name]:
                 sector_info[name] = {"mode": "granule",
                                      "times": sorted(hits[name])}
             else:
-                sector_info[name] = {"mode": "daily",
-                                     "times": [daily_dates[-1]]}
+                sector_info[name] = {"mode": "none", "times": []}
                 print(f"Sektor {name}: kein Ueberflug im Fenster — "
-                      f"Basis Tageskomposit")
+                      f"bleibt schwarz")
+        if all(not v["times"] for v in sector_info.values()):
+            print("Keine Ueberfluege in keinem Sektor — kein Frame.")
+            return
 
         rows: list[tuple[str, Image.Image]] = []
         for idx, (label, _lyr) in enumerate(LAYERS):
             row = Image.new("RGB", (FRAME_W, PH), (12, 12, 12))
             x0 = 0
             for name, *_r in SECTORS:
-                info = sector_info[name]
-                stamps = info["times"] if info["mode"] == "granule" else []
-                panel = await build_sector(client, idx, name, stamps,
-                                           daily_dates)
+                panel = await build_sector(client, idx, name,
+                                           sector_info[name]["times"])
                 row.paste(panel, (x0, (PH - panel.height) // 2))
                 x0 += PW + GAP
             rows.append((label, row))
@@ -284,31 +267,25 @@ async def main() -> None:
         f = f_small = ImageFont.load_default()
 
     gran_stamps = sorted(set(
-        s for v in sector_info.values() if v["mode"] == "granule"
-        for s in v["times"]))
+        s for v in sector_info.values() for s in v["times"]))
     n_gran = len(gran_stamps)
-    daily_sectors = [n for n, v in sector_info.items() if v["mode"] == "daily"]
-    if gran_stamps:
-        span = gran_stamps[0][11:16] + "-" + gran_stamps[-1][11:16] + "Z"
-        title = f"VIIRS NOAA-20 Ueberfluege {span} ({n_gran} Granulen)"
-        if daily_sectors:
-            title += f" | {'/'.join(daily_sectors)}: Tageskomposit"
-    else:
-        title = "VIIRS NOAA-20 TAGESKOMPOSIT (keine Einzel-Ueberfluege)"
+    empty_sectors = [n for n, v in sector_info.items() if not v["times"]]
+    span = gran_stamps[0][11:16] + "-" + gran_stamps[-1][11:16] + "Z"
+    title = f"VIIRS NOAA-20 Ueberfluege {span} ({n_gran} Granulen)"
+    if empty_sectors:
+        title += f" | {'/'.join(empty_sectors)}: kein Pass (schwarz)"
     title += f" — abgerufen {now:%Y-%m-%d %H:%M}Z"
 
     def times_label(name: str) -> str:
         info = sector_info[name]
-        if info["mode"] == "daily":
-            return (f"Tageskomposit bis {info['times'][0]} "
-                    f"(kein Pass im Fenster)")
+        if not info["times"]:
+            return "kein Ueberflug im Fenster (8 h) — keine Daten"
         by_day: dict[str, list[str]] = {}
         for s in info["times"]:
             day = f"{s[8:10]}.{s[5:7]}."
             by_day.setdefault(day, []).append(s[11:16] + "Z")
-        return ("  ".join(d + " " + " · ".join(ts)
-                          for d, ts in by_day.items())
-                + "  (Basis: Komposit)")
+        return "  ".join(d + " " + " · ".join(ts)
+                         for d, ts in by_day.items())
 
     for i, (label, row) in enumerate(rows):
         y0 = i * (PH + CAP)
@@ -327,8 +304,8 @@ async def main() -> None:
     draw.text((FRAME_W - 6, 8), title,
               font=f, fill=(235, 235, 235), anchor="ra")
     draw.text((FRAME_W // 2, CAP + 6),
-              "Schichtgrenzen:  orange = aktuelle Ueberflug-Daten  |  "
-              "grau = heutiges Komposit (aussen: Vortag)",
+              "NUR aktuelle Ueberfluege — schwarz = keine Daten  |  "
+              "orange = Rand/Naht einzelner Passes (Zeiten: gelbe Zeile)",
               font=f_small, fill=(220, 220, 220), anchor="ma",
               stroke_width=2, stroke_fill=(0, 0, 0))
 
@@ -337,12 +314,10 @@ async def main() -> None:
         p.unlink()                          # Altbestand des Archiv-Modus
     (OUT_DIR / "manifest.json").unlink(missing_ok=True)
     sheet.save(LATEST, quality=80)
-    overall = ("granule" if not daily_sectors
-               else ("daily" if not gran_stamps else "hybrid"))
     META.write_text(json.dumps({
         "updated": now.isoformat(),
         "wms": WMS,
-        "mode": overall,
+        "mode": "granule-only",
         "frame": {"w": FRAME_W, "panel_w": PW, "panel_h": PH,
                   "gap": GAP, "cap": CAP},
         "layers": [{"label": lbl, "layer": lyr} for lbl, lyr in LAYERS],
@@ -354,9 +329,7 @@ async def main() -> None:
                      "zoom": {
                          "time": (sector_info[name]["times"][-1]
                                   if sector_info[name]["times"] else None),
-                         "layers": [lyr for _l, lyr in
-                                    (LAYERS if sector_info[name]["mode"]
-                                     == "granule" else DAILY_LAYERS)]}}
+                         "layers": [lyr for _l, lyr in LAYERS]}}
                     for name, *_r in SECTORS],
     }, indent=1))
     print(f"Aktualisiert: {LATEST} ({LATEST.stat().st_size // 1024} KB) — "
