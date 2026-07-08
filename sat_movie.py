@@ -97,7 +97,7 @@ async def fetch_wms(client, layers: str, time: str | None, bbox, w: int,
                     h: int, fmt="image/jpeg",
                     transparent=False) -> Image.Image | None:
     params = {"SERVICE": "WMS", "REQUEST": "GetMap", "VERSION": "1.1.1",
-              "LAYERS": layers, "SRS": "EPSG:3413",
+              "LAYERS": layers, "STYLES": "", "SRS": "EPSG:3413",
               "BBOX": f"{bbox[0]:.0f},{bbox[1]:.0f},{bbox[2]:.0f},{bbox[3]:.0f}",
               "WIDTH": w, "HEIGHT": h, "FORMAT": fmt}
     if time:
@@ -106,8 +106,11 @@ async def fetch_wms(client, layers: str, time: str | None, bbox, w: int,
         params["TRANSPARENT"] = "TRUE"
     try:
         r = await client.get(WMS, params=params, timeout=120.0)
-        if r.status_code != 200 or not r.headers.get(
-                "content-type", "").startswith("image"):
+        ctype = r.headers.get("content-type", "")
+        if r.status_code != 200 or not ctype.startswith("image"):
+            body = r.text[:200].replace("\n", " ") if hasattr(r, "text") else ""
+            print(f"[WMS {r.status_code} {ctype}] {layers} {time}: {body}",
+                  file=sys.stderr)
             return None
         return Image.open(io.BytesIO(r.content))
     except (httpx.HTTPError, OSError) as exc:
