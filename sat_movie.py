@@ -50,6 +50,11 @@ TARGET_PER_SECTOR = 3           # Granulen je Sektor (2-3 Ueberfluege)
 GRANULE_MEAN = 2.0
 DIFF_MEAN = 3.0
 LATENCY_MIN = 80                # LANCE-Latenz: Suche beginnt frueher
+DAILY_LAYERS = [
+    ("True Color", "VIIRS_NOAA20_CorrectedReflectance_TrueColor"),
+    ("Snow/Fog-RGB (weiss=Nebel/Wasserwolke, tuerkis=Eis)",
+     "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11"),
+]
 FONT_BOLD = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 
 # --- EPSG:3413 (Polar Stereographic North, lat_ts=70, lon0=-45, WGS84) -----
@@ -182,12 +187,28 @@ async def main() -> None:
         n_total = sum(len(v) for v in hits.values())
         print("Granulen je Sektor: " + ", ".join(
             f"{k}={len(v)}" for k, v in hits.items()))
+        layers_used, mode = LAYERS, "granule"
         if n_total == 0:
-            print("Keine Ueberfluege im Suchfenster — kein Frame.")
-            return
+            # Fallback: Tageskomposit (heute, sonst gestern), damit die
+            # Seite nie ohne Bild bleibt. Beschriftung sagt es ehrlich.
+            print("Keine Ueberfluege gefunden — Fallback auf Tageskomposit.")
+            layers_used, mode = DAILY_LAYERS, "daily"
+            for back in (0, 1):
+                d = (now - timedelta(days=back)).strftime("%Y-%m-%d")
+                bb = SECTOR_BOX[SECTORS[1][0]]
+                probe = await fetch_wms(client, DAILY_LAYERS[0][1], d, bb,
+                                        160, 160)
+                if probe is not None and \
+                        _mean(probe.convert("RGB")) >= GRANULE_MEAN:
+                    hits = {name: [d] for name, *_r in SECTORS}
+                    n_total = len(SECTORS)
+                    break
+            if n_total == 0:
+                print("Auch Tageskomposit leer — kein Frame.")
+                return
 
         rows: list[tuple[str, Image.Image]] = []
-        for label, layer in LAYERS:
+        for label, layer in layers_used:
             row = Image.new("RGB", (FRAME_W, PH), (12, 12, 12))
             x0 = 0
             for name, *_ in SECTORS:
@@ -207,14 +228,23 @@ async def main() -> None:
         f_small = ImageFont.truetype(FONT_BOLD, 14)
     except OSError:
         f = f_small = ImageFont.load_default()
-    all_stamps = sorted(s for v in hits.values() for s in v)
-    span = (all_stamps[0][11:16] + "-" + all_stamps[-1][11:16] + "Z"
-            if all_stamps else "?")
+    all_stamps = sorted(set(s for v in hits.values() for s in v))
+    if mode == "granule":
+        span = (all_stamps[0][11:16] + "-" + all_stamps[-1][11:16] + "Z"
+                if all_stamps else "?")
+        title = (f"VIIRS NOAA-20 Ueberfluege {span} ({n_total} Granulen) — "
+                 f"abgerufen {now:%Y-%m-%d %H:%M}Z")
+    else:
+        span = all_stamps[0] if all_stamps else "?"
+        title = (f"VIIRS NOAA-20 TAGESKOMPOSIT {span} (keine Einzel-"
+                 f"Ueberfluege verfuegbar) — abgerufen {now:%Y-%m-%d %H:%M}Z")
 
     def times_label(stamps: list[str]) -> str:
         """Tag + UTC jedes Ueberflugs, z.B. '08.07. 10:54Z · 12:36Z'."""
         if not stamps:
             return "kein Ueberflug im Fenster"
+        if mode == "daily":
+            return f"Tageskomposit {stamps[0]}"
         by_day: dict[str, list[str]] = {}
         for s in sorted(stamps):
             day = f"{s[8:10]}.{s[5:7]}."
@@ -235,9 +265,7 @@ async def main() -> None:
     for j, (name, *_r) in enumerate(SECTORS):
         draw.text((j * (PW + GAP) + PW - 6, CAP + 6), name, font=f,
                   fill=(200, 200, 200), anchor="ra")
-    draw.text((FRAME_W - 6, 8),
-              f"VIIRS NOAA-20 Ueberfluege {span} ({n_total} Granulen) — "
-              f"abgerufen {now:%Y-%m-%d %H:%M}Z",
+    draw.text((FRAME_W - 6, 8), title,
               font=f, fill=(235, 235, 235), anchor="ra")
 
     OUT_DIR.mkdir(exist_ok=True)
@@ -248,9 +276,10 @@ async def main() -> None:
     META.write_text(json.dumps({
         "updated": now.isoformat(),
         "wms": WMS,
+        "mode": mode,
         "frame": {"w": FRAME_W, "panel_w": PW, "panel_h": PH,
                   "gap": GAP, "cap": CAP},
-        "layers": [{"label": lbl, "layer": lyr} for lbl, lyr in LAYERS],
+        "layers": [{"label": lbl, "layer": lyr} for lbl, lyr in layers_used],
         "sectors": [{"name": name,
                      "bbox": SECTOR_BOX[name],
                      "h": SECTOR_H[name],
