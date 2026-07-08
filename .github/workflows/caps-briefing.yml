@@ -71,7 +71,7 @@ jobs:
         run: python map_dashboard.py --lead 12
 
       - name: Satellitenbilder abrufen (Archiv-Rotation im Skript)
-        run: python sat_chips.py || echo "Satellitenabruf fehlgeschlagen — nicht fatal"
+        run: python sat_chips.py --lead 12 || echo "Satellitenabruf fehlgeschlagen — nicht fatal"
 
       - name: Briefings, Karte und Satellitenbilder committen
         run: |
