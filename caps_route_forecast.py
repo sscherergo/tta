@@ -344,12 +344,15 @@ def fog_spread_2m(data, fh, wi) -> float | None:
     return gv(data, fh, "DewPointDepression_AGL-2m", wi)
 
 
-def fog_trend(data, fh, wi) -> tuple[float | None, str]:
+def fog_trend(data, fh, wi) -> tuple[float | None, float | None, str]:
     """Trend des 2-m-Spreads: SP-Schwellen auf +6 h extrapoliert.
 
     d      = Spread(fh) - Spread(fh-6) [erste Zeile: 2 x 3-h-Delta]
     |d|<0.3 gilt als stabil (Modellrauschen).
-    Klasse = cls_sp(Spread + d_gedaempft), Anzeige = ungedaempftes d.
+    Klasse = cls_sp(Projektion), Projektion = Spread + d_gedaempft.
+    Rueckgabe: (ungedaempftes d, Projektion, Klasse) — die Projektion
+    wird mit angezeigt, damit die Klasse direkt gegen die SP-Schwellen
+    ablesbar ist.
 
     Daempfer gegen Tagesgang-Fehlalarme:
       1. In die Projektion geht hoechstens ±TRD_DELTA_CAP °C/6h ein —
@@ -364,19 +367,20 @@ def fog_trend(data, fh, wi) -> tuple[float | None, str]:
     elif fh - 3 in data:
         sp_prev, scale = fog_spread_2m(data, fh - 3, wi), 2.0
     else:
-        return None, "?"
+        return None, None, "?"
     if not (valid(sp_now) and valid(sp_prev)):
-        return None, "?"
+        return None, None, "?"
     d6 = (sp_now - sp_prev) * scale
     if abs(d6) < 0.3:
         d6 = 0.0
     d6_proj = max(min(d6, TRD_DELTA_CAP), -TRD_DELTA_CAP)
-    cls = cls_sp(max(sp_now + d6_proj, 0.0))
+    proj = max(sp_now + d6_proj, 0.0)
+    cls = cls_sp(proj)
     if d6 < -TRD_DELTA_CAP and cls == "OK":
         cls = "WARN"            # extremer Kollaps: mindestens beobachten
     if sp_now > TRD_DRY_SPREAD and cls == "NOGO":
         cls = "WARN"
-    return d6, cls
+    return d6, proj, cls
 
 
 def icing_assess(data, fh, wi) -> tuple[float | None, str]:
@@ -428,8 +432,9 @@ def dashboard_block(data, date, run, waypoints, obs=None) -> list[str]:
         "(~ = Piste unbekannt, volle Boe) | CIG: Wolkenbasis ft AGL "
         "(RH-Interpolation, auf 100 ft gerundet; nur bei Bedeckung >=50%) | "
         "SP2m: Taupunkt-Spread 2m in °C (Bodennebel: NOGO<=1.5, WARN<=3) | "
-        "TRD: Spread-Trend °C/6h (Klasse = SP-Schwellen auf +6h "
-        "extrapoliert; negativ = schliessend) | "
+        "TRD: Spread-Aenderung °C/6h \u2192 projizierter Spread in +6h "
+        "(Klasse = SP-Schwellen auf die Projektion; negativ = "
+        "schliessend) | "
         "ICE: Spread+Temp 850/700 (nur unterkuehlte Level; '—' = alle "
         "Level >0°C)",
         "* = durch aktuelles METAR herabgestuft (Persistenz: voll bis +6h, "
@@ -456,7 +461,7 @@ def dashboard_block(data, date, run, waypoints, obs=None) -> list[str]:
             continue
 
         lines.append(f"{'VT (UTC)':<12}{'HW kt':>12}{'XW kt':>13}"
-                     f"{'CIG ft':>14}{'SP2m °C':>12}{'TRD 6h':>12}"
+                     f"{'CIG ft':>14}{'SP2m °C':>12}{'TRD\u2192proj':>16}"
                      f"{'ICE °C':>12}   GESAMT")
         entry = obs.get(wp.icao)
         downgraded = False
@@ -468,7 +473,7 @@ def dashboard_block(data, date, run, waypoints, obs=None) -> list[str]:
             xw, exact = crosswind_gust(data, fh, wi, rwy)
             cig = ceiling_ft(data, fh, wi)
             sp = fog_spread_2m(data, fh, wi)
-            trd_val, trd_cls = fog_trend(data, fh, wi)
+            trd_val, trd_proj, trd_cls = fog_trend(data, fh, wi)
             ice_val, ice_cls = icing_assess(data, fh, wi)
 
             parts, worst = [], 0
@@ -493,13 +498,14 @@ def dashboard_block(data, date, run, waypoints, obs=None) -> list[str]:
                            else f"~{round(v / 100) * 100:5.0f}"),
                 floor=cig_floor)
             one(sp, cls_sp, lambda v: f"{v:5.1f}", floor=fog_floor)
-            # TRD-Spalte: Klasse aus fog_trend (Projektion), Anzeige = Delta
+            # TRD-Spalte: Delta -> Projektion, Klasse gilt der Projektion
             if trd_cls == "?":
-                parts.append(f"{'?':>11}")
+                parts.append(f"{'?':>15}")
                 worst = max(worst, WORST["?"])
             else:
                 worst = max(worst, WORST[trd_cls])
-                parts.append(f"{trd_val:+5.1f} {trd_cls:<4}")
+                parts.append(f"{trd_val:+5.1f}\u2192{trd_proj:3.1f} "
+                             f"{trd_cls:<4}")
             # ICE-Spalte: Klasse kommt aus icing_assess, nicht aus Schwellen
             if ice_cls == "?":
                 parts.append(f"{'?':>11}")
