@@ -111,14 +111,22 @@ async def chip_for_airport(client, icao, name, lat, lon,
             return None
         panels.append((label, img, used_date))
 
-    gap, cap_h = 6, 34
+    gap, cap_h = 6, 56
     w = CHIP_PX * 2 + gap
     sheet = Image.new("RGB", (w, CHIP_PX + cap_h), (12, 12, 12))
     draw = ImageDraw.Draw(sheet)
     try:
         f_cap = ImageFont.truetype(FONT_BOLD, 16)
+        f_sub = ImageFont.truetype(FONT_BOLD, 14)
     except OSError:
-        f_cap = ImageFont.load_default()
+        f_cap = f_sub = ImageFont.load_default()
+
+    # Zeile 1: Platz links, Abrufzeit rechts — Zeile 2: Panel-Labels
+    draw.text((6, 6), f"{icao} {name} — VIIRS ~250x250 km",
+              font=f_cap, fill=(235, 235, 235))
+    draw.text((w - 6, 6),
+              f"abgerufen {datetime.now(timezone.utc):%Y-%m-%d %H:%M}Z",
+              font=f_cap, fill=(160, 168, 178), anchor="ra")
 
     for i, (label, img, used_date) in enumerate(panels):
         x0 = i * (CHIP_PX + gap)
@@ -129,14 +137,16 @@ async def chip_for_airport(client, icao, name, lat, lon,
         draw.line([cx - 18, cy, cx - 10, cy], fill=(255, 60, 60), width=3)
         draw.line([cx + 10, cy, cx + 18, cy], fill=(255, 60, 60), width=3)
         stale = used_date != date0.strftime("%Y-%m-%d")
-        draw.text((x0 + 6, 8), f"{label} — Bild vom {used_date}"
-                  + (" (VORTAG!)" if stale else ""), font=f_cap,
-                  fill=(255, 170, 60) if stale else (235, 235, 235))
-
-    draw.text((w - 6, 8),
-              f"{icao} {name} — VIIRS ~250x250 km — abgerufen "
-              f"{datetime.now(timezone.utc):%Y-%m-%d %H:%M}Z",
-              font=f_cap, fill=(235, 235, 235), anchor="ra")
+        now_utc = datetime.now(timezone.utc)
+        if stale:
+            span = "Passes 00-24Z"
+        else:
+            latest = now_utc - timedelta(minutes=90)   # LANCE-Latenz
+            span = f"Passes ~00:00-{latest:%H:%M}Z"
+        draw.text((x0 + 6, 32),
+                  f"{label} — Tageskomposit {used_date} ({span})"
+                  + (" (VORTAG!)" if stale else ""), font=f_sub,
+                  fill=(255, 170, 60) if stale else (255, 235, 140))
 
     OUT_DIR.mkdir(exist_ok=True)
     out = OUT_DIR / f"{icao}.jpg"
