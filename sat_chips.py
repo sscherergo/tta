@@ -46,7 +46,8 @@ ARCHIVE_DIR = OUT_DIR / "archive"
 ARCHIVE_KEEP = 10               # juengste Staende je Platz
 CHIP_PX = 768                   # Pixel je Teilbild (~320 m/px bei 245-km-Box)
 HALF_LAT = 1.1                  # halbe Boxhoehe in Grad (~122 km)
-BLANK_STDDEV = 8.0              # darunter gilt das Bild als leer
+BLANK_MEAN = 10.0               # mittlere Helligkeit darunter = leeres Komposit
+                                 # (robust gegen Kuestenlinien-Overlay auf Schwarz)
 MAX_DAYS_BACK = 2
 
 MAIN_AIRPORTS = [
@@ -89,7 +90,7 @@ async def fetch_chip(client: httpx.AsyncClient, layer: str, bbox: str,
 
 
 def is_blank(img: Image.Image) -> bool:
-    return ImageStat.Stat(img.convert("L")).stddev[0] < BLANK_STDDEV
+    return ImageStat.Stat(img.convert("L")).mean[0] < BLANK_MEAN
 
 
 async def chip_for_airport(client, icao, name, lat, lon,
