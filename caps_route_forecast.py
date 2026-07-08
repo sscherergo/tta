@@ -37,7 +37,10 @@ import httpx
 import numpy as np
 import xarray as xr
 
-CAPS_BASE = "https://dd.weather.gc.ca/today/model_caps/3km"
+CAPS_BASES = [   # Primaer + offizieller ECCC-Lastspitzen-Mirror (HPFX)
+    "https://dd.weather.gc.ca/today/model_caps/3km",
+    "https://hpfx.collab.science.gc.ca/today/model_caps/3km",
+]
 RDPS_WEONG_BASES = [
     "https://dd.alpha.weather.gc.ca/model_rdps/10km",
     "https://dd.alpha.weather.gc.ca/model_gem_regional/10km",
@@ -208,20 +211,49 @@ def valid(v) -> bool:
 # CAPS-Daten laden (gemeinsame Basis fuer Block 0 und 1)
 # ---------------------------------------------------------------------------
 
+async def select_caps_source(client) -> tuple[str, str, str]:
+    """(Basis-URL, Datum, Lauf) ermitteln — mit Retries und HPFX-Failover.
+
+    Probiert je Basis (dd.weather.gc.ca, dann HPFX-Mirror) den erwarteten
+    und den vorherigen Lauf, jeweils mit 2 Verbindungsversuchen. Erst wenn
+    alles scheitert, bricht das Briefing mit klarer Meldung ab.
+    """
+    date0, run0 = latest_expected_run(7)  # Publikation gemessen: Lauf +~6.6 h
+    runs = [(date0, run0), previous_run(date0, run0)]
+    for base in CAPS_BASES:
+        for date, run in runs:
+            probe = (f"{base}/{run}/{CAPS_HOURS[-1]:03d}/{date}T{run}Z_"
+                     f"MSC_CAPS_AirTemp_AGL-2m_RLatLon0.03_"
+                     f"PT{CAPS_HOURS[-1]:03d}H.grib2")
+            for attempt in range(2):
+                try:
+                    r = await client.head(probe, timeout=30.0)
+                    if r.status_code == 200:
+                        if (date, run) != runs[0]:
+                            print(f"CAPS: Fallback auf Lauf {date} {run}Z",
+                                  file=sys.stderr)
+                        if base != CAPS_BASES[0]:
+                            print(f"CAPS: Ausweichserver {base}",
+                                  file=sys.stderr)
+                        return base, date, run
+                    break                      # 404: Lauf fehlt -> naechster
+                except httpx.HTTPError as exc:
+                    print(f"CAPS-Probe {base} Versuch {attempt + 1}: {exc}",
+                          file=sys.stderr)
+                    await asyncio.sleep(10)
+    sys.exit("CAPS-Datamart nicht erreichbar (dd.weather.gc.ca und "
+             "HPFX-Mirror) — spaeter erneut versuchen.")
+
+
 async def load_caps(client, tmpdir: Path, waypoints
                     ) -> tuple[dict, str, str]:
-    date, run = latest_expected_run(7)   # Publikation gemessen: Lauf + ~6.6 h
-    probe = (f"{CAPS_BASE}/{run}/{CAPS_HOURS[-1]:03d}/{date}T{run}Z_MSC_CAPS_"
-             f"AirTemp_AGL-2m_RLatLon0.03_PT{CAPS_HOURS[-1]:03d}H.grib2")
-    if (await client.head(probe, timeout=30.0)).status_code != 200:
-        date, run = previous_run(date, run)
-        print(f"CAPS: Fallback auf Lauf {date} {run}Z", file=sys.stderr)
+    base, date, run = await select_caps_source(client)
 
     points = [(w.lat, w.lon) for w in waypoints]
     data: dict[int, dict[str, list[float] | None]] = {}
     for fh in CAPS_HOURS:
         async def one(var, lvl, fh=fh):
-            url = (f"{CAPS_BASE}/{run}/{fh:03d}/{date}T{run}Z_MSC_CAPS_"
+            url = (f"{base}/{run}/{fh:03d}/{date}T{run}Z_MSC_CAPS_"
                    f"{var}_{lvl}_RLatLon0.03_PT{fh:03d}H.grib2")
             p = await fetch(client, url, tmpdir / f"c{var}{lvl}{fh}.grib2")
             return f"{var}_{lvl}", p
