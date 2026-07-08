@@ -131,12 +131,16 @@ def parse_block0(text: str, made: datetime) -> list[dict]:
         if not m:
             continue
         toks = TOKEN_RE.findall(m.group(3))
-        if len(toks) != 6:
+        if len(toks) == 7:          # neues TRD-Format: Delta -> Projektion
+            hw, xw, cig, sp, trd_d, trd_p, ice = toks
+            trd = (trd_d[0], "", trd_p[2])   # Anzeige Delta, Klasse Projektion
+        elif len(toks) == 6:
+            hw, xw, cig, sp, trd, ice = toks
+        else:
             continue
         valid = resolve_valid(made, int(m.group(1)), int(m.group(2)))
         if valid is None:
             continue
-        hw, xw, cig, sp, trd, ice = toks
         rows.append({"icao": icao, "valid": valid, "total": m.group(4),
                      "HW": hw, "XW": xw, "CIG": cig, "SP": sp,
                      "TRD": trd, "ICE": ice})
