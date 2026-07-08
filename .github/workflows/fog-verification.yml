@@ -15,7 +15,7 @@ name: Fog Verification
 
 on:
   schedule:
-    - cron: "9 0,6,12,18 * * *"   # 4x taeglich (siehe Empfehlung: 6-h-Raster)
+    - cron: "15 0,6,12,18 * * *"   # 4x taeglich (siehe Empfehlung: 6-h-Raster)
   workflow_dispatch: {}
 
 permissions:
@@ -70,5 +70,12 @@ jobs:
           git add -A verification/
           git diff --cached --quiet && echo "Keine Aenderung." && exit 0
           git commit -m "Nebel-Verifikation $(date -u '+%Y-%m-%d %H:%MZ')"
-          git pull --rebase origin main
+          # Push mit Retry: bewegt sich origin parallel (anderer Workflow),
+          # gewinnen bei Konflikten unsere frisch GENERIERTEN Dateien
+          # (-X theirs = im Rebase der eigene, gerade erzeugte Commit).
+          for i in 1 2 3; do
+            git push && exit 0
+            echo "Push abgewiesen (Versuch $i) — origin einholen"
+            git pull --rebase -X theirs origin main
+          done
           git push
