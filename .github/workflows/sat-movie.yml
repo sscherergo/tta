@@ -1,0 +1,52 @@
+# .github/workflows/sat-movie.yml
+#
+# Aktuelles Ueberflug-Mosaik (VIIRS-Granulen) ueber den Flugkorridor.
+# Nur EIN Bild wird gepflegt (sat_movie/latest.jpg + meta.json) —
+# der Detail-Zoom laeuft im Viewer live gegen NASA GIBS, ohne
+# Repo-Speicher. Committet wird nur bei neuen Ueberfluegen.
+#
+# Viewer:  https://<USER>.github.io/<REPO>/movie.html
+
+name: Sat Movie
+
+on:
+  schedule:
+    - cron: "37 */3 * * *"   # 8x taeglich — Granulen-Daten (Per-Pass) rechtfertigen dichten Takt
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sat-movie
+  cancel-in-progress: false
+
+jobs:
+  movie:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Pakete installieren
+        run: pip install httpx pillow
+
+      - name: Frame abrufen (Aenderungserkennung im Skript)
+        run: python sat_movie.py
+
+      - name: Committen (nur bei neuem Frame)
+        run: |
+          git config user.name  "sat-movie-bot"
+          git config user.email "actions@github.com"
+          git add -A sat_movie/
+          git diff --cached --quiet && echo "Kein neuer Frame." && exit 0
+          git commit -m "Sat-Movie-Frame $(date -u '+%Y-%m-%d %H:%MZ')"
+          git pull --rebase origin main
+          git push
