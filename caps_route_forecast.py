@@ -218,7 +218,8 @@ async def select_caps_source(client) -> tuple[str, str, str]:
     und den vorherigen Lauf, jeweils mit 2 Verbindungsversuchen. Erst wenn
     alles scheitert, bricht das Briefing mit klarer Meldung ab.
     """
-    date0, run0 = latest_expected_run(7)  # Publikation gemessen: Lauf +~6.6 h
+    date0, run0 = latest_expected_run(5)  # 5 h: passend zum Polling-Fenster;
+    # der juengste Lauf wird zuerst probiert, Fallback deckt Verspaetung ab
     runs = [(date0, run0), previous_run(date0, run0)]
     for base in CAPS_BASES:
         for date, run in runs:
