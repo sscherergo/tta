@@ -1,0 +1,60 @@
+{
+ "updated": "2026-07-08T15:58:38.869890+00:00",
+ "wms": "https://gibs.earthdata.nasa.gov/wms/epsg3413/best/wms.cgi",
+ "mode": "granule",
+ "frame": {
+  "w": 2408,
+  "panel_w": 800,
+  "panel_h": 823,
+  "gap": 4,
+  "cap": 34
+ },
+ "layers": [
+  {
+   "label": "True Color",
+   "layer": "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule"
+  },
+  {
+   "label": "Snow/Fog-RGB (weiss=Nebel/Wasserwolke, tuerkis=Eis)",
+   "layer": "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11_Granule"
+  }
+ ],
+ "sectors": [
+  {
+   "name": "West",
+   "bbox": [
+    -3092430.4186817566,
+    -107929.08827693167,
+    -1185950.340433175,
+    1684333.5876814257
+   ],
+   "h": 752,
+   "granules": []
+  },
+  {
+   "name": "Zentral",
+   "bbox": [
+    -3090684.708492363,
+    -1861154.2542820168,
+    -1129337.4195101648,
+    -49350.80778698675
+   ],
+   "h": 739,
+   "granules": []
+  },
+  {
+   "name": "Ost",
+   "bbox": [
+    -2469835.115381746,
+    -2941207.5359876044,
+    -436975.88026298047,
+    -851016.7864045231
+   ],
+   "h": 823,
+   "granules": [
+    "2026-07-08T12:18:00Z",
+    "2026-07-08T12:24:00Z"
+   ]
+  }
+ ]
+}
