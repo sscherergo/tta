@@ -52,5 +52,9 @@ jobs:
           git add -A sat_movie/
           git diff --cached --quiet && echo "Kein neuer Frame." && exit 0
           git commit -m "Sat-Bild $(date -u '+%Y-%m-%d %H:%MZ')"
-          git pull --rebase origin main
+          for i in 1 2 3; do
+            git push && exit 0
+            echo "Push abgewiesen (Versuch $i) — origin einholen"
+            git pull --rebase -X theirs origin main
+          done
           git push
