@@ -24,7 +24,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import httpx
-from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageStat
+from PIL import (Image, ImageChops, ImageDraw, ImageFilter, ImageFont,
+                 ImageStat)
 
 WMS = "https://gibs.earthdata.nasa.gov/wms/epsg3413/best/wms.cgi"
 LAYERS = [
@@ -157,15 +158,59 @@ async def find_granules(client) -> dict[str, list[str]]:
     return hits
 
 
-async def build_sector(client, layer: str, name: str,
-                       stamps: list[str]) -> Image.Image:
+EDGE_GRANULE = (255, 160, 0)     # orange: Grenze aktueller Ueberflug-Daten
+EDGE_TODAY = (145, 145, 145)     # grau: Grenze heutiges Komposit (aussen: Vortag)
+
+
+def coverage_paste(base: Image.Image, img: Image.Image) -> Image.Image:
+    """img dort einfuegen, wo es Daten hat (Abdeckungsmaske statt
+    Helligkeit): Neuestes liegt oben, auch wenn es dunkler ist.
+    Rueckgabe: die Abdeckungsmaske (fuer Schichtgrenzen)."""
+    mask = img.convert("L").point(lambda v: 255 if v > 3 else 0)
+    mask = mask.filter(ImageFilter.MinFilter(3))   # JPEG-Randrauschen weg
+    base.paste(img, (0, 0), mask)
+    return mask
+
+
+def mask_edge(mask: Image.Image, px: int = 2) -> Image.Image:
+    """Innenkontur einer Abdeckungsmaske (px Pixel breit)."""
+    eroded = mask.filter(ImageFilter.MinFilter(2 * px + 1))
+    return ImageChops.subtract(mask, eroded)
+
+
+def draw_edge(mosaic: Image.Image, edge: Image.Image, color) -> None:
+    mosaic.paste(Image.new("RGB", mosaic.size, color), (0, 0), edge)
+
+
+async def build_sector(client, idx: int, name: str, stamps: list[str],
+                       daily_dates: list[str]) -> Image.Image:
+    """Panel: Tageskomposite (alt -> neu) als Basis, Granulen obenauf.
+    Schichtgrenzen werden als Konturen markiert, damit alte und frische
+    Wolken-/Nebelkanten nicht verwechselt werden."""
     bb = SECTOR_BOX[name]
     h = SECTOR_H[name]
     mosaic = Image.new("RGB", (PW, h), (0, 0, 0))
-    for stamp in reversed(stamps):          # alt zuerst, neu obendrauf
-        img = await fetch_wms(client, layer, stamp, bb, PW, h)
+    m_today = Image.new("L", (PW, h), 0)
+    m_gran = Image.new("L", (PW, h), 0)
+    for k, d in enumerate(daily_dates):            # gestern, dann heute
+        img = await fetch_wms(client, DAILY_LAYERS[idx][1], d, bb, PW, h)
         if img is not None:
-            mosaic = ImageChops.lighter(mosaic, img.convert("RGB"))
+            m = coverage_paste(mosaic, img.convert("RGB"))
+            if k == len(daily_dates) - 1:          # heutiges Komposit
+                m_today = m
+    for stamp in sorted(stamps):                   # Ueberfluege, neu oben
+        img = await fetch_wms(client, LAYERS[idx][1], stamp, bb, PW, h)
+        if img is not None:
+            m = coverage_paste(mosaic, img.convert("RGB"))
+            m_gran = ImageChops.lighter(m_gran, m)
+
+    # Schichtgrenzen: grau = heutiges Komposit (nur ausserhalb der
+    # Ueberflug-Flaeche relevant), orange = aktuelle Ueberflug-Daten
+    inv_gran = ImageChops.invert(m_gran)
+    edge_today = ImageChops.multiply(mask_edge(m_today), inv_gran)
+    draw_edge(mosaic, edge_today, EDGE_TODAY)
+    draw_edge(mosaic, mask_edge(m_gran), EDGE_GRANULE)
+
     coast = await fetch_wms(client, OVERLAY, None, bb, PW, h,
                             fmt="image/png", transparent=True)
     if coast is not None:
@@ -187,17 +232,6 @@ def changed_vs_latest(row: Image.Image) -> bool:
     return diff >= DIFF_MEAN
 
 
-async def daily_date_for(client, name: str, now: datetime) -> str | None:
-    """Juengstes nicht-leeres Tageskomposit (heute, sonst gestern)."""
-    bb = SECTOR_BOX[name]
-    for back in (0, 1):
-        d = (now - timedelta(days=back)).strftime("%Y-%m-%d")
-        probe = await fetch_wms(client, DAILY_LAYERS[0][1], d, bb, 160, 160)
-        if probe is not None and _mean(probe.convert("RGB")) >= GRANULE_MEAN:
-            return d
-    return None
-
-
 async def main() -> None:
     now = datetime.now(timezone.utc)
     async with httpx.AsyncClient(follow_redirects=True) as client:
@@ -205,21 +239,20 @@ async def main() -> None:
         print("Granulen je Sektor: " + ", ".join(
             f"{k}={len(v)}" for k, v in hits.items()))
 
-        # Je Sektor: Granulen-Mosaik, sonst Tageskomposit als Rueckfall
+        # Basis fuer ALLE Sektoren: Komposite gestern + heute (alt -> neu);
+        # Granulen-Sektoren bekommen ihre Ueberfluege obenauf.
+        daily_dates = [(now - timedelta(days=1)).strftime("%Y-%m-%d"),
+                       now.strftime("%Y-%m-%d")]
         sector_info: dict[str, dict] = {}
         for name, *_r in SECTORS:
             if hits[name]:
                 sector_info[name] = {"mode": "granule",
                                      "times": sorted(hits[name])}
             else:
-                d = await daily_date_for(client, name, now)
                 sector_info[name] = {"mode": "daily",
-                                     "times": [d] if d else []}
+                                     "times": [daily_dates[-1]]}
                 print(f"Sektor {name}: kein Ueberflug im Fenster — "
-                      + (f"Tageskomposit {d}" if d else "auch Komposit leer"))
-        if all(not v["times"] for v in sector_info.values()):
-            print("Keine Daten in keinem Sektor — kein Frame.")
-            return
+                      f"Basis Tageskomposit")
 
         rows: list[tuple[str, Image.Image]] = []
         for idx, (label, _lyr) in enumerate(LAYERS):
@@ -227,13 +260,9 @@ async def main() -> None:
             x0 = 0
             for name, *_r in SECTORS:
                 info = sector_info[name]
-                if info["mode"] == "granule":
-                    layer = LAYERS[idx][1]
-                    stamps = info["times"]
-                else:
-                    layer = DAILY_LAYERS[idx][1]
-                    stamps = info["times"]           # [] oder [Datum]
-                panel = await build_sector(client, layer, name, stamps)
+                stamps = info["times"] if info["mode"] == "granule" else []
+                panel = await build_sector(client, idx, name, stamps,
+                                           daily_dates)
                 row.paste(panel, (x0, (PH - panel.height) // 2))
                 x0 += PW + GAP
             rows.append((label, row))
@@ -266,15 +295,16 @@ async def main() -> None:
 
     def times_label(name: str) -> str:
         info = sector_info[name]
-        if not info["times"]:
-            return "keine Daten"
         if info["mode"] == "daily":
-            return f"Tageskomposit {info['times'][0]} (kein Pass im Fenster)"
+            return (f"Tageskomposit bis {info['times'][0]} "
+                    f"(kein Pass im Fenster)")
         by_day: dict[str, list[str]] = {}
         for s in info["times"]:
             day = f"{s[8:10]}.{s[5:7]}."
             by_day.setdefault(day, []).append(s[11:16] + "Z")
-        return "  ".join(d + " " + " · ".join(ts) for d, ts in by_day.items())
+        return ("  ".join(d + " " + " · ".join(ts)
+                          for d, ts in by_day.items())
+                + "  (Basis: Komposit)")
 
     for i, (label, row) in enumerate(rows):
         y0 = i * (PH + CAP)
@@ -292,6 +322,11 @@ async def main() -> None:
                   fill=(200, 200, 200), anchor="ra")
     draw.text((FRAME_W - 6, 8), title,
               font=f, fill=(235, 235, 235), anchor="ra")
+    draw.text((FRAME_W // 2, CAP + 6),
+              "Schichtgrenzen:  orange = aktuelle Ueberflug-Daten  |  "
+              "grau = heutiges Komposit (aussen: Vortag)",
+              font=f_small, fill=(220, 220, 220), anchor="ma",
+              stroke_width=2, stroke_fill=(0, 0, 0))
 
     OUT_DIR.mkdir(exist_ok=True)
     for p in OUT_DIR.glob("region_*.jpg"):
