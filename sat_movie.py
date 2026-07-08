@@ -167,7 +167,11 @@ def coverage_paste(base: Image.Image, img: Image.Image) -> Image.Image:
     Helligkeit): Neuestes liegt oben, auch wenn es dunkler ist.
     Rueckgabe: die Abdeckungsmaske (fuer Schichtgrenzen)."""
     mask = img.convert("L").point(lambda v: 255 if v > 3 else 0)
-    mask = mask.filter(ImageFilter.MinFilter(3))   # JPEG-Randrauschen weg
+    # Nadelloecher schliessen (dunkle JPEG-Pixel im Bildinneren wuerden
+    # sonst als kleine orange Rahmen-Artefakte konturiert), dann Rand
+    # gegen JPEG-Kantenrauschen leicht schrumpfen:
+    mask = mask.filter(ImageFilter.MaxFilter(5)).filter(ImageFilter.MinFilter(5))
+    mask = mask.filter(ImageFilter.MinFilter(3))
     base.paste(img, (0, 0), mask)
     return mask
 
