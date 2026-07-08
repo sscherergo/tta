@@ -1,5 +1,5 @@
 {
- "updated": "2026-07-08T17:17:17.483984+00:00",
+ "updated": "2026-07-08T17:39:23.421405+00:00",
  "wms": "https://gibs.earthdata.nasa.gov/wms/epsg3413/best/wms.cgi",
  "mode": "hybrid",
  "frame": {
@@ -52,6 +52,7 @@
    "h": 739,
    "mode": "granule",
    "granules": [
+    "2026-07-08T14:00:00Z",
     "2026-07-08T14:06:00Z"
    ],
    "zoom": {
