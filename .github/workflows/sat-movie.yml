@@ -21,6 +21,7 @@ on:
 
 permissions:
   contents: write
+  actions: write          # darf den Briefing-Workflow mit anstossen
 
 concurrency:
   group: sat-movie
@@ -63,3 +64,12 @@ jobs:
             git pull --rebase -X theirs origin main
           done
           git push
+
+      - name: Briefing-Workflow anstossen (Fallback fuer traege Schedules)
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run "CAPS Route Briefing" --ref main \
+            && echo "Briefing-Check angestossen (Dedup entscheidet dort)" \
+            || echo "Anstoss fehlgeschlagen — unkritisch, eigener Cron laeuft"
