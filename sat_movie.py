@@ -28,12 +28,22 @@ from PIL import (Image, ImageChops, ImageDraw, ImageFilter, ImageFont,
                  ImageStat)
 
 WMS = "https://gibs.earthdata.nasa.gov/wms/epsg3413/best/wms.cgi"
-LAYERS = [
-    ("True Color", "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule"),
-    ("Snow/Fog-RGB (weiss=Nebel/Wasserwolke, tuerkis=Eis)",
-     "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11_Granule"),
-]
-PROBE_LAYER = LAYERS[0][1]
+
+# Drei VIIRS-Traeger, ~25-50 min zeitversetzt auf gleicher Bahn —
+# verdreifacht die Passdichte (Ueberflug ~alle 30-35 min statt 101 min).
+# Je Satellit: (TrueColor-Granule, Snow/Fog-Granule).
+SAT_LAYERS = {
+    "N20":  ("VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
+             "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11_Granule"),
+    "N21":  ("VIIRS_NOAA21_CorrectedReflectance_TrueColor_Granule",
+             "VIIRS_NOAA21_CorrectedReflectance_BandsM3-I3-M11_Granule"),
+    "SNPP": ("VIIRS_SNPP_CorrectedReflectance_TrueColor_Granule",
+             "VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11_Granule"),
+}
+ROW_LABELS = ["True Color",
+              "Snow/Fog-RGB (weiss=Nebel/Wasserwolke, tuerkis=Eis)"]
+# Fuer meta.json/Viewer-Beschriftung (Layer-Referenz: N20)
+LAYERS = list(zip(ROW_LABELS, SAT_LAYERS["N20"]))
 OVERLAY = "Coastlines_15m"
 
 LAT_MIN, LAT_MAX = 62.0, 77.0
@@ -50,7 +60,9 @@ MAX_SLOTS = 80                  # 80 x 6 min = 8 h Suchtiefe (Orbit + Latenz)
 TARGET_PER_SECTOR = 3           # Granulen je Sektor (2-3 Ueberfluege)
 GRANULE_MEAN = 2.0
 DIFF_MEAN = 3.0
-LATENCY_MIN = 80                # LANCE-Latenz: Suche beginnt frueher
+LATENCY_MIN = 30                # Suche beginnt nahe jetzt: schnell
+                                 # verarbeitete Granulen nicht ausschliessen
+                                 # (LANCE meist 1,5-3 h, gelegentlich schneller)
 DAILY_LAYERS = [
     ("True Color", "VIIRS_NOAA20_CorrectedReflectance_TrueColor"),
     ("Snow/Fog-RGB (weiss=Nebel/Wasserwolke, tuerkis=Eis)",
@@ -128,22 +140,23 @@ def _mean(img: Image.Image) -> float:
     return ImageStat.Stat(img.convert("L")).mean[0]
 
 
-async def find_granules(client) -> dict[str, list[str]]:
-    """Je Sektor die juengsten Slots mit Ueberflug (kleine Probebilder).
-    Die Sektor-Proben eines Slots laufen parallel; je Sektor endet die
-    Suche bei TARGET_PER_SECTOR Treffern."""
+async def find_granules(client) -> dict[str, list[tuple[str, str]]]:
+    """Je Sektor die juengsten Slots mit Ueberflug — ueber ALLE drei
+    Satelliten. Probes je Slot parallel (fehlende Sektoren x Satelliten);
+    je Sektor endet die Suche bei TARGET_PER_SECTOR Treffern.
+    Rueckgabe: name -> [(stamp, sat), ...] zeitlich aufsteigend."""
     t0 = datetime.now(timezone.utc) - timedelta(minutes=LATENCY_MIN)
     t0 = t0.replace(minute=(t0.minute // SLOT_MIN) * SLOT_MIN,
                     second=0, microsecond=0)
-    hits: dict[str, list[str]] = {name: [] for name, *_ in SECTORS}
+    hits: dict[str, list[tuple[str, str]]] = {n: [] for n, *_ in SECTORS}
 
-    async def probe(name: str, stamp: str) -> tuple[str, str, bool]:
+    async def probe(name: str, sat: str, stamp: str):
         bb = SECTOR_BOX[name]
-        img = await fetch_wms(client, PROBE_LAYER, stamp, bb, 160,
+        img = await fetch_wms(client, SAT_LAYERS[sat][0], stamp, bb, 160,
                               max(1, round(160 * (bb[3]-bb[1])
                                            / (bb[2]-bb[0]))))
         ok = img is not None and _mean(img.convert("RGB")) >= GRANULE_MEAN
-        return name, stamp, ok
+        return name, sat, stamp, ok
 
     for k in range(MAX_SLOTS):
         lacking = [n for n, v in hits.items() if len(v) < TARGET_PER_SECTOR]
@@ -151,10 +164,12 @@ async def find_granules(client) -> dict[str, list[str]]:
             break
         stamp = (t0 - timedelta(minutes=SLOT_MIN * k)) \
             .strftime("%Y-%m-%dT%H:%M:%SZ")
-        for name, s, ok in await asyncio.gather(
-                *(probe(n, stamp) for n in lacking)):
-            if ok:
-                hits[name].append(s)
+        tasks = [probe(n, sat, stamp) for n in lacking for sat in SAT_LAYERS]
+        for name, sat, s, ok in await asyncio.gather(*tasks):
+            if ok and len(hits[name]) < TARGET_PER_SECTOR + 1:
+                hits[name].append((s, sat))
+    for v in hits.values():
+        v.sort()
     return hits
 
 
@@ -186,16 +201,15 @@ def draw_edge(mosaic: Image.Image, edge: Image.Image, color) -> None:
 
 
 async def build_sector(client, idx: int, name: str,
-                       stamps: list[str]) -> Image.Image:
-    """Panel: AUSSCHLIESSLICH aktuelle Ueberfluege — kein Komposit-
-    Unterbau, Rest bleibt schwarz (bewusst: alte Daten wuerden zu
-    Fehlinterpretationen einladen). Orange Konturen markieren Rand und
-    Naehte der einzelnen Passes; Kuestenlinien zur Orientierung."""
+                       entries: list[tuple[str, str]]) -> Image.Image:
+    """Panel: AUSSCHLIESSLICH aktuelle Ueberfluege (alle Satelliten) —
+    Rest bleibt schwarz. Orange Konturen markieren Rand und Naehte der
+    einzelnen Passes; Kuestenlinien zur Orientierung."""
     bb = SECTOR_BOX[name]
     h = SECTOR_H[name]
     mosaic = Image.new("RGB", (PW, h), (0, 0, 0))
-    for stamp in sorted(stamps):                   # alt -> neu, neu oben
-        img = await fetch_wms(client, LAYERS[idx][1], stamp, bb, PW, h)
+    for stamp, sat in entries:                     # alt -> neu, neu oben
+        img = await fetch_wms(client, SAT_LAYERS[sat][idx], stamp, bb, PW, h)
         if img is not None:
             m = coverage_paste(mosaic, img.convert("RGB"))
             draw_edge(mosaic, mask_edge(m), EDGE_GRANULE)
@@ -266,12 +280,15 @@ async def main() -> None:
     except OSError:
         f = f_small = ImageFont.load_default()
 
-    gran_stamps = sorted(set(
-        s for v in sector_info.values() for s in v["times"]))
-    n_gran = len(gran_stamps)
+    gran_entries = sorted(set(
+        e for v in sector_info.values() for e in v["times"]))
+    n_gran = len(gran_entries)
+    sats_used = sorted({sat for _s, sat in gran_entries})
     empty_sectors = [n for n, v in sector_info.items() if not v["times"]]
-    span = gran_stamps[0][11:16] + "-" + gran_stamps[-1][11:16] + "Z"
-    title = f"VIIRS NOAA-20 Ueberfluege {span} ({n_gran} Granulen)"
+    span = (gran_entries[0][0][11:16] + "-"
+            + gran_entries[-1][0][11:16] + "Z")
+    title = (f"VIIRS {'/'.join(sats_used)} Ueberfluege {span} "
+             f"({n_gran} Granulen)")
     if empty_sectors:
         title += f" | {'/'.join(empty_sectors)}: kein Pass (schwarz)"
     title += f" — abgerufen {now:%Y-%m-%d %H:%M}Z"
@@ -281,9 +298,9 @@ async def main() -> None:
         if not info["times"]:
             return "kein Ueberflug im Fenster (8 h) — keine Daten"
         by_day: dict[str, list[str]] = {}
-        for s in info["times"]:
+        for s, sat in info["times"]:
             day = f"{s[8:10]}.{s[5:7]}."
-            by_day.setdefault(day, []).append(s[11:16] + "Z")
+            by_day.setdefault(day, []).append(f"{s[11:16]}Z {sat}")
         return "  ".join(d + " " + " · ".join(ts)
                          for d, ts in by_day.items())
 
@@ -325,11 +342,17 @@ async def main() -> None:
                      "bbox": SECTOR_BOX[name],
                      "h": SECTOR_H[name],
                      "mode": sector_info[name]["mode"],
-                     "granules": sector_info[name]["times"],
+                     "granules": [
+                         {"t": s, "sat": sat,
+                          "layers": list(SAT_LAYERS[sat])}
+                         for s, sat in sector_info[name]["times"]],
                      "zoom": {
-                         "time": (sector_info[name]["times"][-1]
+                         "time": (sector_info[name]["times"][-1][0]
                                   if sector_info[name]["times"] else None),
-                         "layers": [lyr for _l, lyr in LAYERS]}}
+                         "layers": (list(SAT_LAYERS[
+                             sector_info[name]["times"][-1][1]])
+                             if sector_info[name]["times"]
+                             else [lyr for _l, lyr in LAYERS])}}
                     for name, *_r in SECTORS],
     }, indent=1))
     print(f"Aktualisiert: {LATEST} ({LATEST.stat().st_size // 1024} KB) — "
