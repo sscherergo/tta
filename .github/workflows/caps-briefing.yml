@@ -14,10 +14,11 @@ name: CAPS Route Briefing
 
 on:
   schedule:
-    # 00Z-Lauf: Publikation gemessen ~06:07-06:37, Reserve bis 08:xx
-    - cron: "7,22,37,52 6,7,8 * * *"
-    # 12Z-Lauf: Publikation gemessen ~18:07-18:37, Reserve bis 20:xx
-    - cron: "7,22,37,52 18,19,20 * * *"
+    # Rund um die Uhr alle 15 min: robust gegen GitHubs Cron-Ausfaelle
+    # und Registrierungs-Verzoegerungen. Kostenlos (public repo), der
+    # Check-Job endet in ~20 s; state/last_run.txt garantiert trotzdem
+    # genau EIN Briefing je Modelllauf (typ. ~06:45 und ~18:45 UTC).
+    - cron: "7,22,37,52 * * * *"
   workflow_dispatch:
     inputs:
       force:
