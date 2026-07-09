@@ -11,7 +11,12 @@ name: Sat Movie
 
 on:
   schedule:
-    - cron: "37 */3 * * *"   # 8x taeglich — Granulen-Daten (Per-Pass) rechtfertigen dichten Takt
+    # Stuendlich: neue Granulen erscheinen (Orbit ~101 min + LANCE-
+    # Latenz 1,5-3 h) etwa alle 1-2 h — der Stundentakt haelt die
+    # Zusatzwartezeit minimal. Aenderungserkennung committet nur bei
+    # wirklich neuen Ueberfluegen; leere Ticks enden in Sekunden.
+    # Minute :45 = versetzt zu den Briefing-Ticks (:07/:22/:37/:52).
+    - cron: "45 * * * *"
   workflow_dispatch: {}
 
 permissions:
