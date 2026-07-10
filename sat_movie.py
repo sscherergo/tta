@@ -46,6 +46,15 @@ ROW_LABELS = ["True Color",
 LAYERS = list(zip(ROW_LABELS, SAT_LAYERS["N20"]))
 OVERLAY = "Coastlines_15m"
 
+# Hauptplaetze als Orientierungsmarker in den Panels (Sektor-Fenster
+# ueberlappen in Polarprojektion — ein Platz kann in zwei Panels liegen)
+MAIN_AIRPORTS = {
+    "CYFB": (63.756, -68.556), "CYIO": (72.683, -77.967),
+    "CYRB": (74.717, -94.969), "CYHK": (68.636, -95.850),
+    "CYCB": (69.108, -105.138), "PABR": (71.285, -156.766),
+    "PAOM": (64.512, -165.445),
+}
+
 LAT_MIN, LAT_MAX = 62.0, 77.0
 SECTORS = [("West", -168.0, -133.0), ("Zentral", -133.0, -98.0),
            ("Ost", -98.0, -63.0)]
@@ -217,6 +226,25 @@ async def build_sector(client, idx: int, name: str,
                             fmt="image/png", transparent=True)
     if coast is not None:
         mosaic.paste(coast, (0, 0), coast.convert("RGBA"))
+
+    # Hauptplaetze markieren (rotes Fadenkreuz + ICAO)
+    d = ImageDraw.Draw(mosaic)
+    try:
+        f_ap = ImageFont.truetype(FONT_BOLD, 13)
+    except OSError:
+        f_ap = ImageFont.load_default()
+    for icao, (lat, lon) in MAIN_AIRPORTS.items():
+        X, Y = project(lat, lon)
+        if not (bb[0] <= X <= bb[2] and bb[1] <= Y <= bb[3]):
+            continue
+        px = round((X - bb[0]) / (bb[2] - bb[0]) * PW)
+        py = round((bb[3] - Y) / (bb[3] - bb[1]) * h)
+        d.ellipse([px - 6, py - 6, px + 6, py + 6],
+                  outline=(255, 60, 60), width=2)
+        d.line([px - 11, py, px - 6, py], fill=(255, 60, 60), width=2)
+        d.line([px + 6, py, px + 11, py], fill=(255, 60, 60), width=2)
+        d.text((px + 9, py - 18), icao, font=f_ap, fill=(255, 90, 90),
+               stroke_width=2, stroke_fill=(0, 0, 0))
     return mosaic
 
 
