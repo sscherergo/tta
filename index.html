@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>TTA Wetter-Cockpit</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #0d1117; color: #e6edf3;
+         font: 15px/1.45 -apple-system, "SF Pro Text", sans-serif; }
+  header { position: sticky; top: 0; background: #161b22ee;
+           backdrop-filter: blur(6px); padding: 12px 16px;
+           border-bottom: 1px solid #30363d; }
+  header h1 { margin: 0; font-size: 17px; }
+  #meta { font-size: 12.5px; color: #8b949e; margin-top: 2px; }
+  #meta .warn { color: #f0883e; font-weight: 600; }
+  main { padding: 12px; max-width: 780px; margin: 0 auto; }
+  section { margin-bottom: 18px; }
+  h2 { font-size: 14px; text-transform: uppercase; letter-spacing: .06em;
+       color: #8b949e; margin: 0 0 8px 2px; }
+  .card { background: #161b22; border: 1px solid #30363d;
+          border-radius: 10px; overflow: hidden; }
+  pre { margin: 0; padding: 12px; overflow-x: auto; font-size: 11.5px;
+        line-height: 1.35; -webkit-overflow-scrolling: touch; }
+  .ok   { color: #3fb950; font-weight: 700; }
+  .warn { color: #f0883e; font-weight: 700; }
+  .nogo { color: #f85149; font-weight: 700; }
+  .imgbox { position: relative; min-height: 90px; display: flex;
+            align-items: center; justify-content: center; }
+  .imgbox img { width: 100%; height: auto; display: block; }
+  .loadbtn { background: #21262d; color: #58a6ff; border: 1px solid #30363d;
+             border-radius: 8px; padding: 10px 16px; font-size: 14px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .grid .card { font-size: 13px; }
+  .grid .label { padding: 6px 10px; color: #8b949e; font-size: 12px; }
+  .links a { display: inline-block; margin: 4px 8px 4px 0; color: #58a6ff;
+             text-decoration: none; font-size: 13.5px; }
+  .btnrow { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .btnrow a { flex: 1; text-align: center; background: #21262d;
+              border: 1px solid #30363d; border-radius: 8px; padding: 10px;
+              color: #e6edf3; text-decoration: none; font-size: 13.5px; }
+  #dashonly { padding: 12px; }
+  footer { color: #484f58; font-size: 11px; text-align: center;
+           padding: 16px 0 28px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Tribute to Amundsen — Wetter-Cockpit</h1>
+  <div id="meta">lade Briefing-Status …</div>
+</header>
+<main>
+
+<section>
+  <h2>Machbarkeits-Dashboard (Block 0)</h2>
+  <div class="card"><pre id="dashonly">lade …</pre></div>
+  <div class="btnrow">
+    <a href="briefing.txt">Volles Briefing (Text)</a>
+    <a href="https://github.com/OWNER/REPO/actions" target="_blank">Neu erzeugen ↗</a>
+  </div>
+</section>
+
+<section>
+  <h2>Ampel-Karte</h2>
+  <div class="card imgbox" data-src="dashboard_map.png"></div>
+</section>
+
+<section>
+  <h2>Satellit (VIIRS, antippen zum Laden)</h2>
+  <div class="grid" id="satgrid"></div>
+</section>
+
+<section>
+  <h2>SIGWX / GFA (amtlich, antippen zum Laden)</h2>
+  <div style="font-size:12.5px;color:#8b949e;margin:2px 0 8px">
+    Kanada: GFA Clouds &amp; Weather (NAV CANADA, 4×/Tag) — Panels T+0/+6/+12.
+    Alaska: AAWU Significant Weather (2×/Tag). Spiegel aktualisiert ~05:55/11:55/17:55/23:55Z.</div>
+
+  <div style="font-size:13px;color:#c9d1d9;margin:6px 0 4px">GFACN37 — Arctic (Resolute/Pond-Korridor)</div>
+  <div class="card imgbox" data-src="sigwx/gfacn37_000.jpg"></div>
+  <div style="height:6px"></div>
+  <div class="card imgbox" data-src="sigwx/gfacn37_006.jpg"></div>
+  <div style="height:6px"></div>
+  <div class="card imgbox" data-src="sigwx/gfacn37_012.jpg"></div>
+
+  <div style="font-size:13px;color:#c9d1d9;margin:12px 0 4px">GFACN36 — Nunavut (Iqaluit/Gjoa/Cambridge)</div>
+  <div class="card imgbox" data-src="sigwx/gfacn36_000.jpg"></div>
+  <div style="height:6px"></div>
+  <div class="card imgbox" data-src="sigwx/gfacn36_006.jpg"></div>
+  <div style="height:6px"></div>
+  <div class="card imgbox" data-src="sigwx/gfacn36_012.jpg"></div>
+
+  <div style="font-size:13px;color:#c9d1d9;margin:12px 0 4px">GFACN35 — Yukon/NWT (Inuvik-Ausweichrouten)</div>
+  <div class="card imgbox" data-src="sigwx/gfacn35_000.jpg"></div>
+  <div style="height:6px"></div>
+  <div class="card imgbox" data-src="sigwx/gfacn35_006.jpg"></div>
+
+  <div style="font-size:13px;color:#c9d1d9;margin:12px 0 4px">Alaska — AAWU Significant Weather</div>
+  <div class="card imgbox" data-src="sigwx/aawu_sigwx24.png"></div>
+  <div style="height:6px"></div>
+  <div class="card imgbox" data-src="sigwx/aawu_sigwx36.png"></div>
+  <div style="height:6px"></div>
+  <div class="card imgbox" data-src="sigwx/aawu_sigwx48.png"></div>
+
+  <div style="font-size:13px;color:#c9d1d9;margin:12px 0 4px">
+    Nordatlantik (inkl. Grönland) — WAFC Mid-Level SIGWX (FL100–450) — Festtermine 00/06/12/18Z, rollierend: Datum/Zeit auf der Karte!</div>
+  <div class="card imgbox" data-src="sigwx/nat_0000.png"></div>
+  <div style="height:6px"></div>
+  <div class="card imgbox" data-src="sigwx/nat_0600.png"></div>
+  <div style="height:6px"></div>
+  <div class="card imgbox" data-src="sigwx/nat_1200.png"></div>
+  <div style="height:6px"></div>
+  <div class="card imgbox" data-src="sigwx/nat_1800.png"></div>
+
+  <div style="font-size:13px;color:#c9d1d9;margin:12px 0 4px">
+    Grönland + Island — IMO SIGWX Low-Level (SFC–FL150) — Festtermine 06/12/18Z, rollierend: Datum/Zeit auf der Karte!</div>
+  <div class="card imgbox" data-src="sigwx/iceland_06.png"></div>
+  <div style="height:6px"></div>
+  <div class="card imgbox" data-src="sigwx/iceland_12.png"></div>
+  <div style="height:6px"></div>
+  <div class="card imgbox" data-src="sigwx/iceland_18.png"></div>
+
+  <div class="links" style="margin-top:8px">
+    <a href="https://en.vedur.is/weather/aviation/sigwx/" target="_blank">IMO SIGWX-Seite</a>
+    <a href="https://www.dmi.dk/erhverv/luftfart" target="_blank">DMI Luftfahrt (Nuuk FIR)</a>
+    <a href="https://plan.navcanada.ca/" target="_blank">CFPS (amtl. Briefing Kanada)</a>
+  </div>
+</section>
+
+<section>
+  <h2>Verifikation</h2>
+  <div class="card imgbox" data-src="verification/briefing_verification.png"></div>
+  <div style="height:8px"></div>
+  <div class="card imgbox" data-src="verification/fog_verification.png"></div>
+</section>
+
+<section>
+  <h2>Archive</h2>
+  <div class="links">
+    <a href="https://github.com/OWNER/REPO/tree/main/briefings">Briefings (10)</a>
+    <a href="https://github.com/OWNER/REPO/tree/main/maps">Karten (10)</a>
+    <a href="https://github.com/OWNER/REPO/tree/main/sat/archive">Satellit (10/Platz)</a>
+    <a href="https://github.com/OWNER/REPO/tree/main/verification/archive">Verifikation</a>
+  </div>
+</section>
+
+<footer>Planungshilfe — ersetzt kein amtliches Briefing und keine PIC-Entscheidung.</footer>
+</main>
+
+<script>
+const AIRPORTS = ["CYFB","CYIO","CYRB","CYHK","CYCB","PABR","PAOM"];
+const bust = "?t=" + Math.floor(Date.now() / 300000);   // 5-min-Cachebrecher
+
+// --- Briefing laden: Kopf + Block 0 inline, farbcodiert -------------------
+fetch("briefing.txt" + bust).then(r => r.text()).then(t => {
+  const lines = t.split("\n");
+  const meta = document.getElementById("meta");
+  const erz = lines.find(l => l.includes("erzeugt")) || "";
+  const lauf = lines.find(l => l.startsWith("VORHERSAGE:")) || "";
+  const alter = (lauf.match(/Alter ([\d.]+) h/) || [])[1];
+  meta.innerHTML = erz.replace("NWP-ROUTENBRIEFING — ", "")
+    + (lauf ? "<br>" + lauf.replace("VORHERSAGE: ", "") : "");
+  // Warnung nur, wenn ein NEUERER Lauf bereits publiziert sein muesste
+  // (Publikation gemessen: Lauf + ~6.7 h). Sonst ist hohes Alter normal.
+  const rm = lauf.match(/Modelllauf (\d{4})(\d{2})(\d{2}) (\d{2})/);
+  if (rm) {
+    const runT = Date.UTC(+rm[1], rm[2] - 1, +rm[3], +rm[4]);
+    const c = new Date(Date.now() - 6.7 * 3600 * 1000);
+    const expRun = Date.UTC(c.getUTCFullYear(), c.getUTCMonth(),
+                            c.getUTCDate(), c.getUTCHours() >= 12 ? 12 : 0);
+    if (runT < expRun) {
+      meta.innerHTML += ' <span class="warn">⚠ Neuerer Modelllauf ist ' +
+        'publiziert — Briefing neu erzeugen (oder Polling-Tick abwarten)</span>';
+    } else if (alter && parseFloat(alter) > 14) {
+      meta.innerHTML += ' <span style="color:#8b949e">(hohes Lauf-Alter ' +
+        'ist um diese Uhrzeit normal — kein neuerer Lauf verfügbar)</span>';
+    }
+  } else if (alter && parseFloat(alter) > 14) {
+    meta.innerHTML += ' <span class="warn">⚠ Lauf aelter als erwartet — ' +
+      'ggf. manuell neu erzeugen</span>';
+  }
+
+  const b0end = lines.findIndex(l => l.startsWith("BLOCK 1"));
+  const block0 = lines.slice(0, b0end > 0 ? b0end : 200).join("\n")
+    .replace(/NOGO/g, '<span class="nogo">NOGO</span>')
+    .replace(/WARN/g, '<span class="warn">WARN</span>')
+    .replace(/\bOK\b/g, '<span class="ok">OK</span>');
+  document.getElementById("dashonly").innerHTML = block0;
+}).catch(() => {
+  document.getElementById("dashonly").textContent =
+    "briefing.txt nicht erreichbar — Verbindung pruefen.";
+});
+
+// --- Bilder erst auf Tipp laden (Bandbreite!) ------------------------------
+function armImgBox(box, src, label) {
+  const btn = document.createElement("button");
+  btn.className = "loadbtn";
+  btn.textContent = (label ? label + " " : "") + "laden";
+  btn.onclick = () => {
+    const img = new Image();
+    img.src = src + bust;
+    img.alt = src;
+    box.replaceChildren(img);
+    img.onclick = () => window.open(src + bust);
+  };
+  box.replaceChildren(btn);
+}
+document.querySelectorAll(".imgbox[data-src]").forEach(b =>
+  armImgBox(b, b.dataset.src));
+
+// --- Satelliten-Raster ------------------------------------------------------
+const grid = document.getElementById("satgrid");
+AIRPORTS.forEach(icao => {
+  const card = document.createElement("div");
+  card.className = "card";
+  const label = document.createElement("div");
+  label.className = "label";
+  label.textContent = icao;
+  const box = document.createElement("div");
+  box.className = "imgbox";
+  armImgBox(box, "sat/" + icao + ".jpg", icao);
+  card.append(label, box);
+  grid.append(card);
+});
+</script>
+</body>
+</html>
