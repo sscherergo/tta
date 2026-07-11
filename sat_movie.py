@@ -129,7 +129,9 @@ LATEST = OUT_DIR / "latest.jpg"
 META = OUT_DIR / "meta.json"
 SLOT_MIN = 6
 MAX_SLOTS = 80                  # 80 x 6 min = 8 h Suchtiefe (Orbit + Latenz)
-TARGET_PER_SECTOR = 3           # Granulen je Sektor (2-3 Ueberfluege)
+TARGET_PER_SECTOR = 4           # Treffer je Sektor: 1 mehr als vorher —
+                                 # versetzte aeltere Swaths (oft SNPP)
+                                 # fuellen Flaechen, Neuestes bleibt oben           # Granulen je Sektor (2-3 Ueberfluege)
 GRANULE_MEAN = 2.0
 DIFF_MEAN = 3.0
 LATENCY_MIN = 30                # Suche beginnt nahe jetzt: schnell
