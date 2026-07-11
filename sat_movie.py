@@ -18,6 +18,7 @@ from __future__ import annotations
 import asyncio
 import io
 import json
+import re
 import math
 import sys
 from datetime import datetime, timedelta, timezone
@@ -40,6 +41,54 @@ SAT_LAYERS = {
     "SNPP": ("VIIRS_SNPP_CorrectedReflectance_TrueColor_Granule",
              "VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11_Granule"),
 }
+
+
+async def discover_layers(client) -> None:
+    """Fragt GIBS-GetCapabilities und passt SAT_LAYERS/OVERLAY an die
+    tatsaechlich existierenden Layernamen an. Nie mehr raten: nicht
+    vorhandene Satelliten werden mit Logzeile uebersprungen, umbenannte
+    Layer (auch Kuestenlinien) per Muster gefunden. Bei Fehlschlag der
+    Abfrage bleiben die statischen Namen als Fallback."""
+    global OVERLAY
+    try:
+        r = await client.get(WMS, params={"SERVICE": "WMS",
+                                          "REQUEST": "GetCapabilities",
+                                          "VERSION": "1.1.1"})
+        r.raise_for_status()
+        names = set(re.findall(r"<Name>([^<]+)</Name>", r.text))
+    except httpx.HTTPError as e:
+        print(f"[Discover] Capabilities nicht abrufbar ({e}) — "
+              f"nutze statische Layernamen")
+        return
+    if len(names) < 50:
+        print("[Discover] Capabilities unplausibel klein — statische Namen")
+        return
+
+    def find(tag: str, band: str) -> str | None:
+        pat = re.compile(rf"VIIRS_{tag}.*{band}.*_Granule$")
+        hits = sorted(n for n in names if pat.search(n))
+        return hits[0] if hits else None
+
+    for key, tag in (("N20", "NOAA20"), ("N21", "NOAA21"),
+                     ("SNPP", "SNPP")):
+        tc = find(tag, "TrueColor")
+        sf = find(tag, r"M3-I3-M11")
+        if tc and sf:
+            if (tc, sf) != SAT_LAYERS.get(key):
+                print(f"[Discover] {key}: Layernamen angepasst -> {tc}")
+            SAT_LAYERS[key] = (tc, sf)
+        else:
+            SAT_LAYERS.pop(key, None)
+            print(f"[Discover] {key}: keine Granule-Layer in GIBS — "
+                  f"Satellit uebersprungen")
+    coasts = sorted(n for n in names if "Coastlines" in n)
+    if OVERLAY not in names and coasts:
+        print(f"[Discover] Kuestenlinien: {OVERLAY} fehlt -> {coasts[0]}")
+        OVERLAY = coasts[0]
+    elif OVERLAY not in names:
+        print("[Discover] Keine Kuestenlinien-Layer gefunden — ohne Overlay")
+        OVERLAY = None
+    print(f"[Discover] aktive Satelliten: {sorted(SAT_LAYERS)}")
 ROW_LABELS = ["True Color",
               "Snow/Fog-RGB (weiss=Nebel/Wasserwolke, tuerkis=Eis)"]
 # Fuer meta.json/Viewer-Beschriftung (Layer-Referenz: N20)
@@ -135,8 +184,9 @@ async def fetch_wms(client, layers: str, time: str | None, bbox, w: int,
         r = await client.get(WMS, params=params, timeout=120.0)
         ctype = r.headers.get("content-type", "")
         if r.status_code != 200 or not ctype.startswith("image"):
-            body = r.text[:200].replace("\n", " ") if hasattr(r, "text") else ""
-            print(f"[WMS {r.status_code} {ctype}] {layers} {time}: {body}",
+            body = re.sub(r"<[^>]+>", " ", r.text) if hasattr(r, "text") else ""
+            body = re.sub(r"\s+", " ", body).strip()[:180]
+            print(f"[WMS {r.status_code}] {layers} {time}: {body}",
                   file=sys.stderr)
             return None
         return Image.open(io.BytesIO(r.content))
@@ -222,8 +272,9 @@ async def build_sector(client, idx: int, name: str,
         if img is not None:
             m = coverage_paste(mosaic, img.convert("RGB"))
             draw_edge(mosaic, mask_edge(m), EDGE_GRANULE)
-    coast = await fetch_wms(client, OVERLAY, None, bb, PW, h,
-                            fmt="image/png", transparent=True)
+    coast = (await fetch_wms(client, OVERLAY, None, bb, PW, h,
+                             fmt="image/png", transparent=True)
+             if OVERLAY else None)
     if coast is not None:
         mosaic.paste(coast, (0, 0), coast.convert("RGBA"))
 
@@ -265,6 +316,7 @@ def changed_vs_latest(row: Image.Image) -> bool:
 async def main() -> None:
     now = datetime.now(timezone.utc)
     async with httpx.AsyncClient(follow_redirects=True) as client:
+        await discover_layers(client)
         hits = await find_granules(client)
         print("Granulen je Sektor: " + ", ".join(
             f"{k}={len(v)}" for k, v in hits.items()))
