@@ -104,6 +104,20 @@ MAIN_AIRPORTS = {
     "PAOM": (64.512, -165.445),
 }
 
+# Ausweichplaetze (gruen) mit RECHTWEISENDER Pistenrichtung — identisch
+# zur Tabelle im Briefing-Skript (vor Abflug gegen CFS/Chart Supplement
+# pruefen). Der Balken zeigt die Pistenachse.
+ALT_AIRPORTS = {
+    "CYCY": (70.486,  -68.517,  20.0), "CYAB": (73.006,  -85.047, 130.0),
+    "CYYH": (69.547,  -93.577, 150.0), "CYBB": (68.534,  -89.808,  50.0),
+    "CYCO": (67.817, -115.144, 120.0), "CYHI": (70.763, -117.806,  60.0),
+    "CYPC": (69.361, -124.075,  20.0), "CYUB": (69.433, -133.026, 100.0),
+    "CYEV": (68.304, -133.483,  60.0), "PASC": (70.195, -148.465,  65.0),
+    "PAWI": (70.638, -159.995,  62.0), "PAPO": (68.349, -166.799,  20.0),
+    "PAOT": (66.885, -162.599,  99.0),
+}
+ALT_GREEN = (60, 220, 110)
+
 LAT_MIN, LAT_MAX = 62.0, 77.0
 SECTORS = [("West", -168.0, -133.0), ("Zentral", -133.0, -98.0),
            ("Ost", -98.0, -63.0)]
@@ -296,6 +310,26 @@ async def build_sector(client, idx: int, name: str,
         d.line([px + 6, py, px + 11, py], fill=(255, 60, 60), width=2)
         d.text((px + 9, py - 18), icao, font=f_ap, fill=(255, 90, 90),
                stroke_width=2, stroke_fill=(0, 0, 0))
+
+    # Ausweichplaetze: gruener Balken = Pistenachse. In der Polar-
+    # projektion zeigt Nord nicht nach oben — Bildwinkel je Platz:
+    # delta = Pistenrichtung(true) - (lon - lon0), lon0 = -45.
+    for icao, (lat, lon, hdg) in ALT_AIRPORTS.items():
+        X, Y = project(lat, lon)
+        if not (bb[0] <= X <= bb[2] and bb[1] <= Y <= bb[3]):
+            continue
+        px = round((X - bb[0]) / (bb[2] - bb[0]) * PW)
+        py = round((bb[3] - Y) / (bb[3] - bb[1]) * h)
+        delta = math.radians(hdg - (lon - (-45.0)))
+        dx, dy = math.sin(delta), -math.cos(delta)
+        L = 14
+        p1 = (px - dx * L, py - dy * L)
+        p2 = (px + dx * L, py + dy * L)
+        d.line([p1, p2], fill=(0, 0, 0), width=7)          # Kontur
+        d.line([p1, p2], fill=ALT_GREEN, width=3)          # Pistenachse
+        d.ellipse([px - 2, py - 2, px + 2, py + 2], fill=ALT_GREEN)
+        d.text((px + 8, py + 6), icao, font=f_ap, fill=ALT_GREEN,
+               stroke_width=2, stroke_fill=(0, 0, 0))
     return mosaic
 
 
@@ -401,8 +435,8 @@ async def main() -> None:
     draw.text((FRAME_W - 6, 8), title,
               font=f, fill=(235, 235, 235), anchor="ra")
     draw.text((FRAME_W // 2, CAP + 6),
-              "NUR aktuelle Ueberfluege — schwarz = keine Daten  |  "
-              "orange = Rand/Naht einzelner Passes (Zeiten: gelbe Zeile)",
+              "NUR aktuelle Ueberfluege — schwarz = keine Daten  |  orange = "
+              "Naht/Rand der Passes  |  gruen = Alternates (Balken = Pistenachse true)",
               font=f_small, fill=(220, 220, 220), anchor="ma",
               stroke_width=2, stroke_fill=(0, 0, 0))
 
