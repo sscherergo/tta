@@ -57,6 +57,12 @@
   a, #pdfbtn, .links, footer { display: none !important; }
   img { max-width: 100% !important; page-break-inside: avoid; }
   section { page-break-inside: avoid; }
+  #fullbrief { display: block !important; }
+  #fullbrief, #fullbrief pre, .card, pre {
+    max-height: none !important; height: auto !important;
+    overflow: visible !important; }
+  #fullbrief, #fullbrief .card, #fullbrief pre, #dashonly {
+    page-break-inside: auto !important; }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
 </style>
@@ -80,6 +86,11 @@
   </div>
 </section>
 
+<section id="fullbrief" style="display:none">
+  <h2>Briefing Blocks 1–3 (CAPS-Rohdaten, Nebelsicht, METAR/TAF)</h2>
+  <div class="card"><pre id="fullpre"></pre></div>
+</section>
+  
 <section>
   <h2>Ampel-Karte</h2>
   <div class="card imgbox" data-src="dashboard_map.png"></div>
@@ -243,9 +254,19 @@ AIRPORTS.forEach(icao => {
   grid.append(card);
 });
 
- // --- PDF-Export: alles laden, dann Druckdialog -------------------------------
-document.getElementById("pdfbtn").onclick = () => {
+// --- PDF-Export: alles laden, dann Druckdialog -------------------------------
+document.getElementById("pdfbtn").onclick = async () => {
   const btn = document.getElementById("pdfbtn");
+  btn.textContent = "lade Volltext …";
+  try {
+    const t = await (await fetch("briefing.txt" + bust)).text();
+    const i = t.indexOf("BLOCK 1");
+    document.getElementById("fullpre").textContent =
+      i > 0 ? t.slice(i) : t;
+  } catch (e) {
+    document.getElementById("fullpre").textContent =
+      "briefing.txt nicht erreichbar - Blocks 1-3 fehlen im Export.";
+  }
   btn.textContent = "lade Bilder …";
   document.querySelectorAll(".imgbox button, #satgrid button")
     .forEach(b => b.click());
@@ -260,7 +281,7 @@ document.getElementById("pdfbtn").onclick = () => {
     } else setTimeout(tick, 500);
   };
   setTimeout(tick, 800);
-}; 
+};
 </script>
 </body>
 </html>
