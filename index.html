@@ -45,12 +45,29 @@
   #dashonly { padding: 12px; }
   footer { color: #484f58; font-size: 11px; text-align: center;
            padding: 16px 0 28px; }
+
+/* --- PDF-Export (Druck): helles Layout, Farben erhalten, Umbruch --- */
+@media print {
+  body { background: #fff !important; color: #111 !important; }
+  .card, section, pre { background: #fff !important; border-color: #bbb !important; }
+  pre { color: #111 !important; white-space: pre-wrap !important;
+        word-break: break-all; font-size: 9.5px !important;
+        line-height: 1.25 !important; }
+  h1, h2, #meta { color: #111 !important; }
+  a, #pdfbtn, .links, footer { display: none !important; }
+  img { max-width: 100% !important; page-break-inside: avoid; }
+  section { page-break-inside: avoid; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
 </style>
 </head>
 <body>
 <header>
   <h1>Tribute to Amundsen — Wetter-Cockpit</h1>
   <div id="meta">lade Briefing-Status …</div>
+ <button id="pdfbtn" style="margin:6px 0 0;padding:6px 14px;background:#1f6feb;
+  color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer">
+  PDF-Export (laedt alle Bilder, dann Druckdialog)</button> 
 </header>
 <main>
 
@@ -225,6 +242,25 @@ AIRPORTS.forEach(icao => {
   card.append(label, box);
   grid.append(card);
 });
+
+ // --- PDF-Export: alles laden, dann Druckdialog -------------------------------
+document.getElementById("pdfbtn").onclick = () => {
+  const btn = document.getElementById("pdfbtn");
+  btn.textContent = "lade Bilder …";
+  document.querySelectorAll(".imgbox button, #satgrid button")
+    .forEach(b => b.click());
+  const t0 = Date.now();
+  const tick = () => {
+    const imgs = [...document.images];
+    const open = imgs.filter(im => !im.complete).length;
+    btn.textContent = `lade Bilder … (${open} offen)`;
+    if (open === 0 || Date.now() - t0 > 20000) {
+      btn.textContent = "PDF-Export (laedt alle Bilder, dann Druckdialog)";
+      window.print();
+    } else setTimeout(tick, 500);
+  };
+  setTimeout(tick, 800);
+}; 
 </script>
 </body>
 </html>
