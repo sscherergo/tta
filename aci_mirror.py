@@ -17,6 +17,8 @@ import re
 import sys
 from pathlib import Path
 
+from urllib.parse import urljoin
+
 import httpx
 
 BASES = ["https://satepsanone.nesdis.noaa.gov/pub/7day/arctic/",
@@ -43,7 +45,7 @@ def newest(names: list[str], spec: dict) -> str | None:
 
 def main() -> None:
     with httpx.Client(timeout=TIMEOUT, follow_redirects=True) as client:
-        names: list[str] = []
+        hrefs: list[str] = []
         base_used = ""
         for base in BASES:
             try:
@@ -54,15 +56,24 @@ def main() -> None:
             if r.status_code != 200:
                 print(f"[aci] {base}: HTTP {r.status_code}")
                 continue
-            names = sorted({n for n in
-                            re.findall(r'href="([^"/?]+\.gif)"', r.text,
-                                       re.I)})
+            # tolerant: absolute/relative Pfade, GIF/JPG/PNG, jede Schreibung
+            hrefs = sorted({h for h in
+                            re.findall(r'href="([^"]+\.(?:gif|jpe?g|png))"',
+                                       r.text, re.I)})
             base_used = base
-            if names:
+            if hrefs:
                 break
-        if not names:
-            print("[aci] kein Verzeichnis lesbar — Abbruch")
+            all_links = re.findall(r'href="([^"]+)"', r.text)[:10]
+            print(f"[aci] {base}: 200, aber keine Bild-Links — "
+                  f"{len(r.text)} B, erste Links: {all_links}")
+            if not all_links:
+                print(f"[aci] Body-Anfang: "
+                      + re.sub(r"\s+", " ", r.text)[:250])
+        if not hrefs:
+            print("[aci] kein Verzeichnis lesbar — Abbruch (Diagnose oben)")
             sys.exit(1)
+        names = [h.split("/")[-1] for h in hrefs]
+        by_name = dict(zip(names, hrefs))
 
         got = 0
         for out_name, spec in CHANNELS.items():
@@ -72,7 +83,8 @@ def main() -> None:
                       f"Beispiele im Index: {names[-8:]}")
                 continue
             try:
-                r = client.get(base_used + pick, headers=UA)
+                r = client.get(urljoin(base_used, by_name[pick]),
+                               headers=UA)
             except httpx.HTTPError as e:
                 print(f"[aci] {pick}: {e}")
                 continue
