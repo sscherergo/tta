@@ -185,7 +185,11 @@ def cfps_sigwx(client: httpx.Client) -> dict[str, bytes]:
         try:
             frames = frames_of(row)
         except (KeyError, TypeError, ValueError) as e:
-            print(f"  [cfps-sigwx] {want}: Strukturfehler {e}")
+            # Schema in EINEM Lauf lernen, statt es ueber mehrere Laeufe
+            # zu erraten: Schluessel und Rohtext der Zeile ausgeben.
+            print(f"  [cfps-sigwx] {want}: Strukturfehler {e}\n"
+                  f"      Schluessel: {list(row)}\n"
+                  f"      text[:400]: {str(row.get('text'))[:400]}")
             continue
         for fr in frames[:2]:
             try:
@@ -240,9 +244,9 @@ def awc_swm_nat(client: httpx.Client) -> dict[str, bytes]:
             base_used = base
             if names:
                 break
+            links = re.findall(r'href="([^"]+)"', r.text)[:6]
             print(f"  [awc] {base}: Index ohne *nat*-Dateien — "
-                  f"erste Links: "
-                  f"{re.findall(chr(39)+'href="([^"]+)"'+chr(39), r.text)[:6]}")
+                  f"erste Links: {links}")
         except httpx.HTTPError as e:
             print(f"  [awc] {base}: {e}")
 
@@ -330,18 +334,24 @@ def main() -> None:
                 if save(data, f"gfacn{region}_{panel}.jpg"):
                     changed += 1
 
-        # --- Mid-Level SIGWX NAT (FL100-450, WAFC Washington) ---
-        total += SWM_SLOTS
+        # --- Mid-Level SIGWX NAT (FL100-450) ---
+        # Wie viele Charts es gibt, bestimmt die Quelle (CFPS liefert bis
+        # zu 4, tgftp nur 1). Feste Slots zu erwarten erzeugte frueher
+        # FEHLT-Zeilen fuer Charts, die es gar nicht gibt.
         swm = awc_swm_nat(client)
-        for k in range(1, SWM_SLOTS + 1):
-            name = f"swm_nat_{k}.png"
-            data = swm.get(name)
-            if data is None:
-                print(f"FEHLT: {name} — AWC-Verzeichnis (Diagnose oben)")
-                continue
+        total += max(1, len(swm))
+        if not swm:
+            print("FEHLT: swm_nat_* — keine Quelle lieferte Mid-Level-SIGWX "
+                  "(Diagnose oben)")
+        for name in sorted(swm):
             ok += 1
-            if save(data, name):
+            if save(swm[name], name):
                 changed += 1
+        if swm:                             # veraltete Slots entfernen, sonst
+            for p in OUT.glob("swm_nat_*.png"):   # zeigt index.html Altlasten
+                if p.name not in swm:
+                    p.unlink()
+                    print(f"  veraltet entfernt: {p.name}")
 
         # --- Uebrige Charts (AAWU, Island): Direktabruf ---
         for c in CHARTS:
