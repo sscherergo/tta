@@ -1,0 +1,35 @@
+# .github/workflows/aci-probe.yml
+#
+# Einmal-Messung (nur manuell): Wie gross ist das ACI-Rohgitter?
+# Laedt netCDF/AREA von AMRDC und schreibt Dimensionen, Variablen und
+# Projektionsattribute ins Log. Committet nichts, laeuft nach keinem
+# Zeitplan — reine Diagnose.
+
+name: ACI Probe (manuell)
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout (nur Skript)
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            aci_probe.py
+          sparse-checkout-cone-mode: false
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Pakete installieren
+        run: pip install httpx netCDF4
+
+      - name: Rohprodukte vermessen
+        run: python aci_probe.py
