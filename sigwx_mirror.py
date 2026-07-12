@@ -174,8 +174,11 @@ def cfps_sigwx(client: httpx.Client) -> dict[str, bytes]:
     k = 0
     for want in ("atlantic", "canada"):
         row = next((c for c in rows_all
-                    if want in str(c.get("image", "")).lower()
-                    and "mid" in str(c.get("image", "")).lower()), None)
+                    if want in (str(c.get("image", ""))
+                                + str(c.get("location", ""))).lower()
+                    and "mid" in (str(c.get("image", ""))
+                                  + str(c.get("location", ""))).lower()),
+                   None)
         if row is None:
             print(f"  [cfps-sigwx] kein {want}-Produkt in den Zeilen")
             continue
