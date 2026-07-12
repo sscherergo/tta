@@ -122,15 +122,45 @@ CHARTS: list[dict] = [
     *({"name": f"aawu_sigwx{h}.png",
        "direct": [f"https://www.weather.gov/images/aawu/sigWx{h}.png"],
        "wrapper": []} for h in (24, 36, 48)),
-    *({"name": f"nat_{v}.png",
-       "direct": [f"https://www.vedur.is/photos/flugkort/PGAE05_EGRR_{v}.png",
-                  f"http://www.vedur.is/photos/flugkort/PGAE05_EGRR_{v}.png"],
-       "wrapper": []} for v in ("0000", "0600", "1200", "1800")),
+    # Mid-Level SIGWX Nordatlantik (FL100-450, WAFC Washington):
+    # Dateinamen werden zur Laufzeit aus dem offenen AWC-Verzeichnis
+    # ermittelt (awc_swm_nat), hier nur Platzhalter fuer die Zaehlung.
     *({"name": f"iceland_{v}.png",
        "direct": [f"https://www.vedur.is/photos/flugkort/sigwx_iceland_{v}.png",
                   f"http://www.vedur.is/photos/flugkort/sigwx_iceland_{v}.png"],
        "wrapper": []} for v in ("06", "12", "18")),
 ]
+
+AWC_SWM_DIR = "https://www.aviationweather.gov/data/products/swm/"
+SWM_SLOTS = 4
+
+
+def awc_swm_nat(client: httpx.Client) -> dict[str, bytes]:
+    """Mid-Level-SIGWX NAT (FL100-450) aus dem offenen AWC-Verzeichnis.
+    Ermittelt die aktuellen Dateinamen selbst (Muster *nat* ohne
+    Datums-Praefix) und liefert bis zu SWM_SLOTS Charts als
+    {'swm_nat_1.png': bytes, ...}."""
+    out: dict[str, bytes] = {}
+    try:
+        r = client.get(AWC_SWM_DIR, headers=UA, follow_redirects=True)
+        if r.status_code != 200:
+            print(f"  [awc] Verzeichnis: HTTP {r.status_code}")
+            return out
+        names = sorted({
+            n for n in re.findall(r'href="([^"/?]+\.(?:png|gif))"', r.text)
+            if "nat" in n.lower() and not re.match(r"^\d{8}", n)})
+    except httpx.HTTPError as e:
+        print(f"  [awc] Verzeichnis: {e}")
+        return out
+    if not names:
+        print("  [awc] keine *nat*-Dateien im Index — Struktur geaendert?")
+        return out
+    for k, n in enumerate(names[:SWM_SLOTS], 1):
+        data = get(client, AWC_SWM_DIR + n)
+        if data:
+            out[f"swm_nat_{k}.png"] = data
+            print(f"  via AWC: {n} -> swm_nat_{k}.png")
+    return out
 
 def get(client: httpx.Client, url: str) -> bytes | None:
     try:
@@ -175,7 +205,20 @@ def main() -> None:
                 if save(data, f"gfacn{region}_{panel}.jpg"):
                     changed += 1
 
-        # --- Uebrige Charts (AAWU, NAT, Island): Direktabruf ---
+        # --- Mid-Level SIGWX NAT (FL100-450, WAFC Washington) ---
+        total += SWM_SLOTS
+        swm = awc_swm_nat(client)
+        for k in range(1, SWM_SLOTS + 1):
+            name = f"swm_nat_{k}.png"
+            data = swm.get(name)
+            if data is None:
+                print(f"FEHLT: {name} — AWC-Verzeichnis (Diagnose oben)")
+                continue
+            ok += 1
+            if save(data, name):
+                changed += 1
+
+        # --- Uebrige Charts (AAWU, Island): Direktabruf ---
         for c in CHARTS:
             total += 1
             data = None
