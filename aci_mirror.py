@@ -150,6 +150,71 @@ def verify_geometry(img: Image.Image) -> float:
     return mean
 
 
+def stamp_strip(img: Image.Image) -> Image.Image | None:
+    """Die Bildunterschrift des Produkts ("ARCTIC COMPOSITE VISIBLE IMAGE
+    12 JUL 26 AT 17 UTC ...") liegt als schwarzer Streifen am unteren Rand,
+    weit UNTERHALB des Korridor-Ausschnitts — im Crop fehlte sie deshalb.
+    Hier wird sie ausgeschnitten und spaeter unter den Crop gesetzt: der
+    Zeitstempel stammt damit vom Produkt selbst, nicht von unserer Uhr.
+
+    Der Streifen wird gesucht, nicht hartkodiert: von unten alle Zeilen mit
+    schwarzem Hintergrund (Median < 15), darin die breiteste Textgruppe."""
+    w, h = img.size
+    g = img.convert("L")
+    px = g.load()
+
+    def row_dark(y: int) -> bool:
+        vals = sorted(px[x, y] for x in range(0, w, 8))
+        return vals[len(vals) // 2] < 15
+
+    y0 = h
+    while y0 > h - 60 and row_dark(y0 - 1):
+        y0 -= 1
+    if y0 >= h - 3:                      # kein Streifen gefunden
+        return None
+
+    cols = [x for x in range(w)
+            if any(px[x, y] > 100 for y in range(y0, h))]
+    if not cols:
+        return None
+    groups, cur = [], [cols[0]]          # Luecken > 30 px trennen Gruppen
+    for x in cols[1:]:
+        if x - cur[-1] > 30:
+            groups.append(cur)
+            cur = [x]
+        else:
+            cur.append(x)
+    groups.append(cur)
+    main = max(groups, key=lambda gr: gr[-1] - gr[0])   # die Hauptzeile
+    return img.crop((max(0, main[0] - 6), y0,
+                     min(w, main[-1] + 7), h))
+
+
+def with_stamp(crop: Image.Image, strip: Image.Image | None,
+               fetched: str) -> Image.Image:
+    """Crop + Zeitstempelzeile des Produkts + eigene Abrufzeit."""
+    bar_h = 22
+    if strip is None:                    # Notfall: wenigstens die Abrufzeit
+        out = Image.new("RGB", (crop.width, crop.height + bar_h), (0, 0, 0))
+        out.paste(crop, (0, 0))
+        ImageDraw.Draw(out).text((6, crop.height + 4),
+                                 f"AMRC Arctic Composite — geholt {fetched}",
+                                 fill=(235, 235, 235))
+        return out
+    s = strip
+    if s.width > crop.width:             # nur verkleinern, nie hochskalieren
+        s = s.resize((crop.width,
+                      max(1, round(s.height * crop.width / s.width))),
+                     Image.LANCZOS)
+    out = Image.new("RGB", (crop.width, crop.height + s.height + bar_h),
+                    (0, 0, 0))
+    out.paste(crop, (0, 0))
+    out.paste(s, (0, crop.height))
+    ImageDraw.Draw(out).text((6, crop.height + s.height + 4),
+                             f"geholt {fetched}", fill=(160, 168, 178))
+    return out
+
+
 def corridor_box(w: int, h: int) -> tuple[int, int, int, int]:
     pts = [ll_to_px(lat, lon, w, h) for lat, lon in CORRIDOR]
     xs = [p[0] for p in pts]
@@ -206,6 +271,7 @@ def main() -> None:
 
     FRAME_DIR.mkdir(exist_ok=True)
     now = datetime.now(timezone.utc).strftime("%Y%m%d%H%M")
+    fetched = datetime.now(timezone.utc).strftime("%d.%m. %H:%MZ")
     if args.local:
         raw = {"vis": Path(args.local).read_bytes(), "ir": None}
     else:
@@ -225,20 +291,29 @@ def main() -> None:
         verify_geometry(img)                    # je Kanal — IR kann abweichen
         box = corridor_box(w, h)
         crop = img.crop(box)
-        crop.save(f"aci_{key}_latest.png", optimize=True)
+        strip = stamp_strip(img)                # Zeitstempelzeile des Produkts
+        if strip is None:
+            print("[aci] WARNUNG: Bildunterschrift nicht gefunden — "
+                  "Ausschnitt ohne Produkt-Zeitstempel!", file=sys.stderr)
+        stamped = with_stamp(crop, strip, fetched)
+        stamped.save(f"aci_{key}_latest.png", optimize=True)
         print(f"[aci] {key}: Quelle {w}x{h}, Ausschnitt "
-              f"{crop.size[0]}x{crop.size[1]} (Box {box})")
+              f"{crop.size[0]}x{crop.size[1]} (Box {box})"
+              + (f" + Zeitstempelzeile {strip.size[0]}x{strip.size[1]}"
+                 if strip else " OHNE Zeitstempel"))
 
         if key == "vis":
+            # Aenderungserkennung auf dem ROHEN Crop — der aufgepraegte
+            # Zeitstempel aendert sich sonst jede Stunde und jeder Lauf
+            # erzeugte einen "neuen" Frame, auch ohne neues Satellitenbild.
             digest = hashlib.sha256(crop.tobytes()).hexdigest()
+            sha_file = FRAME_DIR / "last.sha256"
+            last_digest = (sha_file.read_text().strip()
+                           if sha_file.exists() else "")
             frames = sorted(FRAME_DIR.glob("vis_*.png"))
-            last_digest = ""
-            if frames:
-                last = Image.open(frames[-1]).convert("RGB")
-                if last.size == crop.size:
-                    last_digest = hashlib.sha256(last.tobytes()).hexdigest()
             if digest != last_digest:
-                crop.save(FRAME_DIR / f"vis_{now}.png", optimize=True)
+                stamped.save(FRAME_DIR / f"vis_{now}.png", optimize=True)
+                sha_file.write_text(digest)
                 frames = sorted(FRAME_DIR.glob("vis_*.png"))
                 for old in frames[:-FRAMES_KEEP]:
                     old.unlink()
