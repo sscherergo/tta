@@ -136,12 +136,102 @@ AWC_SWM_DIRS = ["https://aviationweather.gov/data/products/swm/",
 SWM_SLOTS = 4
 
 
+
+SIGWX_KEYS = [                      # Produktschluessel-Kandidaten (CFPS)
+    "SIGWX/MID_LEVEL_ATLANTIC", "SIGWX/MID_LEVEL_CANADA",
+    "SIGWX/MID_ATLANTIC", "SIGWX/MID_CANADA",
+    "SIG_WX/MID_LEVEL_ATLANTIC", "SIG_WX/MID_LEVEL_CANADA",
+    "SIGWX/MIDLVL_ATLANTIC", "SIGWX/MIDLVL_CANADA", "SIGWX",
+]
+
+
+def cfps_sigwx(client: httpx.Client) -> dict[str, bytes]:
+    """Mid-Level-SIGWX (Atlantik + Kanada) ueber die CFPS-API — gleiche
+    Mechanik wie die GFA. Produktschluessel unbekannt -> Kandidaten
+    durchprobieren; jede 200er-Antwort mit Zeilen loggt die echten
+    image/location-Werte (Selbstdiagnose)."""
+    out: dict[str, bytes] = {}
+    rows_all: list = []
+    for key in SIGWX_KEYS:
+        try:
+            r = client.get(CFPS_API,
+                           headers={**UA, "Accept": "application/json"},
+                           params={"site": "CYFB", "image": key},
+                           follow_redirects=True)
+            if r.status_code != 200:
+                continue
+            rows = r.json().get("data", [])
+            if rows:
+                print(f"  [cfps-sigwx] image={key} -> {len(rows)} Zeilen; "
+                      f"Produkte: "
+                      + str([(c.get('image'), c.get('location'))
+                             for c in rows])[:220])
+                rows_all += rows
+                if len({json.dumps(c)[:80] for c in rows_all}) >= 2                         and key != "SIGWX":
+                    break
+        except (httpx.HTTPError, ValueError) as e:
+            print(f"  [cfps-sigwx] image={key}: {e}")
+    if not rows_all:
+        print("  [cfps-sigwx] kein Schluessel lieferte Zeilen")
+        return out
+
+    def frames_of(row):
+        payload = row.get("text")
+        payload = json.loads(payload) if isinstance(payload, str) else payload
+        fls = payload["frame_lists"]
+        fl = max(fls, key=lambda f: str(f.get("sv") or f.get("id")))
+        return fl["frames"]
+
+    k = 0
+    for want in ("atlantic", "canada"):
+        row = next((c for c in rows_all
+                    if want in json.dumps(c).lower()), None)
+        if row is None:
+            print(f"  [cfps-sigwx] kein {want}-Produkt in den Zeilen")
+            continue
+        try:
+            frames = frames_of(row)
+        except (KeyError, TypeError, ValueError) as e:
+            print(f"  [cfps-sigwx] {want}: Strukturfehler {e}")
+            continue
+        for fr in frames[:2]:
+            try:
+                img_id = max(im["id"] for im in fr["images"])
+            except (KeyError, ValueError, TypeError):
+                continue
+            data = get(client, CFPS_IMG.format(id=img_id))
+            if data:
+                k += 1
+                out[f"swm_nat_{k}.png"] = data
+                print(f"  via CFPS-SIGWX: {want} (id {img_id}) "
+                      f"-> swm_nat_{k}.png")
+    return out
+
 def awc_swm_nat(client: httpx.Client) -> dict[str, bytes]:
     """Mid-Level-SIGWX NAT (FL100-450) aus dem offenen AWC-Verzeichnis.
     Ermittelt die aktuellen Dateinamen selbst (Muster *nat* ohne
     Datums-Praefix) und liefert bis zu SWM_SLOTS Charts als
     {'swm_nat_1.png': bytes, ...}."""
     out: dict[str, bytes] = {}
+
+    # Stufe -1: CFPS-SIGWX (gleiche API wie GFA — Stefan-Fund 12.07.)
+    out = cfps_sigwx(client)
+    if out:
+        return out
+
+    # Stufe 0: NOAA-tgftp (offener Faxserver, keine WAF/Geo-Sperre).
+    # 14er-Serie = WAFC-Mid-Level-PNGs; Region steht in der Kartenlegende
+    # (PGNE14 = NAT-Kandidat Nr. 1). PGAE05 = High-Level, bewusst NICHT.
+    TGFTP = "https://tgftp.nws.noaa.gov/fax/"
+    for k, fname in enumerate(("PGNE14.PNG", "PGCE14.PNG",
+                               "PGDE14.PNG", "PGZE14.PNG"), 1):
+        data = get(client, TGFTP + fname)
+        if data:
+            out[f"swm_nat_{k}.png"] = data
+            print(f"  via tgftp: {fname} -> swm_nat_{k}.png")
+    if out:
+        return out
+
     names: list[str] = []
     base_used = ""
     for base in AWC_SWM_DIRS:                 # www-Redirect-Schleifen umgehen
