@@ -37,22 +37,23 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: httpx installieren
-        run: pip install httpx
+      - name: Pakete installieren
+        run: pip install httpx pillow
 
-      - name: Vorherige Bilder vom aci-Branch holen (Change-Detection)
+      - name: Framebestand vom aci-Branch holen
         run: |
           git fetch origin aci --depth 1 2>/dev/null && \
-            git checkout origin/aci -- aci_vis.gif aci_ir.gif \
-              2>/dev/null || echo "Noch kein aci-Branch — Erstlauf."
+            git checkout origin/aci -- . 2>/dev/null || \
+            echo "Noch kein aci-Branch — Erstlauf."
 
       - name: Komposit holen
         run: python aci_mirror.py
 
       - name: Auf Orphan-Branch aci pushen (Force, Historie = 1 Commit)
         run: |
-          ls aci_*.gif 1>/dev/null 2>&1 || { echo "Keine Bilder."; exit 0; }
-          mkdir /tmp/aci && cp aci_*.gif /tmp/aci/
+          ls aci_* 1>/dev/null 2>&1 || { echo "Keine Bilder."; exit 0; }
+          mkdir /tmp/aci && cp aci_* /tmp/aci/
+          [ -d frames ] && cp -r frames /tmp/aci/ || true
           cd /tmp/aci
           git init -q -b aci
           git config user.name  "aci-bot"
