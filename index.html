@@ -46,6 +46,23 @@
   footer { color: #484f58; font-size: 11px; text-align: center;
            padding: 16px 0 28px; }
 
+/* --- Lupe: Vollbild mit Zoom/Pan (Tipp aufs Bild) ------------------------- */
+  .imgbox img { cursor: zoom-in; }
+  #lb { position: fixed; inset: 0; z-index: 99; background: #000000ee;
+        display: none; touch-action: none; overscroll-behavior: contain; }
+  #lb.on { display: block; }
+  #lb img { position: absolute; top: 0; left: 0; transform-origin: 0 0;
+            max-width: none; width: auto; height: auto;
+            image-rendering: -webkit-optimize-contrast; }
+  #lbbar { position: absolute; top: 0; left: 0; right: 0; z-index: 2;
+           display: flex; gap: 8px; align-items: center; padding: 8px 10px;
+           background: linear-gradient(#000000cc, #0000); }
+  #lbbar button { background: #21262db3; color: #e6edf3;
+                  border: 1px solid #30363d; border-radius: 8px;
+                  padding: 8px 12px; font-size: 15px; min-width: 44px; }
+  #lbzoom { color: #8b949e; font-size: 12.5px; margin-left: auto;
+            padding-right: 4px; }
+
 /* --- PDF-Export (Druck): helles Layout, Farben erhalten, Umbruch --- */
 @media print {
   body { background: #fff !important; color: #111 !important; }
@@ -54,7 +71,7 @@
         word-break: break-all; font-size: 9.5px !important;
         line-height: 1.25 !important; }
   h1, h2, #meta { color: #111 !important; }
-  a, #pdfbtn, .links, footer { display: none !important; }
+  a, #pdfbtn, .links, footer, #lb { display: none !important; }
   img { max-width: 100% !important; page-break-inside: avoid; }
   section { page-break-inside: avoid; }
   #fullbrief { display: block !important; }
@@ -100,7 +117,8 @@
   <h2>Arktis-Komposit (NOAA ACI, stündlich, antippen zum Laden)</h2>
   <div style="font-size:12.5px;color:#8b949e;margin:2px 0 8px">
     Alle Sensoren gemischt (VIIRS/AVHRR/GOES/Meteosat/Himawari), 50–90°N,
-    ~3 km. Latenz 2–3 h, Pixelalter variiert — Zeitstempel auf dem Bild!
+    ~4 km/px (Rohgitter 2176², dxKm = 4.0 laut AMRDC-Header).
+    Latenz 2–3 h, Pixelalter variiert — Zeitstempel auf dem Bild!
     Lagebild-Fundament; die VIIRS-Passes darunter bleiben die
     zeitgestempelte Detail-Wahrheit.</div>
   <div style="font-size:13px;color:#c9d1d9;margin:6px 0 4px">
@@ -240,6 +258,117 @@ fetch("briefing.txt" + bust).then(r => r.text()).then(t => {
     "briefing.txt nicht erreichbar — Verbindung pruefen.";
 });
 
+// --- Lupe: Vollbild, Zoom + Pan --------------------------------------------
+// Kein Framework: ein <img> mit transform=translate+scale. Maus (Rad, Ziehen,
+// Doppelklick) und Finger (Pinch, Wischen, Doppeltipp) laufen ueber dieselben
+// Pointer-Events. Zoom haelt den Punkt unter Zeiger/Fingermitte fest.
+const lb = document.createElement("div");
+lb.id = "lb";
+lb.innerHTML =
+  '<div id="lbbar">' +
+  '<button data-a="out">−</button><button data-a="in">+</button>' +
+  '<button data-a="fit">Fit</button><button data-a="one">1:1</button>' +
+  '<span id="lbzoom"></span>' +
+  '<button data-a="close" style="margin-left:8px">✕</button></div>' +
+  '<img alt="">';
+document.body.append(lb);
+const lbImg = lb.querySelector("img");
+const lbZoom = lb.querySelector("#lbzoom");
+let S = 1, TX = 0, TY = 0, fitS = 1;
+const pointers = new Map();
+let pinchD = 0, pinchS = 1, lastTap = 0;
+
+function apply() {
+  lbImg.style.transform = `translate(${TX}px,${TY}px) scale(${S})`;
+  lbZoom.textContent = Math.round(S / fitS * 100) + " %";
+}
+function fit() {
+  const w = lbImg.naturalWidth, h = lbImg.naturalHeight;
+  if (!w) return;
+  fitS = Math.min(innerWidth / w, (innerHeight - 44) / h);
+  S = fitS;
+  TX = (innerWidth - w * S) / 2;
+  TY = 44 + (innerHeight - 44 - h * S) / 2;
+  apply();
+}
+function zoomAt(f, cx, cy) {              // Punkt unter (cx,cy) bleibt fest
+  const ns = Math.min(Math.max(S * f, fitS * 0.5), fitS * 16);
+  const k = ns / S;
+  TX = cx - (cx - TX) * k;
+  TY = cy - (cy - TY) * k;
+  S = ns;
+  apply();
+}
+function openLightbox(src) {
+  lbImg.src = src;
+  lb.classList.add("on");
+  document.body.style.overflow = "hidden";
+  if (lbImg.complete) fit(); else lbImg.onload = fit;
+}
+function closeLightbox() {
+  lb.classList.remove("on");
+  document.body.style.overflow = "";
+  pointers.clear();
+}
+lb.querySelector("#lbbar").onclick = e => {
+  const a = e.target.dataset.a;
+  if (!a) return;
+  if (a === "close") closeLightbox();
+  else if (a === "fit") fit();
+  else if (a === "one") zoomAt(1 / S, innerWidth / 2, innerHeight / 2);
+  else zoomAt(a === "in" ? 1.4 : 1 / 1.4, innerWidth / 2, innerHeight / 2);
+};
+lb.addEventListener("wheel", e => {
+  e.preventDefault();
+  zoomAt(Math.exp(-e.deltaY / 400), e.clientX, e.clientY);
+}, { passive: false });
+lb.addEventListener("pointerdown", e => {
+  if (e.target.closest("#lbbar")) return;
+  lb.setPointerCapture(e.pointerId);
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if (pointers.size === 2) {
+    const [a, b] = [...pointers.values()];
+    pinchD = Math.hypot(a.x - b.x, a.y - b.y);
+    pinchS = S;
+  }
+  const t = Date.now();                    // Doppeltipp / Doppelklick
+  if (pointers.size === 1 && t - lastTap < 300) {
+    zoomAt(S > fitS * 1.5 ? fitS / S : 3, e.clientX, e.clientY);
+  }
+  lastTap = t;
+});
+lb.addEventListener("pointermove", e => {
+  const p = pointers.get(e.pointerId);
+  if (!p) return;
+  if (pointers.size === 1) {               // Pan
+    TX += e.clientX - p.x;
+    TY += e.clientY - p.y;
+    apply();
+  }
+  p.x = e.clientX; p.y = e.clientY;
+  if (pointers.size === 2 && pinchD) {     // Pinch
+    const [a, b] = [...pointers.values()];
+    const d = Math.hypot(a.x - b.x, a.y - b.y);
+    const cx = (a.x + b.x) / 2, cy = (a.y + b.y) / 2;
+    zoomAt(pinchS * d / pinchD / S, cx, cy);
+  }
+});
+const drop = e => {
+  pointers.delete(e.pointerId);
+  if (pointers.size < 2) pinchD = 0;
+};
+lb.addEventListener("pointerup", drop);
+lb.addEventListener("pointercancel", drop);
+addEventListener("keydown", e => {
+  if (!lb.classList.contains("on")) return;
+  if (e.key === "Escape") closeLightbox();
+  if (e.key === "+" || e.key === "=")
+    zoomAt(1.4, innerWidth / 2, innerHeight / 2);
+  if (e.key === "-") zoomAt(1 / 1.4, innerWidth / 2, innerHeight / 2);
+  if (e.key === "0") fit();
+});
+addEventListener("resize", () => { if (lb.classList.contains("on")) fit(); });
+
 // --- Bilder erst auf Tipp laden (Bandbreite!) ------------------------------
 function armImgBox(box, src, label) {
   const btn = document.createElement("button");
@@ -250,7 +379,7 @@ function armImgBox(box, src, label) {
     img.src = src + bust;
     img.alt = src;
     box.replaceChildren(img);
-    img.onclick = () => window.open(src + bust);
+    img.onclick = () => openLightbox(img.src);   // statt neuem Tab: Lupe
   };
   box.replaceChildren(btn);
 }
