@@ -9,7 +9,7 @@ Geometrie-Annahme (Produktspez.: Polstereografie, 50-90N):
 Pol = Bildmitte, 50N = Bildrand; ORIENT_UP_LON = Meridian, der im
 Bild nach oben zeigt. Kalibrierung: aci_debug.png zeigt die
 Vollscheibe mit eingezeichnetem Korridor-Rahmen — passt der Rahmen
-nicht auf die Geografie, ORIENT_UP_LON anpassen (eine Zahl).
+nicht auf die Geografie, ORIENT_UP_LON anpassen (eine Zahl). Test
 
 Ausgaben (Orphan-Branch `aci`):
   aci_vis_movie.gif   5-Frame-Loop VIS, Korridor-Ausschnitt
