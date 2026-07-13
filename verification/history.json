@@ -2668,6 +2668,83 @@
    "gust_kt": null,
    "ceiling_ft": 200,
    "raw": "METAR PABR 121953Z AUTO 06019KT 4SM BR OVC002 02/02 A2971 RMK AO2 VIS 2 NE RAB19E44 SLP060 P0000 T00220017 TSNO $"
+  },
+  {
+   "time": "2026-07-13T11:45:08+00:00",
+   "icao": "CYIO",
+   "vis_km": 0.40225,
+   "cat": "NOGO",
+   "wind_dir": 260,
+   "wind_kt": 9,
+   "gust_kt": null,
+   "ceiling_ft": 400,
+   "raw": "SPECI CYIO 131139Z AUTO 26009KT 1/4SM FG VV004 02/02 A2970 RMK SLP064"
+  },
+  {
+   "time": "2026-07-13T11:45:08+00:00",
+   "icao": "PAOM",
+   "vis_km": 16.09,
+   "cat": "OK",
+   "wind_dir": 270,
+   "wind_kt": 6,
+   "gust_kt": null,
+   "ceiling_ft": 4900,
+   "raw": "SPECI PAOM 131131Z AUTO 27006KT 10SM SCT009 BKN049 OVC085 09/08 A2959 RMK AO2 T00940083 TSNO"
+  },
+  {
+   "time": "2026-07-13T11:45:08+00:00",
+   "icao": "CYRB",
+   "vis_km": 32.18,
+   "cat": "OK",
+   "wind_dir": 290,
+   "wind_kt": 4,
+   "gust_kt": null,
+   "ceiling_ft": 1500,
+   "raw": "METAR CYRB 131100Z 29004KT 20SM -RA SCT002 OVC015 02/02 A2977 RMK ST3SC5 SLP089"
+  },
+  {
+   "time": "2026-07-13T11:45:08+00:00",
+   "icao": "CYHK",
+   "vis_km": 14.481,
+   "cat": "OK",
+   "wind_dir": null,
+   "wind_kt": null,
+   "gust_kt": null,
+   "ceiling_ft": 6600,
+   "raw": "METAR CYHK 131100Z AUTO /////KT 9SM OVC066 08/07 A2958 RMK WIND MISG SLP021"
+  },
+  {
+   "time": "2026-07-13T11:45:08+00:00",
+   "icao": "CYCB",
+   "vis_km": 24.134999999999998,
+   "cat": "OK",
+   "wind_dir": 60,
+   "wind_kt": 10,
+   "gust_kt": null,
+   "ceiling_ft": 5500,
+   "raw": "METAR CYCB 131100Z 06010KT 15SM FEW010 BKN055 BKN085 14/09 A2959 RMK CF1SC4AC2 SLP025 DENSITY ALT 400FT"
+  },
+  {
+   "time": "2026-07-13T11:45:08+00:00",
+   "icao": "CYFB",
+   "vis_km": 48.269999999999996,
+   "cat": "OK",
+   "wind_dir": 270,
+   "wind_kt": 4,
+   "gust_kt": null,
+   "ceiling_ft": 2400,
+   "raw": "METAR CYFB 131100Z 27004KT 30SM OVC024 13/11 A2983 RMK SC8 SLP106"
+  },
+  {
+   "time": "2026-07-13T11:45:08+00:00",
+   "icao": "PABR",
+   "vis_km": 0.40225,
+   "cat": "NOGO",
+   "wind_dir": 100,
+   "wind_kt": 8,
+   "gust_kt": null,
+   "ceiling_ft": 200,
+   "raw": "METAR PABR 131053Z AUTO 10008KT 1/4SM FG VV002 01/01 A2980 RMK AO2 SLP093 T00110011 TSNO RVRNO $"
   }
  ],
  "briefing_forecasts": [
