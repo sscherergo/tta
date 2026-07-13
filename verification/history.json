@@ -2745,6 +2745,83 @@
    "gust_kt": null,
    "ceiling_ft": 200,
    "raw": "METAR PABR 131053Z AUTO 10008KT 1/4SM FG VV002 01/01 A2980 RMK AO2 SLP093 T00110011 TSNO RVRNO $"
+  },
+  {
+   "time": "2026-07-13T18:22:20+00:00",
+   "icao": "CYCB",
+   "vis_km": 24.134999999999998,
+   "cat": "OK",
+   "wind_dir": 30,
+   "wind_kt": 17,
+   "gust_kt": 23,
+   "ceiling_ft": 1000,
+   "raw": "SPECI CYCB 131817Z 03017G23KT 15SM FEW007 BKN010 OVC055 11/09 A2967 RMK SF1SC5SC2 CU EMBD SLP051"
+  },
+  {
+   "time": "2026-07-13T18:22:20+00:00",
+   "icao": "CYHK",
+   "vis_km": 4.827,
+   "cat": "WARN",
+   "wind_dir": 90,
+   "wind_kt": 9,
+   "gust_kt": null,
+   "ceiling_ft": 5000,
+   "raw": "METAR CYHK 131800Z 09009KT 3SM BR FEW001 BKN050 OVC090 09/08 RMK ST1SC5AC2 ALTM 2953 WIND EST VIA CYQB DENSITY ALT MISG"
+  },
+  {
+   "time": "2026-07-13T18:22:20+00:00",
+   "icao": "CYFB",
+   "vis_km": 48.269999999999996,
+   "cat": "OK",
+   "wind_dir": 130,
+   "wind_kt": 6,
+   "gust_kt": null,
+   "ceiling_ft": null,
+   "raw": "METAR CYFB 131800Z 13006KT 30SM FEW020 15/11 A2979 RMK SC2 SLP093"
+  },
+  {
+   "time": "2026-07-13T18:22:20+00:00",
+   "icao": "CYIO",
+   "vis_km": 64.36,
+   "cat": "OK",
+   "wind_dir": 300,
+   "wind_kt": 4,
+   "gust_kt": null,
+   "ceiling_ft": null,
+   "raw": "METAR CYIO 131800Z 30004KT 270V340 40SM FEW023 FEW046 SCT210 05/03 A2974 RMK SC1SC1CC1 SLP076"
+  },
+  {
+   "time": "2026-07-13T18:22:20+00:00",
+   "icao": "CYRB",
+   "vis_km": 40.225,
+   "cat": "OK",
+   "wind_dir": 280,
+   "wind_kt": 9,
+   "gust_kt": null,
+   "ceiling_ft": 2900,
+   "raw": "METAR CYRB 131800Z 28009KT 25SM SCT016 OVC029 03/02 A2978 RMK SC4SC4 SLP092"
+  },
+  {
+   "time": "2026-07-13T18:22:20+00:00",
+   "icao": "PAOM",
+   "vis_km": 16.09,
+   "cat": "OK",
+   "wind_dir": 280,
+   "wind_kt": 13,
+   "gust_kt": null,
+   "ceiling_ft": 4400,
+   "raw": "METAR PAOM 131753Z AUTO 28013KT 10SM BKN044 OVC065 07/04 A2965 RMK AO2 SLP041 60005 T00670039 10094 20056 53013 TSNO"
+  },
+  {
+   "time": "2026-07-13T18:22:20+00:00",
+   "icao": "PABR",
+   "vis_km": 8.045,
+   "cat": "WARN",
+   "wind_dir": 90,
+   "wind_kt": 8,
+   "gust_kt": null,
+   "ceiling_ft": 200,
+   "raw": "METAR PABR 131753Z AUTO 09008KT 5SM BR OVC002 02/01 A2980 RMK AO2 VIS 1 1/2 NE SLP091 T00170011 10017 20011 53001 TSNO $"
   }
  ],
  "briefing_forecasts": [
