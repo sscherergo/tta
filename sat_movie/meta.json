@@ -1,5 +1,5 @@
 {
- "updated": "2026-07-14T15:01:42.392496+00:00",
+ "updated": "2026-07-14T15:31:27.016963+00:00",
  "wms": "https://gibs.earthdata.nasa.gov/wms/epsg3413/best/wms.cgi",
  "mode": "granule-only",
  "frame": {
@@ -69,6 +69,14 @@
    "h": 823,
    "mode": "granule",
    "granules": [
+    {
+     "t": "2026-07-14T12:06:00Z",
+     "sat": "N20",
+     "layers": [
+      "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
+      "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11_Granule"
+     ]
+    },
     {
      "t": "2026-07-14T12:12:00Z",
      "sat": "N20",
