@@ -314,47 +314,58 @@ def save(data: bytes, name: str) -> bool:
 
 
 def main() -> None:
+    # --iceland-only: nur die drei vedur.is-Slot-URLs pruefen. Die Slots
+    # rollen zu IMO-eigenen Zeiten, die um die 4x-Termine des Voll-
+    # spiegels streuen (beobachtet 12./15.07.: 18Z-Karte mal vor, mal
+    # nach 17:50Z) — der Stundentakt via Sat-Workflow schliesst die
+    # Luecke. Hash-Vergleich in save() verhindert Leer-Commits; die
+    # inoffizielle CFPS-API bleibt bewusst beim 4x-Takt.
+    iceland_only = "--iceland-only" in sys.argv
     OUT.mkdir(exist_ok=True)
     ok = changed = total = 0
     with httpx.Client(timeout=TIMEOUT, verify=True) as client:
-        # --- GFA: CFPS zuerst, Legacy-AWWS als Rueckfall je Panel ---
-        gfa_panels = {"37": ("000", "006", "012"),
-                      "36": ("000", "006", "012"),
-                      "35": ("000", "006")}
-        for region, panels in gfa_panels.items():
-            total += len(panels)
-            got = gfa_via_cfps(client, region, panels)
-            for panel in panels:
-                data = got.get(panel)
-                if data is None:
-                    print(f"FEHLT: gfacn{region}_{panel}.jpg — "
-                          f"CFPS ohne Treffer (Diagnose oben)")
-                    continue
-                ok += 1
-                if save(data, f"gfacn{region}_{panel}.jpg"):
-                    changed += 1
+        if not iceland_only:
+            # --- GFA: CFPS zuerst, Legacy-AWWS als Rueckfall je Panel ---
+            gfa_panels = {"37": ("000", "006", "012"),
+                          "36": ("000", "006", "012"),
+                          "35": ("000", "006")}
+            for region, panels in gfa_panels.items():
+                total += len(panels)
+                got = gfa_via_cfps(client, region, panels)
+                for panel in panels:
+                    data = got.get(panel)
+                    if data is None:
+                        print(f"FEHLT: gfacn{region}_{panel}.jpg — "
+                              f"CFPS ohne Treffer (Diagnose oben)")
+                        continue
+                    ok += 1
+                    if save(data, f"gfacn{region}_{panel}.jpg"):
+                        changed += 1
 
         # --- Mid-Level SIGWX NAT (FL100-450) ---
         # Wie viele Charts es gibt, bestimmt die Quelle (CFPS liefert bis
         # zu 4, tgftp nur 1). Feste Slots zu erwarten erzeugte frueher
         # FEHLT-Zeilen fuer Charts, die es gar nicht gibt.
-        swm = awc_swm_nat(client)
-        total += max(1, len(swm))
-        if not swm:
-            print("FEHLT: swm_nat_* — keine Quelle lieferte Mid-Level-SIGWX "
-                  "(Diagnose oben)")
-        for name in sorted(swm):
-            ok += 1
-            if save(swm[name], name):
-                changed += 1
-        if swm:                             # veraltete Slots entfernen, sonst
-            for p in OUT.glob("swm_nat_*.png"):   # zeigt index.html Altlasten
-                if p.name not in swm:
-                    p.unlink()
-                    print(f"  veraltet entfernt: {p.name}")
+        if not iceland_only:
+            swm = awc_swm_nat(client)
+            total += max(1, len(swm))
+            if not swm:
+                print("FEHLT: swm_nat_* — keine Quelle lieferte "
+                      "Mid-Level-SIGWX (Diagnose oben)")
+            for name in sorted(swm):
+                ok += 1
+                if save(swm[name], name):
+                    changed += 1
+            if swm:                         # veraltete Slots entfernen, sonst
+                for p in OUT.glob("swm_nat_*.png"):  # zeigt index Altlasten
+                    if p.name not in swm:
+                        p.unlink()
+                        print(f"  veraltet entfernt: {p.name}")
 
         # --- Uebrige Charts (AAWU, Island): Direktabruf ---
-        for c in CHARTS:
+        charts = [c for c in CHARTS
+                  if not iceland_only or c["name"].startswith("iceland_")]
+        for c in charts:
             total += 1
             data = None
             for u in c["direct"]:
