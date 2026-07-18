@@ -47,17 +47,19 @@ jobs:
       - name: Frame abrufen (Aenderungserkennung im Skript)
         run: python sat_movie.py
 
-      - name: Committen (nur bei neuem Frame)
+      - name: Island-SIGWX-Slots nachfuehren (rollen zu IMO-Zeiten)
+        if: always()
+        run: python sigwx_mirror.py --iceland-only
+        continue-on-error: true
+
+      - name: Committen (nur bei Aenderung)
         run: |
-          if [ ! -d sat_movie ]; then
-            echo "Kein Frame erzeugt — nichts zu committen."
-            exit 0
-          fi
           git config user.name  "sat-movie-bot"
           git config user.email "actions@github.com"
-          git add -A sat_movie/
-          git diff --cached --quiet && echo "Kein neuer Frame." && exit 0
-          git commit -m "Sat-Bild $(date -u '+%Y-%m-%d %H:%MZ')"
+          [ -d sat_movie ] && git add -A sat_movie/
+          [ -d sigwx ]     && git add -A sigwx/
+          git diff --cached --quiet && echo "Keine Aenderung." && exit 0
+          git commit -m "Sat/SIGWX $(date -u '+%Y-%m-%d %H:%MZ')"
           for i in 1 2 3; do
             git push && exit 0
             echo "Push abgewiesen (Versuch $i) — origin einholen"
