@@ -1,0 +1,57 @@
+name: EGPB-BIRK Leg Briefing
+
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Flugtag YYYY-MM-DD (leer = automatisch)"
+        required: false
+        default: ""
+  schedule:
+    # So 19:30Z  -> 12Z-Lauf vom Sonntag, Ziel Montag (Mo 12-18Z = +21..+30h)
+    - cron: "30 19 * * 0"
+    # Mo 08:00Z  -> 00Z-Lauf vom Montag, Ziel Montag (Mo 12-18Z = +12..+18h)
+    - cron: "0 8 * * 1"
+
+concurrency:
+  group: egpb-leg
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  brief:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Pakete installieren
+        run: pip install httpx ecmwf-opendata xarray cfgrib eccodes
+
+      - name: Briefing erzeugen
+        run: |
+          set -e
+          python egpb_leg.py "${{ inputs.date }}" > egpb_leg.txt
+          echo "---"; head -40 egpb_leg.txt
+
+      - name: Committen
+        run: |
+          git config user.name  "egpb-leg-bot"
+          git config user.email "actions@github.com"
+          git add egpb_leg.txt
+          git diff --cached --quiet && echo "Keine Aenderung." && exit 0
+          git commit -m "EGPB-BIRK-Leg-Briefing $(date -u '+%Y-%m-%d %H:%MZ')"
+          for i in 1 2 3; do
+            git push && exit 0
+            git pull --rebase -X theirs && sleep 5
+          done
+          git push
