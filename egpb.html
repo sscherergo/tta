@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EGPB &rarr; BIRK Leg-Briefing</title>
+<style>
+  :root{--bg:#0b0f14;--panel:#121922;--ink:#d7e2ec;--dim:#8aa0b4;--line:#25313f;
+        --ok:#1fbf5b;--warn:#e6a817;--nogo:#e23b3b;--accent:#4aa8ff;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:14px/1.5 "SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace}
+  header{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;
+         justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  h1{font-size:16px;margin:0;letter-spacing:.5px}
+  .wrap{max-width:1100px;margin:0 auto;padding:18px}
+  .ann{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:6px 0 16px}
+  .cell{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+        padding:12px;text-align:center}
+  .cell .lbl{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:1px}
+  .cell .val{font-size:22px;font-weight:700;margin-top:6px}
+  .ok{color:var(--ok)} .warn{color:var(--warn)} .nogo{color:var(--nogo)}
+  .bg-ok{border-color:var(--ok)} .bg-warn{border-color:var(--warn)} .bg-nogo{border-color:var(--nogo)}
+  .fresh{padding:8px 12px;border-radius:6px;margin:10px 0;font-size:13px}
+  .fresh.good{background:#0f2417;color:#9fe6bb;border:1px solid #1c5233}
+  .fresh.mid{background:#2a230c;color:#f0d183;border:1px solid #5c4a12}
+  .fresh.bad{background:#2c1010;color:#f2a3a3;border:1px solid #5c1c1c}
+  .best{color:var(--accent);font-weight:700}
+  pre{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+      padding:14px;overflow-x:auto;white-space:pre;font-size:13px}
+  .links a{color:var(--accent);margin-right:14px;font-size:12px;white-space:nowrap}
+  .meta{color:var(--dim);font-size:12px}
+  .tok-ok{color:var(--ok)} .tok-warn{color:var(--warn)} .tok-nogo{color:var(--nogo)}
+</style>
+</head>
+<body>
+<header>
+  <h1>EGPB &rarr; BIRK &nbsp;LEG-BRIEFING</h1>
+  <span class="meta" id="src">lade &hellip;</span>
+</header>
+
+<div class="wrap">
+  <div id="fresh" class="fresh good">Frische wird gepr&uuml;ft &hellip;</div>
+
+  <div class="ann" id="ann">
+    <div class="cell" id="c-g1"><div class="lbl">G1 Eisfrei-Lvl</div><div class="val">&ndash;</div></div>
+    <div class="cell" id="c-g2"><div class="lbl">G2 On-Top FL080</div><div class="val">&ndash;</div></div>
+    <div class="cell" id="c-g3"><div class="lbl">G3 Wind</div><div class="val">&ndash;</div></div>
+    <div class="cell" id="c-all"><div class="lbl">Gesamt</div><div class="val">&ndash;</div></div>
+  </div>
+
+  <div id="bestline" class="meta" style="margin-bottom:14px"></div>
+
+  <div class="links" style="margin-bottom:14px">
+    Handpflicht:
+    <a href="https://aviationweather.gov/gfa/#wafs" target="_blank">WAFS-Icing</a>
+    <a href="https://aviationweather.gov/sigwx/" target="_blank">SIGWX</a>
+    <a href="https://en.vedur.is/weather/forecasts/aviation/" target="_blank">IMO Island</a>
+    <a href="https://www.windy.com/?62.0,-9.0,6" target="_blank">Windy</a>
+    <a href="https://worldview.earthdata.nasa.gov/" target="_blank">Worldview</a>
+  </div>
+
+  <pre id="txt">lade Rohdaten &hellip;</pre>
+</div>
+
+<script>
+const ORDER = {OK:0, WARN:1, NOGO:2};
+const CLS   = {OK:"ok", WARN:"warn", NOGO:"nogo"};
+const BG    = {OK:"bg-ok", WARN:"bg-warn", NOGO:"bg-nogo"};
+
+function worst(a, b){ return ORDER[b] > ORDER[a] ? b : a; }
+
+function setCell(id, val){
+  const el = document.getElementById(id);
+  el.className = "cell " + (BG[val] || "");
+  const v = el.querySelector(".val");
+  v.textContent = val || "–";
+  v.className = "val " + (CLS[val] || "");
+}
+
+function colorize(text){
+  // Ampel- und Icing-Token einfaerben (Text bleibt monospace)
+  return text
+    .replace(/\bNOGO\b/g, '<span class="tok-nogo">NOGO</span>')
+    .replace(/\bWARN\b/g, '<span class="tok-warn">WARN</span>')
+    .replace(/\bOK\b/g,   '<span class="tok-ok">OK</span>')
+    .replace(/ICE!/g,     '<span class="tok-nogo">ICE!</span>')
+    .replace(/ICE\?/g,    '<span class="tok-warn">ICE?</span>');
+}
+
+async function load(){
+  const bust = Math.floor(Date.now()/3e5);      // 5-min Cache-Buster
+  let raw;
+  try{
+    const r = await fetch("egpb_leg.txt?v="+bust, {cache:"no-store"});
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    raw = await r.text();
+  }catch(e){
+    document.getElementById("txt").textContent = "Keine Daten (egpb_leg.txt): "+e.message
+      + "\nLaeuft der Workflow (egpb-leg.yml) schon durch?";
+    document.getElementById("fresh").className = "fresh bad";
+    document.getElementById("fresh").textContent = "KEINE DATEN";
+    return;
+  }
+
+  // Rohtext + Farbe
+  document.getElementById("txt").innerHTML = colorize(
+    raw.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"));
+
+  // Header/Quelle + Frische
+  const h = raw.match(/erzeugt (\d{4}-\d{2}-\d{2} \d{2}:\d{2}) UTC \| Quelle ([^\n]+)/);
+  const fresh = document.getElementById("fresh");
+  if(h){
+    document.getElementById("src").textContent = "Quelle: " + h[2].trim();
+    const ageH = (Date.now() - Date.parse(h[1].replace(" ","T")+"Z")) / 36e5;
+    const a = ageH.toFixed(1);
+    if(ageH > 20){ fresh.className="fresh bad";
+      fresh.textContent = `ALT: erzeugt vor ${a} h – vor Gate neu rechnen (workflow_dispatch date=Flugtag).`; }
+    else if(ageH > 11){ fresh.className="fresh mid";
+      fresh.textContent = `Achtung: erzeugt vor ${a} h – vor dem Gate aktualisieren.`; }
+    else { fresh.className="fresh good";
+      fresh.textContent = `Frisch: erzeugt vor ${a} h.`; }
+  }
+
+  // Gate-Zeilen parsen (eigenes Format)
+  const re = /^(\d{2})\.\s*(\d{2})Z\s+G1[^:]*:\s*(\w+)\s+G2[^:]*:\s*(\w+)\s+G3[^:]*:\s*(\w+)\s*=>\s*\[(\w+)\](?:\s+Best:\s*(FL\d+)\s+HWmax\s*([+\-]?\d+)\s*kt)?/;
+  let g1="OK", g2="OK", g3="OK", all="OK", any=false;
+  let bestRows=[];
+  raw.split("\n").forEach(line=>{
+    const m = line.match(re);
+    if(!m) return;
+    any=true;
+    g1=worst(g1,m[3]); g2=worst(g2,m[4]); g3=worst(g3,m[5]); all=worst(all,m[6]);
+    if(m[7]) bestRows.push(`${m[1]}.${m[2]}Z → ${m[7]} (HWmax ${m[8]}kt) [${m[6]}]`);
+  });
+
+  if(any){
+    setCell("c-g1",g1); setCell("c-g2",g2); setCell("c-g3",g3); setCell("c-all",all);
+    document.getElementById("bestline").innerHTML =
+      '<span class="best">Empfohlenes Level je Slot:</span> ' + bestRows.join(" &nbsp;|&nbsp; ");
+  }
+}
+load();
+</script>
+</body>
+</html>
