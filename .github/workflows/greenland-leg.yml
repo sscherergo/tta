@@ -18,6 +18,9 @@ concurrency:
   group: greenland-leg
   cancel-in-progress: false
 
+permissions:
+  contents: write
+
 jobs:
   brief:
     runs-on: ubuntu-latest
