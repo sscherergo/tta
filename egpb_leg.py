@@ -226,7 +226,7 @@ def met_block(ids):
 # Hauptlauf
 # ----------------------------------------------------------------------------
 def main():
-    now = dt.datetime.utcnow()
+    now = dt.datetime.now(dt.timezone.utc).replace(tzinfo=None)  # naives UTC
     if len(sys.argv) > 1 and sys.argv[1].strip():
         target_date = dt.date.fromisoformat(sys.argv[1].strip())
     elif now.hour < TARGET_HOURS[-1]:
@@ -267,7 +267,7 @@ def main():
     detail_blocks = []
     for step_h, tg in zip(steps, targets):
         # Profile je Routenpunkt einsammeln
-        rows = []  # (name, fzlvl, {fl:(t,rh,ice,hw)})
+        rows = []  # (name, brg, fzlvl, {fl:(t,rh,ice,hw,spd,wdir)})
         for (name, lat, lon), brg in zip(ROUTE, brgs):
             prof = point_profile(ds, step_h, lat, lon)
             levs = list(prof.keys())
@@ -280,54 +280,62 @@ def main():
                 rh = interp_logp(pt, levs, [prof[p][1] for p in levs])
                 u = interp_logp(pt, levs, [prof[p][2] for p in levs])
                 v = interp_logp(pt, levs, [prof[p][3] for p in levs])
-                per_fl[fl] = (t, rh, ice_flag(t, rh), headwind_kt(u, v, brg))
-            rows.append((name, fz, per_fl))
+                spd = math.hypot(u, v) * MS_TO_KT                    # Betrag [kt]
+                wdir = math.degrees(math.atan2(-u, -v)) % 360.0      # FROM, true
+                per_fl[fl] = (t, rh, ice_flag(t, rh), headwind_kt(u, v, brg), spd, wdir)
+            rows.append((name, brg, fz, per_fl))
 
         # ---- Gate-Bewertung ----
         # G1: existiert ein Level ohne ICE! ueber ALLE Punkte?
-        ice_free_levels = []
-        for fl in LEVELS_FL:
-            if all(r[2][fl][2] != "ICE!" for r in rows):
-                ice_free_levels.append(fl)
+        ice_free_levels = [fl for fl in LEVELS_FL
+                           if all(r[3][fl][2] != "ICE!" for r in rows)]
         g1 = "OK" if ice_free_levels else "NOGO"
 
-        # G2: On-Top FL080 plausibel? FZLVL <= FL080 und FL080 trocken (RH<85) irgendwo kritisch?
-        ontop_ok = all((r[1] <= ONTOP_FL * 100) or (r[2][ONTOP_FL][1] < RH_ICE_Q) for r in rows)
+        # G2: On-Top FL080 plausibel? FZLVL <= FL080 ODER FL080 trocken (RH<85)
+        ontop_ok = all((r[2] <= ONTOP_FL * 100) or (r[3][ONTOP_FL][1] < RH_ICE_Q)
+                       for r in rows)
         g2 = "OK" if ontop_ok else "WARN"
 
-        # G3: bestes eisfreies Level -> kleinster HWmax; Ampel nach Schwelle
-        best_fl, best_hw = None, None
-        for fl in (ice_free_levels or LEVELS_FL):
-            hwmax = max(r[2][fl][3] for r in rows)
-            if best_hw is None or hwmax < best_hw:
-                best_fl, best_hw = fl, hwmax
-        if best_hw is None:
-            g3 = "NOGO"
-        elif best_hw <= HW_OK:
-            g3 = "OK"
-        elif best_hw <= HW_WARN:
-            g3 = "WARN"
+        # G3: bestes EISFREIES Level -> kleinster HWmax; Ampel nach Schwelle
+        if ice_free_levels:
+            best_fl, best_hw = min(
+                ((fl, max(r[3][fl][3] for r in rows)) for fl in ice_free_levels),
+                key=lambda x: x[1])
+            g3 = "OK" if best_hw <= HW_OK else ("WARN" if best_hw <= HW_WARN else "NOGO")
+            best_txt = f"Best: FL{best_fl:03d} HWmax {best_hw:+.0f}kt"
         else:
+            best_fl, best_hw = None, None
             g3 = "NOGO"
+            best_txt = "Best: - (kein eisfreies Level)"
 
         order = {"OK": 0, "WARN": 1, "NOGO": 2}
         overall = max([g1, g2, g3], key=lambda s: order[s])
-        best_txt = f"Best: FL{best_fl:03d} HWmax {best_hw:+.0f}kt" if best_fl else "Best: -"
         L.append(f"{tg:%d}. {tg:%H}Z  G1-Eisfrei-Lvl: {g1:<4} "
                  f"G2-OnTop080: {g2:<4} G3-Wind: {g3:<4} => [{overall}]  {best_txt}")
 
-        # ---- Detailblock ----
+        # ---- Detailblock 1: Temp / RH / Icing / Headwind-Komponente ----
         db = []
         db.append(f"--- {tg:%d.%m.} {tg:%H}Z (Step +{step_h}h) ---")
         hdr = f"{'Punkt':<18}{'FZLVL':>7} |"
         for fl in LEVELS_FL:
             hdr += f"  FL{fl:03d} T/RH/ICE  HW |"
         db.append(hdr)
-        for name, fz, per_fl in rows:
+        for name, brg, fz, per_fl in rows:
             line = f"{name:<18}{fz:>6.0f}ft |"
             for fl in LEVELS_FL:
-                t, rh, ice, hw = per_fl[fl]
+                t, rh, ice, hw, spd, wdir = per_fl[fl]
                 line += f" {t:+5.1f}C {rh:3.0f}% {ice:<4} {hw:+4.0f} |"
+            db.append(line)
+        # ---- Detailblock 2: Windbetrag/-richtung (true) zum Windy-Vergleich ----
+        # HW = Track-Komponente (oben); hier der VOLLE Vektor wie Windy-Barbs.
+        whdr = f"{'Punkt':<18}{'Track':>7} |" + "".join(
+            f"  FL{fl:03d} dir/spd |" for fl in LEVELS_FL)
+        db.append(whdr)
+        for name, brg, fz, per_fl in rows:
+            line = f"{name:<18}{brg:>5.0f}T |"
+            for fl in LEVELS_FL:
+                t, rh, ice, hw, spd, wdir = per_fl[fl]
+                line += f"   {wdir:03.0f}/{spd:02.0f}kt |"
             db.append(line)
         detail_blocks.append("\n".join(db))
 
