@@ -1,5 +1,5 @@
 {
- "updated": "2026-07-19T21:02:08.144660+00:00",
+ "updated": "2026-07-19T21:32:04.277686+00:00",
  "wms": "https://gibs.earthdata.nasa.gov/wms/epsg3413/best/wms.cgi",
  "mode": "granule-only",
  "frame": {
@@ -38,50 +38,6 @@
       "VIIRS_SNPP_CorrectedReflectance_TrueColor_Granule",
       "VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11_Granule"
      ]
-    }
-   ],
-   "zoom": {
-    "time": "2026-07-19T17:00:00Z",
-    "layers": [
-     "VIIRS_SNPP_CorrectedReflectance_TrueColor_Granule",
-     "VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11_Granule"
-    ]
-   }
-  },
-  {
-   "name": "Zentral",
-   "bbox": [
-    -3090684.708492363,
-    -1861154.2542820168,
-    -1129337.4195101648,
-    -49350.80778698675
-   ],
-   "h": 739,
-   "mode": "granule",
-   "granules": [
-    {
-     "t": "2026-07-19T16:54:00Z",
-     "sat": "SNPP",
-     "layers": [
-      "VIIRS_SNPP_CorrectedReflectance_TrueColor_Granule",
-      "VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11_Granule"
-     ]
-    },
-    {
-     "t": "2026-07-19T17:00:00Z",
-     "sat": "SNPP",
-     "layers": [
-      "VIIRS_SNPP_CorrectedReflectance_TrueColor_Granule",
-      "VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11_Granule"
-     ]
-    },
-    {
-     "t": "2026-07-19T17:12:00Z",
-     "sat": "N20",
-     "layers": [
-      "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
-      "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11_Granule"
-     ]
     },
     {
      "t": "2026-07-19T17:18:00Z",
@@ -101,24 +57,16 @@
    }
   },
   {
-   "name": "Ost",
+   "name": "Zentral",
    "bbox": [
-    -2469835.115381746,
-    -2941207.5359876044,
-    -436975.88026298047,
-    -851016.7864045231
+    -3090684.708492363,
+    -1861154.2542820168,
+    -1129337.4195101648,
+    -49350.80778698675
    ],
-   "h": 823,
+   "h": 739,
    "mode": "granule",
    "granules": [
-    {
-     "t": "2026-07-19T16:54:00Z",
-     "sat": "SNPP",
-     "layers": [
-      "VIIRS_SNPP_CorrectedReflectance_TrueColor_Granule",
-      "VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11_Granule"
-     ]
-    },
     {
      "t": "2026-07-19T17:00:00Z",
      "sat": "SNPP",
@@ -142,10 +90,70 @@
       "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
       "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11_Granule"
      ]
+    },
+    {
+     "t": "2026-07-19T18:54:00Z",
+     "sat": "N20",
+     "layers": [
+      "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
+      "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11_Granule"
+     ]
     }
    ],
    "zoom": {
-    "time": "2026-07-19T17:18:00Z",
+    "time": "2026-07-19T18:54:00Z",
+    "layers": [
+     "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
+     "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11_Granule"
+    ]
+   }
+  },
+  {
+   "name": "Ost",
+   "bbox": [
+    -2469835.115381746,
+    -2941207.5359876044,
+    -436975.88026298047,
+    -851016.7864045231
+   ],
+   "h": 823,
+   "mode": "granule",
+   "granules": [
+    {
+     "t": "2026-07-19T17:00:00Z",
+     "sat": "SNPP",
+     "layers": [
+      "VIIRS_SNPP_CorrectedReflectance_TrueColor_Granule",
+      "VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11_Granule"
+     ]
+    },
+    {
+     "t": "2026-07-19T17:12:00Z",
+     "sat": "N20",
+     "layers": [
+      "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
+      "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11_Granule"
+     ]
+    },
+    {
+     "t": "2026-07-19T17:18:00Z",
+     "sat": "N20",
+     "layers": [
+      "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
+      "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11_Granule"
+     ]
+    },
+    {
+     "t": "2026-07-19T18:54:00Z",
+     "sat": "N20",
+     "layers": [
+      "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
+      "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11_Granule"
+     ]
+    }
+   ],
+   "zoom": {
+    "time": "2026-07-19T18:54:00Z",
     "layers": [
      "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
      "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11_Granule"
