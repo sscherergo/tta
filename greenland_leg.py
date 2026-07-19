@@ -61,14 +61,15 @@ def die(msg: str) -> None:
 
 
 def target_window(now: datetime, override: str | None) -> list[datetime]:
-    """Zielfenster 06-15Z des Flugtags (heute ab 12Z-Vorabend-Sicht:
-    morgen; vormittags: heute). 3-h-Raster."""
+    """Zielfenster 09-15Z des Flugtags (ETD 0800-0900 -> Landung ~1430;
+    vormittags: heute, ab 12Z: morgen). 3-h-Raster. Frueherer Start
+    verboten per Strategie: vor ~0730Z ETD liegt der Climb im 06Z-Bild."""
     if override:
         day = datetime.strptime(override, "%Y-%m-%d").replace(tzinfo=timezone.utc)
     else:
         day = now + timedelta(days=1) if now.hour >= 12 else now
-    base = day.replace(hour=6, minute=0, second=0, microsecond=0)
-    return [base + timedelta(hours=h) for h in (0, 3, 6, 9)]
+    base = day.replace(hour=9, minute=0, second=0, microsecond=0)
+    return [base + timedelta(hours=h) for h in (0, 3, 6)]
 
 
 def fetch_ecmwf(times: list[datetime]) -> tuple[dict, str]:
