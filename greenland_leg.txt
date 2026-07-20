@@ -1,6 +1,6 @@
 By downloading data from the ECMWF open data dataset, you agree to the terms: Attribution 4.0 International (CC BY 4.0). Please attribute ECMWF when downloading this data.
 GREENLAND-LEG-BRIEFING  BIRK -> BGKK(WPT) -> BGSF
-erzeugt 2026-07-20 11:25 UTC | Quelle ECMWF oper 20260720 00Z
+erzeugt 2026-07-20 20:48 UTC | Quelle ECMWF oper 20260720 12Z
 Strategie: FL100 bis vor Kueste, Climb ab ~40-60NM vor BGKK, FL195 Querung. Zielfenster 21.07. 09-15Z
 HINWEIS: RH-basierte Ice-Flags = notwendige Bedingung, bewusst
 ueberwarnend (ECMWF-Glazierungs-Bias). Karten bleiben Pflicht:
@@ -9,45 +9,45 @@ WAFS-Grids FL100/140/180, SIGWX, IMO/CFPS, Satellit Kulusuk.
 GATES (automatisch, je Zeitschritt schlechtester Punkt)
 ============================================================
 21. 09Z  G1-Leg1-FL100: OK    G2-Climb: OK    G3-FL195: NOGO  => [NOGO]
-21. 12Z  G1-Leg1-FL100: OK    G2-Climb: WARN  G3-FL195: OK    => [WARN]
+21. 12Z  G1-Leg1-FL100: OK    G2-Climb: OK    G3-FL195: OK    => [OK]
 21. 15Z  G1-Leg1-FL100: OK    G2-Climb: WARN  G3-FL195: OK    => [WARN]
 
 G1: FZLVL>=11000ft oder 700hPa trocken | G2: RH(700,500)<85% am Climb-Punkt | G3: kein Ice-Flag 500/FL195
 
 --- 21.07. 09Z ---
 Punkt                   FZLVL |     FL100(700) |     FL180(500) |          FL195 | HW195
-BIRK Reykjavik          10925 |  +1.7C  22% -    | -12.3C  97% ICE! | -14.5C  98% ICE! |  +38kt
-Strasse-Mitte           10518 |  +1.0C  40% -    | -11.8C  97% ICE! | -14.1C  82% -    |  +28kt
-BGKK Kulusuk (WPT)       8828 |  -2.2C  70% -    | -12.2C  78% -    | -14.8C  76% -    |  +23kt
-Kappe ~66N43W            7354 |  -4.2C  95% ICE? | -14.1C 100% ICE! | -16.6C  85% -    |   +9kt
-BGSF Kangerlussuaq       8352 |  -2.9C  81% -    | -15.7C  90% ICE? | -18.2C  87% -    |   +2kt
+BIRK Reykjavik          10481 |  +1.0C  49% -    | -12.9C  99% ICE! | -15.0C 100% ICE! |  +32kt
+Strasse-Mitte           11016 |  +1.8C  33% -    | -11.7C  94% ICE? | -14.0C  92% ICE? |  +27kt
+BGKK Kulusuk (WPT)       9139 |  -1.4C  42% -    | -12.9C  71% -    | -15.3C  75% -    |  +16kt
+Kappe ~66N43W            7502 |  -3.4C  85% ICE? | -13.3C  82% -    | -16.0C  81% -    |   +9kt
+BGSF Kangerlussuaq       8240 |  -3.6C  86% ICE? | -14.6C  98% ICE! | -17.3C 100% -    |   +2kt
 
 --- 21.07. 12Z ---
 Punkt                   FZLVL |     FL100(700) |     FL180(500) |          FL195 | HW195
-BIRK Reykjavik          10843 |  +1.5C  44% -    | -11.6C 100% ICE! | -13.8C  98% ICE! |  +41kt
-Strasse-Mitte            9612 |  -0.5C  65% -    | -11.6C  50% -    | -14.0C  47% -    |  +31kt
-BGKK Kulusuk (WPT)       9089 |  -1.6C  93% ICE? | -11.7C  23% -    | -14.5C  24% -    |  +22kt
-Kappe ~66N43W            7494 |  -3.5C  96% ICE! | -13.3C  11% -    | -16.2C  15% -    |   +9kt
-BGSF Kangerlussuaq       8615 |  -2.3C  84% -    | -15.8C  68% -    | -18.6C  73% -    |   -4kt
+BIRK Reykjavik          10855 |  +1.5C  46% -    | -11.7C  96% ICE! | -13.8C  93% ICE? |  +38kt
+Strasse-Mitte           10138 |  +0.4C  56% -    | -12.1C  99% ICE! | -14.3C  95% ICE? |  +27kt
+BGKK Kulusuk (WPT)       9004 |  -1.7C  69% -    | -11.9C  32% -    | -14.6C  28% -    |  +23kt
+Kappe ~66N43W            7350 |  -4.1C  98% ICE! | -13.6C  26% -    | -16.5C  28% -    |  +11kt
+BGSF Kangerlussuaq       8346 |  -3.0C  88% ICE? | -15.0C  79% -    | -17.8C  71% -    |   -3kt
 
 --- 21.07. 15Z ---
 Punkt                   FZLVL |     FL100(700) |     FL180(500) |          FL195 | HW195
-BIRK Reykjavik          10921 |  +1.6C  34% -    | -11.4C  90% ICE? | -13.7C  81% -    |  +39kt
-Strasse-Mitte           10333 |  +0.6C  74% -    | -10.7C  22% -    | -13.4C  25% -    |  +28kt
-BGKK Kulusuk (WPT)      10285 |  +0.6C  87% -    | -12.6C  39% -    | -15.3C  39% -    |  +14kt
-Kappe ~66N43W            7921 |  -2.4C 100% ICE! | -14.7C  65% -    | -17.6C  66% -    |   +1kt
-BGSF Kangerlussuaq       9251 |  -1.0C  76% -    | -16.3C  56% -    | -19.3C  64% -    |  -11kt
+BIRK Reykjavik          11602 |  +3.0C  30% -    | -11.7C  94% ICE? | -14.0C  95% ICE? |  +36kt
+Strasse-Mitte           10189 |  +0.4C  37% -    | -10.9C  57% -    | -13.3C  47% -    |  +26kt
+BGKK Kulusuk (WPT)       9950 |  +0.1C  92% -    | -12.1C  13% -    | -14.8C  15% -    |  +15kt
+Kappe ~66N43W            7761 |  -2.8C 100% ICE! | -14.6C  85% -    | -17.4C  86% -    |   -0kt
+BGSF Kangerlussuaq       8859 |  -1.7C  92% ICE? | -14.9C  60% -    | -18.1C  64% -    |   -9kt
 
 METAR/TAF (aviationweather.gov)
 ============================================================
-METAR BGSF 201120Z AUTO 04010KT 9999NDV SCT085/// 13/09 Q1017
-SPECI BIRK 201117Z 21015KT 4000 -DZRA BR OVC006 13/13 Q1024
-METAR BGKK 201050Z 23009KT 9999 SCT020 10/06 Q1014 RMK 4SC
+METAR BGSF 202020Z AUTO 06012KT 9999NDV FEW060/// 16/08 Q1015
+METAR BGKK 202020Z AUTO 27006KT 9999NDV NCD 10/06 Q1014
+METAR BIRK 202000Z 23009KT 9000 BR OVC006 11/11 Q1025
 
-TAF BGSF 201100Z 2012/2118 06010KT 9999 FEW040 BKN080
-TAF BIRK 201057Z 2012/2112 21013KT 4000 -DZ BR OVC007 TX12/2012Z TN11/2103Z 
-  TEMPO 2012/2100 1200 DZRA BR OVC003 
-  TEMPO 2100/2112 0500 DZ FG OVC002
-TAF AMD BGKK 200857Z 2009/2018 24010KT 9999 FEW003 SCT050 
-  TEMPO 2009/2012 0500 FG VV002
+TAF BIRK 201958Z 2021/2121 23013KT 4000 -DZ BR OVC006 TX12/2115Z TN10/2106Z 
+  TEMPO 2021/2100 1200 DZRA BR OVC003 
+  TEMPO 2100/2121 0500 DZ FG OVC002
+TAF BGKK 201711Z 2018/2022 24010KT 9999 FEW002 SCT025 
+  TEMPO 2018/2022 0500 BCFG BKN002
+TAF BGSF 201710Z 2018/2124 06010KT 9999 FEW040 BKN080
 
