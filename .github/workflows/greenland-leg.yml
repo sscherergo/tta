@@ -1,0 +1,57 @@
+name: Greenland Leg Briefing
+
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Flugtag YYYY-MM-DD (leer = automatisch)"
+        required: false
+        default: ""
+      etas:
+        description: "ETA-BGSF-Szenarien HHMM, kommagetrennt"
+        required: false
+        default: "1430,1530,1630"
+
+concurrency:
+  group: greenland-leg
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  brief:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Pakete installieren
+        run: pip install httpx ecmwf-opendata xarray cfgrib eccodes
+
+      - name: Briefing erzeugen
+        run: |
+          set -e
+          python greenland_leg.py "${{ inputs.date }}" \
+            "${{ inputs.etas || '1430,1530,1630' }}" > greenland_leg.txt
+          echo "---"; head -40 greenland_leg.txt
+
+      - name: Committen
+        run: |
+          git config user.name  "greenland-leg-bot"
+          git config user.email "actions@github.com"
+          git add greenland_leg.txt
+          git diff --cached --quiet && echo "Keine Aenderung." && exit 0
+          git commit -m "Greenland-Leg-Briefing $(date -u '+%Y-%m-%d %H:%MZ')"
+          for i in 1 2 3; do
+            git push && exit 0
+            git pull --rebase -X theirs && sleep 5
+          done
+          git push
