@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TTA — Greenland Leg BIRK→BGSF</title>
+<style>
+  :root{
+    --bg:#0b0e13; --panel:#141922; --line:#242c3a;
+    --tx:#cfd6e1; --dim:#7d8794; --amber:#e8b34b;
+    --ok:#3fbf6f; --warn:#e8b34b; --nogo:#e5534b; --na:#4a5567;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--tx);
+       font:15px/1.45 -apple-system,"Segoe UI",Roboto,sans-serif;}
+  header{padding:14px 16px 10px;border-bottom:1px solid var(--line)}
+  header h1{margin:0;font-size:16px;font-weight:600;letter-spacing:.02em}
+  header .sub{color:var(--dim);font-size:12.5px;margin-top:2px}
+  #stale{display:none;margin:10px 16px 0;padding:8px 10px;border-radius:6px;
+         background:#3a2a12;color:var(--amber);font-size:13px}
+  #stale.hard{background:#3a1815;color:#f0958f}
+  /* Annunciator */
+  #gates{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
+         padding:12px 16px}
+  .g{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+     padding:8px 6px;text-align:center}
+  .g .lbl{font-size:11px;color:var(--dim);letter-spacing:.06em;
+          text-transform:uppercase}
+  .g .st{font-size:15px;font-weight:700;margin-top:3px}
+  .g.ok   .st{color:var(--ok)}   .g.ok{border-color:#1e5c38}
+  .g.warn .st{color:var(--warn)} .g.warn{border-color:#6b5220}
+  .g.nogo .st{color:var(--nogo)} .g.nogo{border-color:#6e2b27}
+  .g.na   .st{color:var(--na)}
+  #gatenote{padding:0 16px 4px;color:var(--dim);font-size:12px}
+  /* Briefing text */
+  main{padding:8px 12px 24px}
+  pre{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+      padding:12px;margin:0;overflow-x:auto;
+      font:12.5px/1.5 ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+      white-space:pre}
+  .ok{color:var(--ok);font-weight:600}
+  .warn{color:var(--warn);font-weight:600}
+  .nogo{color:var(--nogo);font-weight:600}
+  .ice{color:#f0958f;font-weight:600}
+  /* Quellen */
+  #src{padding:4px 16px 28px}
+  #src h2{font-size:12px;color:var(--dim);letter-spacing:.06em;
+          text-transform:uppercase;margin:14px 0 6px}
+  #src a{display:inline-block;margin:0 12px 8px 0;color:#8ab4e8;
+         text-decoration:none;font-size:13.5px}
+  #src a:hover{text-decoration:underline}
+  #src .note{color:var(--dim);font-size:12px;margin-top:2px}
+  @media (min-width:700px){ main{padding:8px 16px 24px} }
+</style>
+</head>
+<body>
+<header>
+  <h1>Greenland Leg — BIRK → BGKK (WPT) → BGSF</h1>
+  <div class="sub" id="meta">Briefing wird geladen …</div>
+</header>
+
+<div id="stale"></div>
+
+<div id="gates">
+  <div class="g na" id="g1"><div class="lbl">G1 · Leg1 FL100</div><div class="st">—</div></div>
+  <div class="g na" id="g2"><div class="lbl">G2 · Climb</div><div class="st">—</div></div>
+  <div class="g na" id="g3"><div class="lbl">G3 · FL195</div><div class="st">—</div></div>
+  <div class="g na" id="gt"><div class="lbl">Gesamt</div><div class="st">—</div></div>
+</div>
+<div id="gatenote"></div>
+
+<main><pre id="txt">…</pre></main>
+
+<section id="src">
+  <h2>Handpflicht — Karten &amp; Modell (nicht automatisiert)</h2>
+  <a href="https://aviationweather.gov/wafs/" target="_blank" rel="noopener">WAFS-Grids (Icing FL100/140/180)</a>
+  <a href="https://aviationweather.gov/sigwx/" target="_blank" rel="noopener">WAFS-SIGWX interaktiv (+48 h)</a>
+  <a href="https://en.vedur.is/weather/aviation/sigwx/" target="_blank" rel="noopener">IMO Low-Level (vedur.is)</a>
+  <a href="index.html" rel="noopener">Cockpit (CFPS Mid-Level Atlantik)</a>
+  <a href="https://www.windy.com/" target="_blank" rel="noopener">Windy (Querschnitt BIRK–BGSF)</a>
+  <a href="https://worldview.earthdata.nasa.gov/" target="_blank" rel="noopener">Worldview (Satellit Kulusuk)</a>
+  <div class="note">Gates hier = ECMWF-Rohdaten-Ableitung (RH-basiert, überwarnend).
+  Kartenblick und PIC-Entscheidung ersetzt das nicht.</div>
+  <h2>Neu rechnen</h2>
+  <div class="note">GitHub-App → Actions → „Greenland Leg Briefing" → Run
+  (Feld „date" leer = automatisches Zielfenster). Läuft planmäßig Mo ~20:30Z
+  und Di ~05:15Z.</div>
+</section>
+
+<script>
+(async function(){
+  const bust = Math.floor(Date.now()/3e5);            // 5-min-Cache-Buster
+  let raw;
+  try{
+    const r = await fetch("greenland_leg.txt?v="+bust, {cache:"no-store"});
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    raw = await r.text();
+  }catch(e){
+    document.getElementById("meta").textContent =
+      "greenland_leg.txt nicht ladbar ("+e.message+") — Workflow schon gelaufen?";
+    document.getElementById("txt").textContent =
+      "Noch kein Briefing im Repo.\nActions → Greenland Leg Briefing → Run.";
+    return;
+  }
+
+  /* Kopf + Frische */
+  const m = raw.match(/erzeugt (\d{4}-\d{2}-\d{2} \d{2}:\d{2}) UTC \| Quelle ([^\n]+)/);
+  const meta = document.getElementById("meta");
+  if(m){
+    meta.textContent = "erzeugt "+m[1]+"Z · "+m[2];
+    const age = (Date.now() - Date.parse(m[1].replace(" ","T")+":00Z"))/36e5;
+    const st = document.getElementById("stale");
+    if(age > 20){ st.textContent = "⚠ Briefing "+age.toFixed(0)+" h alt — neu rechnen (Actions)."; st.className="hard"; st.style.display="block"; }
+    else if(age > 11){ st.textContent = "Briefing "+age.toFixed(0)+" h alt — vor dem Gate neu rechnen."; st.style.display="block"; }
+  } else { meta.textContent = "Kopfzeile nicht erkannt — Rohtext unten."; }
+
+  /* Gate-Annunciator: schlechtester Wert je Gate ueber alle Zeitschritte,
+     Gesamt = schlechteste Zeile. Reihenfolge NOGO > WARN > OK. */
+  const rank = {NOGO:3, WARN:2, OK:1};
+  const agg = {g1:0,g2:0,g3:0,gt:0};
+  const times = [];
+  for(const ln of raw.split("\n")){
+    const g = ln.match(/^(\d{2}\. \d{4})Z\s+G1[^:]*:\s*(\w+)\s+G2[^:]*:\s*(\w+)\s+G3[^:]*:\s*(\w+)\s+=>\s*\[(\w+)\]/);
+    if(!g) continue;
+    times.push(g[1].slice(4));
+    agg.g1 = Math.max(agg.g1, rank[g[2]]||0);
+    agg.g2 = Math.max(agg.g2, rank[g[3]]||0);
+    agg.g3 = Math.max(agg.g3, rank[g[4]]||0);
+    agg.gt = Math.max(agg.gt, rank[g[5]]||0);
+  }
+  const cls = v => v===3?"nogo":v===2?"warn":v===1?"ok":"na";
+  const txt = v => v===3?"NOGO":v===2?"WARN":v===1?"OK":"—";
+  for(const id of ["g1","g2","g3","gt"]){
+    const el = document.getElementById(id);
+    el.className = "g "+cls(agg[id]);
+    el.querySelector(".st").textContent = txt(agg[id]);
+  }
+  document.getElementById("gatenote").textContent = times.length
+    ? "Schlechtester Wert über "+times.length+" ETA-Szenarien (BGSF "+times.join("/")+"Z). Diagonal: jeder Punkt zu seiner Überflugzeit. Details unten."
+    : "Keine Gate-Zeilen im Briefing gefunden.";
+
+  /* Volltext mit Ampelfarben */
+  const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+  document.getElementById("txt").innerHTML = esc(raw)
+    .replace(/\bNOGO\b/g,'<span class="nogo">NOGO</span>')
+    .replace(/\bWARN\b/g,'<span class="warn">WARN</span>')
+    .replace(/\bOK\b/g,'<span class="ok">OK</span>')
+    .replace(/\bICE!?\??/g, s=>'<span class="ice">'+s+"</span>");
+})();
+</script>
+</body>
+</html>
