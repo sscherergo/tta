@@ -1,54 +1,50 @@
 By downloading data from the ECMWF open data dataset, you agree to the terms: Attribution 4.0 International (CC BY 4.0). Please attribute ECMWF when downloading this data.
-GREENLAND-LEG-BRIEFING  BIRK -> BGKK(WPT) -> BGSF
-erzeugt 2026-07-21 08:49 UTC | Quelle ECMWF oper 20260721 00Z
-Strategie: FL100 bis vor Kueste, Climb ab ~40-60NM vor BGKK, FL195 Querung. Zielfenster 21.07. 09-15Z
-HINWEIS: RH-basierte Ice-Flags = notwendige Bedingung, bewusst
-ueberwarnend (ECMWF-Glazierungs-Bias). Karten bleiben Pflicht:
-WAFS-Grids FL100/140/180, SIGWX, IMO/CFPS, Satellit Kulusuk.
+GREENLAND-LEG-BRIEFING  BIRK -> BGKK(WPT) -> BGSF  [DIAGONAL]
+erzeugt 2026-07-21 11:06 UTC | Quelle ECMWF oper 20260721 00Z
+60% Leistung (AFM: FL100 TAS 152, FL195 TAS 165), Wind je Segment aus Modell. Flugtag 21.07.2026.
+Jeder Punkt zu seiner Ueberflugzeit bewertet (zeitinterpoliert).
+Flags RH-basiert/ueberwarnend. Karten bleiben Pflicht: WAFS-Grids,
+SIGWX, IMO/CFPS, Satellit Kulusuk-Sektor.
 
-GATES (automatisch, je Zeitschritt schlechtester Punkt)
-============================================================
-21. 09Z  G1-Leg1-FL100: OK    G2-Climb: OK    G3-FL195: NOGO  => [NOGO]
-21. 12Z  G1-Leg1-FL100: OK    G2-Climb: WARN  G3-FL195: WARN  => [WARN]
-21. 15Z  G1-Leg1-FL100: OK    G2-Climb: NOGO  G3-FL195: OK    => [NOGO]
+SZENARIO ETA BGSF 1430Z  (ETD BIRK ~0921Z, BGKK ~1220Z)
+21. 1430Z  G1-Leg1-FL100: OK    G2-Climb: WARN  G3-FL195: OK    => [WARN]
+Punkt                  Ueberflug  Level      T   RH Flag |  FZLVL | HW
+BIRK Reykjavik         0921Z     FL100  +1.7C  27%    - |  10853 |  +25kt
+Strasse-Mitte          1102Z     FL100  +1.0C  54%    - |  10498 |  +13kt
+BGKK Kulusuk (WPT)     1220Z     Climb -12.0C  93% ICE? |   9091 |  +16kt
+Kappe ~66N43W          1319Z     FL195 -16.9C  36%    - |   7723 |   +4kt
+BGSF Kangerlussuaq     1430Z     FL195 -18.6C  79%    - |   9229 |  -11kt
 
-G1: FZLVL>=11000ft oder 700hPa trocken | G2: RH(700,500)<85% am Climb-Punkt | G3: kein Ice-Flag 500/FL195
+SZENARIO ETA BGSF 1530Z  (ETD BIRK ~1026Z, BGKK ~1322Z)
+21. 1530Z  G1-Leg1-FL100: OK    G2-Climb: WARN  G3-FL195: OK    => [WARN]
+Punkt                  Ueberflug  Level      T   RH Flag |  FZLVL | HW
+BIRK Reykjavik         1026Z     FL100  +1.7C  36%    - |  10844 |  +22kt
+Strasse-Mitte          1205Z     FL100  +0.7C  58%    - |  10290 |  +13kt
+BGKK Kulusuk (WPT)     1322Z     Climb -11.9C  94% ICE? |   9278 |  +13kt
+Kappe ~66N43W          1421Z     FL195 -17.1C  42%    - |   7784 |   +0kt
+BGSF Kangerlussuaq     1530Z     FL195 -18.8C  78%    - |   9345 |  -13kt
 
---- 21.07. 09Z ---
-Punkt                   FZLVL |     FL100(700) |     FL180(500) |          FL195 | HW195
-BIRK Reykjavik          10856 |  +1.7C  23% -    | -13.3C  99% ICE! | -15.3C  99% ICE! |  +28kt
-Strasse-Mitte           10932 |  +1.8C  43% -    | -12.6C  97% ICE! | -14.7C  89% ICE? |  +28kt
-BGKK Kulusuk (WPT)       8810 |  -2.2C  74% -    | -12.6C  85% -    | -15.1C  86% ICE? |  +16kt
-Kappe ~66N43W            7358 |  -3.7C  89% ICE? | -13.9C  77% -    | -16.5C  80% -    |  +11kt
-BGSF Kangerlussuaq       8338 |  -3.3C  81% -    | -14.8C 100% ICE! | -17.4C  97% -    |   +1kt
-
---- 21.07. 12Z ---
-Punkt                   FZLVL |     FL100(700) |     FL180(500) |          FL195 | HW195
-BIRK Reykjavik          10830 |  +1.5C  50% -    | -12.1C  95% ICE! | -14.2C  92% ICE? |  +37kt
-Strasse-Mitte           10281 |  +0.6C  58% -    | -12.8C  98% ICE! | -14.9C  91% ICE? |  +23kt
-BGKK Kulusuk (WPT)       9035 |  -1.6C  92% ICE? | -12.0C  44% -    | -14.6C  39% -    |  +19kt
-Kappe ~66N43W            7647 |  -3.0C 100% ICE! | -13.6C  27% -    | -16.6C  28% -    |  +10kt
-BGSF Kangerlussuaq       8596 |  -2.4C  81% -    | -15.2C  91% ICE? | -18.0C  77% -    |   -1kt
-
---- 21.07. 15Z ---
-Punkt                   FZLVL |     FL100(700) |     FL180(500) |          FL195 | HW195
-BIRK Reykjavik          11476 |  +2.8C  23% -    | -12.0C  96% ICE! | -14.2C  91% ICE? |  +33kt
-Strasse-Mitte           10619 |  +1.1C  45% -    | -11.5C  97% ICE! | -13.7C  79% -    |  +18kt
-BGKK Kulusuk (WPT)       9616 |  -0.4C  96% ICE! | -11.9C  35% -    | -14.7C  32% -    |  +11kt
-Kappe ~66N43W            7823 |  -2.6C 100% ICE! | -14.4C  49% -    | -17.2C  46% -    |   +1kt
-BGSF Kangerlussuaq       9383 |  -0.8C  79% -    | -15.8C  81% -    | -18.7C  79% -    |  -12kt
+SZENARIO ETA BGSF 1630Z  (ETD BIRK ~1128Z, BGKK ~1423Z)
+21. 1630Z  G1-Leg1-FL100: OK    G2-Climb: NOGO  G3-FL195: OK    => [NOGO]
+Punkt                  Ueberflug  Level      T   RH Flag |  FZLVL | HW
+BIRK Reykjavik         1128Z     FL100  +1.6C  46%    - |  10835 |  +20kt
+Strasse-Mitte          1306Z     FL100  +0.8C  54%    - |  10401 |  +13kt
+BGKK Kulusuk (WPT)     1423Z     Climb -11.9C  96% ICE! |   9483 |  +10kt
+Kappe ~66N43W          1521Z     FL195 -17.3C  45%    - |   7716 |   -2kt
+BGSF Kangerlussuaq     1630Z     FL195 -19.1C  74%    - |   9275 |  -14kt
 
 METAR/TAF (aviationweather.gov)
 ============================================================
-SPECI BIRK 210840Z 22007KT 5000 -DZ BR OVC003 12/12 Q1026
-METAR BGKK 210820Z AUTO 08017KT 060V120 9999NDV BKN130/// 10/02 Q1020
-METAR BGSF 210820Z AUTO 03006KT 9999NDV BKN130/// 08/04 Q1011
+METAR BIRK 211100Z 23006KT 5000 BR OVC003 12/12 Q1026
+METAR BGSF 211050Z AUTO 04007KT 9999NDV SCT110/// BKN130/// 10/05 Q1009
+METAR BGKK 211050Z VRB10KT 9999 BKN120 11/03 Q1021
 
+TAF BGSF 211104Z 2112/2218 06008KT 9999 FEW040 BKN100 
+  TEMPO 2202/2212 BKN024
+TAF BIRK 211054Z 2112/2212 23008KT 4000 -DZ BR OVC004 TX12/2115Z TN11/2204Z 
+  TEMPO 2112/2203 0600 DZ FG OVC002 
+  BECMG 2203/2205 17012KT 7000 BKN012 OVC020 
+  TEMPO 2205/2212 1500 RADZ BR OVC005
 TAF BGKK 210827Z 2109/2118 08015KT 9999 BKN130 
   PROB40 2114/2118 0200 BCFG BKN002
-TAF BIRK 210759Z 2109/2209 23008KT 3000 -DZ BR OVC004 TX12/2115Z TN11/2204Z 
-  TEMPO 2109/2203 0500 DZ FG OVC002 
-  BECMG 2203/2205 17012KT 7000 BKN012 OVC020 
-  TEMPO 2205/2209 2000 RADZ BR OVC006
-TAF BGSF 210501Z 2106/2212 06010KT 9999 FEW040 BKN200
 
