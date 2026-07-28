@@ -1,5 +1,5 @@
 {
- "updated": "2026-07-28T03:01:11.084804+00:00",
+ "updated": "2026-07-28T03:31:01.708786+00:00",
  "wms": "https://gibs.earthdata.nasa.gov/wms/epsg3413/best/wms.cgi",
  "mode": "granule-only",
  "frame": {
@@ -92,7 +92,7 @@
      ]
     },
     {
-     "t": "2026-07-27T22:48:00Z",
+     "t": "2026-07-27T22:54:00Z",
      "sat": "SNPP",
      "layers": [
       "VIIRS_SNPP_CorrectedReflectance_TrueColor_Granule",
