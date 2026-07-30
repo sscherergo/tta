@@ -8777,6 +8777,83 @@
    "gust_kt": null,
    "ceiling_ft": 900,
    "raw": "METAR PAOM 300853Z AUTO 22008KT 10SM OVC009 10/08 A3003 RMK AO2 SLP169 T01000083 401110083 53004 TSNO"
+  },
+  {
+   "time": "2026-07-30T17:00:00+00:00",
+   "icao": "CYHK",
+   "vis_km": 24.134999999999998,
+   "cat": "OK",
+   "wind_dir": 50,
+   "wind_kt": 5,
+   "gust_kt": null,
+   "ceiling_ft": 1100,
+   "raw": "METAR CYHK 301700Z 05005KT 15SM OVC011 10/08 A2973 RMK ST8 WIND EST SLP074"
+  },
+  {
+   "time": "2026-07-30T17:00:00+00:00",
+   "icao": "CYFB",
+   "vis_km": 48.269999999999996,
+   "cat": "OK",
+   "wind_dir": 150,
+   "wind_kt": 18,
+   "gust_kt": 24,
+   "ceiling_ft": 2500,
+   "raw": "METAR CYFB 301700Z 15018G24KT 30SM -RA FEW003 BKN025 OVC056 07/05 A2983 RMK SF1SC7SC1 SF TR SLP104"
+  },
+  {
+   "time": "2026-07-30T17:00:00+00:00",
+   "icao": "CYIO",
+   "vis_km": 56.315,
+   "cat": "OK",
+   "wind_dir": null,
+   "wind_kt": 5,
+   "gust_kt": null,
+   "ceiling_ft": 4700,
+   "raw": "METAR CYIO 301700Z VRB05KT 35SM FEW023 SCT033 BKN047 BKN055 BKN082 11/08 A2974 RMK SC1SC2SC2SC1AC1 SLP078"
+  },
+  {
+   "time": "2026-07-30T17:00:00+00:00",
+   "icao": "CYCB",
+   "vis_km": 24.134999999999998,
+   "cat": "OK",
+   "wind_dir": 360,
+   "wind_kt": 10,
+   "gust_kt": null,
+   "ceiling_ft": 22000,
+   "raw": "METAR CYCB 301700Z 36010KT 15SM SCT110 BKN220 14/06 A2983 RMK AC4CI2 SLP104"
+  },
+  {
+   "time": "2026-07-30T16:53:00+00:00",
+   "icao": "PAOM",
+   "vis_km": 2.81575,
+   "cat": "WARN",
+   "wind_dir": 240,
+   "wind_kt": 7,
+   "gust_kt": null,
+   "ceiling_ft": 800,
+   "raw": "METAR PAOM 301653Z AUTO 24007KT 1 3/4SM R28/6000VP6000FT BR BKN008 OVC011 10/09 A3002 RMK AO2 SLP167 T01000094 TSNO"
+  },
+  {
+   "time": "2026-07-30T16:53:00+00:00",
+   "icao": "PABR",
+   "vis_km": 9.654,
+   "cat": "WARN",
+   "wind_dir": 180,
+   "wind_kt": 8,
+   "gust_kt": null,
+   "ceiling_ft": 600,
+   "raw": "METAR PABR 301653Z AUTO 18008KT 6SM BR OVC006 M01/M02 A3003 RMK AO2 SLP170 T10061017 TSNO $"
+  },
+  {
+   "time": "2026-07-30T16:00:00+00:00",
+   "icao": "CYRB",
+   "vis_km": 40.225,
+   "cat": "OK",
+   "wind_dir": 110,
+   "wind_kt": 13,
+   "gust_kt": null,
+   "ceiling_ft": 9200,
+   "raw": "METAR CYRB 301600Z 11013KT 25SM BKN092 OVC110 08/05 A2991 RMK AC7AC1 SLP136"
   }
  ],
  "briefing_forecasts": [
