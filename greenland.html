@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TTA — Greenland Return BGSF → BIRK</title>
+<style>
+  :root { color-scheme: dark; }
+  body { background:#0b0f14; color:#d7dde3; font:14px/1.45 -apple-system,
+         "Segoe UI", Roboto, sans-serif; margin:0; padding:14px; }
+  h1 { font-size:17px; margin:0 0 2px; }
+  .sub { color:#8a94a0; font-size:12px; margin-bottom:12px; }
+  .lights { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:6px; }
+  .light { border-radius:8px; padding:8px 14px; font-weight:600;
+           border:1px solid #2a333d; min-width:120px; text-align:center; }
+  .fls { color:#8a94a0; font-size:12px; margin-bottom:12px; }
+  .OK   { background:#0e2b16; color:#5fd97f; border-color:#1e5a30; }
+  .WARN { background:#302505; color:#ffcc4d; border-color:#6b5410; }
+  .NOGO { background:#330d0d; color:#ff6b6b; border-color:#6e1c1c; }
+  .NA   { background:#161c22; color:#5c6670; }
+  .scen { border:1px solid #2a333d; border-radius:8px; padding:10px 12px;
+          margin-bottom:10px; }
+  .scen h2 { font-size:14px; margin:0 0 6px; }
+  pre { margin:0; font:12px/1.5 ui-monospace, Menlo, Consolas, monospace;
+        white-space:pre; overflow-x:auto; color:#b9c2cb; }
+  .note { color:#8a94a0; font-size:12px; margin-top:12px; }
+</style>
+</head>
+<body>
+<h1>Greenland Return — BGSF → BGKK (WPT) → BIRK</h1>
+<div class="sub" id="meta">lade…</div>
+<div class="lights" id="lights"></div>
+<div class="fls" id="flinfo"></div>
+<div id="scenarios"></div>
+<div class="note">
+  Höhenoptionen: CROSS (BGSF–Kappe–BGKK) F190/F130 — EAST (BGKK–Mitte–BIRK)
+  F190/F130/F090. DESC = Sinkflug-Transit bei BGKK durch die Spanne der besten
+  Kombination. Annunciator = schlechtestes Szenario, BEST = gangbarste
+  Höhenkombination je Szenario. Anker: ETA BIRK. Ice-Flags bewusst
+  überwarnend. Planungshilfe — keine PIC-Entscheidung.
+</div>
+<script>
+const SRC = "greenland_leg.txt";
+const RANK = { "OK":0, "WARN":1, "NOGO":2 };
+const worstOf = arr => arr.reduce((a, s) =>
+    (RANK[s] ?? 9) > (RANK[a] ?? -1) ? s : a, "OK");
+
+fetch(SRC + "?t=" + Date.now()).then(r => {
+  if (!r.ok) throw new Error(r.status);
+  return r.text();
+}).then(txt => {
+  document.getElementById("meta").textContent =
+      txt.split("\n").slice(0, 2).join(" — ");
+
+  const scen = [];
+  const re = /=== SZENARIO ETA BIRK (\d{4})Z[^=]*===([\s\S]*?)(?====|$)/g;
+  const gre = /GATES\s+CROSS\s+((?:F\d{3}:\w+\s*)+)\|\s*EAST\s+((?:F\d{3}:\w+\s*)+)\|\s*DESC:(\w+)\s*\|\s*BEST\s+(F\d{3}\+F\d{3})\s*=>\s*\[(\w+)\]/;
+  let m;
+  while ((m = re.exec(txt)) !== null) {
+    const g = m[2].match(gre);
+    const pairs = s => Object.fromEntries(
+        s.trim().split(/\s+/).map(p => p.split(":")));
+    scen.push({
+      eta: m[1], body: m[2].trim(),
+      cross: g ? pairs(g[1]) : {}, east: g ? pairs(g[2]) : {},
+      desc: g ? g[3] : "NA", best: g ? g[4] : "?",
+      total: g ? g[5] : "NA",
+      bestCross: g ? worstOf(Object.values(pairs(g[1]))
+                     .filter((_, i, a) => a.includes("OK")) ) : "NA"
+    });
+  }
+
+  const L = document.getElementById("lights");
+  const bestPhase = key => worstOf(scen.map(s => {
+    const v = Object.values(s[key]);
+    return v.length ? v.sort((a, b) => RANK[a] - RANK[b])[0] : "NA";
+  }));
+  [["CROSS (beste FL)", bestPhase("cross")],
+   ["EAST (beste FL)",  bestPhase("east")],
+   ["DESC BGKK",        worstOf(scen.map(s => s.desc))],
+   ["GESAMT",           worstOf(scen.map(s => s.total))]]
+  .forEach(([label, st]) => {
+    const d = document.createElement("div");
+    d.className = "light " + (st in RANK ? st : "NA");
+    d.textContent = label + ": " + st;
+    L.appendChild(d);
+  });
+  document.getElementById("flinfo").textContent =
+    scen.map(s => "ETA " + s.eta + "Z → BEST " + s.best +
+             " [" + s.total + "]").join("   ·   ");
+
+  const S = document.getElementById("scenarios");
+  scen.forEach(s => {
+    const box = document.createElement("div");
+    box.className = "scen";
+    box.innerHTML = "<h2>ETA BIRK " + s.eta + "Z — BEST " + s.best +
+      " — <span class='" + s.total + "'>" + s.total +
+      "</span></h2><pre></pre>";
+    box.querySelector("pre").textContent = s.body;
+    S.appendChild(box);
+  });
+}).catch(e => {
+  document.getElementById("meta").textContent =
+    "Briefing nicht ladbar (" + e.message + ") — Workflow schon gelaufen?";
+});
+</script>
+</body>
+</html>
