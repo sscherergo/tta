@@ -1,0 +1,41 @@
+name: greenland-leg
+
+on:
+  workflow_dispatch:
+    inputs:
+      day:
+        description: "Flugtag YYYY-MM-DD (leer = heute/morgen automatisch)"
+        required: false
+        default: ""
+      etas:
+        description: "ETA-BIRK-Szenarien HHMM, kommagetrennt"
+        required: false
+        default: "1430,1530,1630"
+
+permissions:
+  contents: write
+
+jobs:
+  briefing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install httpx ecmwf-opendata xarray cfgrib eccodes
+
+      - name: Run return briefing
+        run: |
+          python greenland_leg.py "${{ inputs.day }}" "${{ inputs.etas }}"
+
+      - name: Commit result
+        run: |
+          git config user.name "tta-bot"
+          git config user.email "tta-bot@users.noreply.github.com"
+          git add docs/greenland.txt
+          git diff --cached --quiet || git commit -m "greenland return briefing"
+          git push
