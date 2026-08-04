@@ -1,50 +1,57 @@
-By downloading data from the ECMWF open data dataset, you agree to the terms: Attribution 4.0 International (CC BY 4.0). Please attribute ECMWF when downloading this data.
-GREENLAND-LEG-BRIEFING  BIRK -> BGKK(WPT) -> BGSF  [DIAGONAL]
-erzeugt 2026-07-21 11:06 UTC | Quelle ECMWF oper 20260721 00Z
-60% Leistung (AFM: FL100 TAS 152, FL195 TAS 165), Wind je Segment aus Modell. Flugtag 21.07.2026.
-Jeder Punkt zu seiner Ueberflugzeit bewertet (zeitinterpoliert).
-Flags RH-basiert/ueberwarnend. Karten bleiben Pflicht: WAFS-Grids,
-SIGWX, IMO/CFPS, Satellit Kulusuk-Sektor.
+GREENLAND RETURN BGSF -> BGKK(WPT) -> BIRK — 04.08.2026
+Erstellt 04.08. 1013Z | ECMWF oper 0.25 | Segmente 188NM / 150NM / 178NM / 218NM | Kurse 100T / 104T / 092T / 105T
+Hoehenoptionen: CROSS F190/F130 — EAST F190/F130/F090. Anker ETA BIRK; Timing-Referenz mittlere TAS, Kombinations-Spreizung < ~15 min.
+ACHTUNG F130 ueber der Kappe: Kappenkamm auf der Route ~8500 ft — Freiraum ~4500 ft, Grid-MORA/MSA selbst pruefen; F130 liegt im moeglichen Wolkenband statt darueber.
 
-SZENARIO ETA BGSF 1430Z  (ETD BIRK ~0921Z, BGKK ~1220Z)
-21. 1430Z  G1-Leg1-FL100: OK    G2-Climb: WARN  G3-FL195: OK    => [WARN]
-Punkt                  Ueberflug  Level      T   RH Flag |  FZLVL | HW
-BIRK Reykjavik         0921Z     FL100  +1.7C  27%    - |  10853 |  +25kt
-Strasse-Mitte          1102Z     FL100  +1.0C  54%    - |  10498 |  +13kt
-BGKK Kulusuk (WPT)     1220Z     Climb -12.0C  93% ICE? |   9091 |  +16kt
-Kappe ~66N43W          1319Z     FL195 -16.9C  36%    - |   7723 |   +4kt
-BGSF Kangerlussuaq     1430Z     FL195 -18.6C  79%    - |   9229 |  -11kt
+=== SZENARIO ETA BIRK 1430Z  (ETD BGSF 0948Z, BGKK-Ueberflug 1200Z) ===
+Punkt                  Zeit  FZLVL   HW      F190         F130         F090     
+BGSF Kangerlussuaq   0948Z  11637   +9  -13.1/  9 -    -2.3/ 13 -        ---     
+Kappe ~66N43W        1103Z  11203   +2  -13.3/ 18 -    -3.0/ 23 -        ---     
+BGKK Kulusuk (WPT)   1200Z  11100   -1  -13.7/ 54 -    -3.2/ 41 -     3.1/ 43 -   
+Strasse-Mitte        1309Z  11095   -9  -13.7/ 48 -    -3.2/ 37 -     3.0/ 41 -   
+BIRK Reykjavik       1430Z  10989       -14.5/ 57 -    -3.6/ 35 -     3.0/ 32 -   
+GATES  CROSS F190:OK F130:OK | EAST F190:OK F130:OK F090:OK | DESC:OK | BEST F190+F090 => [OK]
 
-SZENARIO ETA BGSF 1530Z  (ETD BIRK ~1026Z, BGKK ~1322Z)
-21. 1530Z  G1-Leg1-FL100: OK    G2-Climb: WARN  G3-FL195: OK    => [WARN]
-Punkt                  Ueberflug  Level      T   RH Flag |  FZLVL | HW
-BIRK Reykjavik         1026Z     FL100  +1.7C  36%    - |  10844 |  +22kt
-Strasse-Mitte          1205Z     FL100  +0.7C  58%    - |  10290 |  +13kt
-BGKK Kulusuk (WPT)     1322Z     Climb -11.9C  94% ICE? |   9278 |  +13kt
-Kappe ~66N43W          1421Z     FL195 -17.1C  42%    - |   7784 |   +0kt
-BGSF Kangerlussuaq     1530Z     FL195 -18.8C  78%    - |   9345 |  -13kt
+=== SZENARIO ETA BIRK 1530Z  (ETD BGSF 1049Z, BGKK-Ueberflug 1300Z) ===
+Punkt                  Zeit  FZLVL   HW      F190         F130         F090     
+BGSF Kangerlussuaq   1049Z  11679   +8  -12.7/  9 -    -2.2/ 12 -        ---     
+Kappe ~66N43W        1203Z  11287   +1  -13.0/ 13 -    -2.8/ 20 -        ---     
+BGKK Kulusuk (WPT)   1300Z  11186   -1  -13.5/ 40 -    -3.0/ 34 -     3.2/ 41 -   
+Strasse-Mitte        1409Z  11143   -8  -13.5/ 34 -    -3.1/ 31 -     3.1/ 39 -   
+BIRK Reykjavik       1530Z  11061       -14.4/ 47 -    -3.4/ 30 -     3.2/ 30 -   
+GATES  CROSS F190:OK F130:OK | EAST F190:OK F130:OK F090:OK | DESC:OK | BEST F190+F090 => [OK]
 
-SZENARIO ETA BGSF 1630Z  (ETD BIRK ~1128Z, BGKK ~1423Z)
-21. 1630Z  G1-Leg1-FL100: OK    G2-Climb: NOGO  G3-FL195: OK    => [NOGO]
-Punkt                  Ueberflug  Level      T   RH Flag |  FZLVL | HW
-BIRK Reykjavik         1128Z     FL100  +1.6C  46%    - |  10835 |  +20kt
-Strasse-Mitte          1306Z     FL100  +0.8C  54%    - |  10401 |  +13kt
-BGKK Kulusuk (WPT)     1423Z     Climb -11.9C  96% ICE! |   9483 |  +10kt
-Kappe ~66N43W          1521Z     FL195 -17.3C  45%    - |   7716 |   -2kt
-BGSF Kangerlussuaq     1630Z     FL195 -19.1C  74%    - |   9275 |  -14kt
+=== SZENARIO ETA BIRK 1630Z  (ETD BGSF 1151Z, BGKK-Ueberflug 1400Z) ===
+Punkt                  Zeit  FZLVL   HW      F190         F130         F090     
+BGSF Kangerlussuaq   1151Z  11725   +6  -12.3/  9 -    -2.1/ 11 -        ---     
+Kappe ~66N43W        1304Z  11417   -1  -12.8/ 12 -    -2.6/ 20 -        ---     
+BGKK Kulusuk (WPT)   1400Z  11275   -2  -13.2/ 27 -    -2.8/ 28 -     3.3/ 39 -   
+Strasse-Mitte        1509Z  11196   -8  -13.3/ 22 -    -3.0/ 25 -     3.2/ 37 -   
+BIRK Reykjavik       1630Z  11115       -14.0/ 34 -    -3.3/ 25 -     3.2/ 28 -   
+GATES  CROSS F190:OK F130:OK | EAST F190:OK F130:OK F090:OK | DESC:OK | BEST F190+F090 => [OK]
 
-METAR/TAF (aviationweather.gov)
-============================================================
-METAR BIRK 211100Z 23006KT 5000 BR OVC003 12/12 Q1026
-METAR BGSF 211050Z AUTO 04007KT 9999NDV SCT110/// BKN130/// 10/05 Q1009
-METAR BGKK 211050Z VRB10KT 9999 BKN120 11/03 Q1021
+METAR/TAF (AWC)
+------------------------------------------------------------
+METAR BIRK 041000Z 28005KT 9999 BKN025 11/06 Q1019
+METAR BIRK 040900Z 28006KT 9999 VCSH OVC022 11/05 Q1019
+METAR BIRK 040800Z 31005KT 9999 -DZ OVC022 11/06 Q1019
+TAF BIRK 040756Z 0409/0509 30007KT 9999 BKN020 TX13/0415Z TN10/0505Z 
+  TEMPO 0503/0507 5000 -DZ BKN014
+METAR BGKK 040950Z 08007KT 040V130 9999 FEW001 BKN004 05/04 Q1016
+METAR BGKK 040850Z AUTO 07007KT 9999NDV OVC003/// 05/04 Q1016
+METAR BGKK 040820Z AUTO 06004KT 360V120 9999NDV OVC003/// 04/04 Q1016
+METAR BGKK 040750Z AUTO 25001KT 6000NDV OVC003/// 04/04 Q1015
+METAR BGKK 040720Z AUTO 22004KT 9999NDV BKN002/// 04/04 Q1015
+TAF BGKK 040824Z 0409/0418 06006KT 8000 BKN002 
+  TEMPO 0409/0412 0500 FG SCT002 
+  BECMG 0412/0414 FEW004 
+  PROB40 0414/0416 2000 BCFG BKN004
+METAR BGSF 040950Z AUTO 05006KT 9999NDV NCD 09/04 Q1020
+METAR BGSF 040920Z AUTO 04005KT 010V070 9999NDV NCD 08/04 Q1020
+METAR BGSF 040850Z AUTO 03006KT 9999NDV NCD 07/03 Q1020
+METAR BGSF 040820Z AUTO 03007KT 9999NDV NCD 06/03 Q1020
+METAR BGSF 040750Z AUTO 03007KT 9999NDV NCD 05/03 Q1020
+METAR BGSF 040720Z AUTO 03006KT 9999NDV NCD 05/03 Q1020
+TAF BGSF 040501Z 0406/0512 05008KT 9999 FEW070
 
-TAF BGSF 211104Z 2112/2218 06008KT 9999 FEW040 BKN100 
-  TEMPO 2202/2212 BKN024
-TAF BIRK 211054Z 2112/2212 23008KT 4000 -DZ BR OVC004 TX12/2115Z TN11/2204Z 
-  TEMPO 2112/2203 0600 DZ FG OVC002 
-  BECMG 2203/2205 17012KT 7000 BKN012 OVC020 
-  TEMPO 2205/2212 1500 RADZ BR OVC005
-TAF BGKK 210827Z 2109/2118 08015KT 9999 BKN130 
-  PROB40 2114/2118 0200 BCFG BKN002
-
+Ice-Flags RH-basiert, bewusst ueberwarnend. TAS-Werte F190/F130/F090 aus AFM-Ankern abgeleitet, keine Zitate. Planungshilfe, keine PIC-Entscheidung.
