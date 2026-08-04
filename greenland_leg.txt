@@ -1,5 +1,5 @@
 GREENLAND RETURN BGSF -> BGKK(WPT) -> BIRK — 05.08.2026
-Erstellt 04.08. 1019Z | ECMWF oper 0.25 | Segmente 188NM / 150NM / 178NM / 218NM | Kurse 100T / 104T / 092T / 105T
+Erstellt 04.08. 1022Z | ECMWF oper 0.25 | Segmente 188NM / 150NM / 178NM / 218NM | Kurse 100T / 104T / 092T / 105T
 Hoehenoptionen: CROSS F190/F130 — EAST F190/F130/F090. Anker ETA BIRK; Timing-Referenz mittlere TAS, Kombinations-Spreizung < ~15 min.
 ACHTUNG F130 ueber der Kappe: Kappenkamm auf der Route ~8500 ft — Freiraum ~4500 ft, Grid-MORA/MSA selbst pruefen; F130 liegt im moeglichen Wolkenband statt darueber.
 
