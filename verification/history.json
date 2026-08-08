@@ -11447,6 +11447,83 @@
    "gust_kt": null,
    "ceiling_ft": 800,
    "raw": "METAR PAOM 071853Z AUTO 20006KT 10SM OVC008 09/07 A3006 RMK AO2 SLP179 T00890072 TSNO"
+  },
+  {
+   "time": "2026-08-08T02:12:00+00:00",
+   "icao": "PABR",
+   "vis_km": 6.436,
+   "cat": "WARN",
+   "wind_dir": 290,
+   "wind_kt": 11,
+   "gust_kt": null,
+   "ceiling_ft": 300,
+   "raw": "SPECI PABR 080212Z AUTO 29011KT 4SM BR OVC003 02/02 A2986 RMK AO2 T00220017 TSNO $"
+  },
+  {
+   "time": "2026-08-08T02:00:00+00:00",
+   "icao": "CYRB",
+   "vis_km": 48.269999999999996,
+   "cat": "OK",
+   "wind_dir": 160,
+   "wind_kt": 3,
+   "gust_kt": null,
+   "ceiling_ft": null,
+   "raw": "METAR CYRB 080200Z 16003KT 30SM SKC 10/03 A3014 RMK SLP215"
+  },
+  {
+   "time": "2026-08-08T02:00:00+00:00",
+   "icao": "CYIO",
+   "vis_km": 14.481,
+   "cat": "OK",
+   "wind_dir": 160,
+   "wind_kt": 2,
+   "gust_kt": null,
+   "ceiling_ft": null,
+   "raw": "METAR CYIO 080200Z AUTO 16002KT 9SM CLR 09/07 A3011 RMK SLP204"
+  },
+  {
+   "time": "2026-08-08T02:00:00+00:00",
+   "icao": "CYFB",
+   "vis_km": 48.269999999999996,
+   "cat": "OK",
+   "wind_dir": 150,
+   "wind_kt": 3,
+   "gust_kt": null,
+   "ceiling_ft": null,
+   "raw": "METAR CYFB 080200Z 15003KT 30SM FEW066 FEW240 08/03 A3007 RMK AC2CI1 CI TR SLP187"
+  },
+  {
+   "time": "2026-08-08T02:00:00+00:00",
+   "icao": "CYHK",
+   "vis_km": 14.481,
+   "cat": "OK",
+   "wind_dir": null,
+   "wind_kt": null,
+   "gust_kt": null,
+   "ceiling_ft": 2300,
+   "raw": "METAR CYHK 080200Z AUTO /////KT 9SM OVC023 13/10 A3002 RMK WIND MISG SLP172"
+  },
+  {
+   "time": "2026-08-08T02:00:00+00:00",
+   "icao": "CYCB",
+   "vis_km": 24.134999999999998,
+   "cat": "OK",
+   "wind_dir": 20,
+   "wind_kt": 7,
+   "gust_kt": null,
+   "ceiling_ft": null,
+   "raw": "METAR CYCB 080200Z 02007KT 15SM FEW080 SCT240 17/09 A3007 RMK AC1CI2 SLP186"
+  },
+  {
+   "time": "2026-08-08T01:53:00+00:00",
+   "icao": "PAOM",
+   "vis_km": 16.09,
+   "cat": "OK",
+   "wind_dir": 200,
+   "wind_kt": 3,
+   "gust_kt": null,
+   "ceiling_ft": 2000,
+   "raw": "METAR PAOM 080153Z AUTO 20003KT 10SM SCT011 OVC020 10/08 A3012 RMK AO2 SLP200 T01000078 TSNO"
   }
  ],
  "briefing_forecasts": [
