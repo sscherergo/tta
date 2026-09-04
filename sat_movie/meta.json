@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-04T00:24:40.624318+00:00",
+ "updated": "2026-09-04T05:05:53.833691+00:00",
  "wms": "https://gibs.earthdata.nasa.gov/wms/epsg3413/best/wms.cgi",
  "mode": "granule-only",
  "frame": {
@@ -32,7 +32,15 @@
    "mode": "granule",
    "granules": [
     {
-     "t": "2026-09-03T19:42:00Z",
+     "t": "2026-09-04T00:24:00Z",
+     "sat": "SNPP",
+     "layers": [
+      "VIIRS_SNPP_CorrectedReflectance_TrueColor_Granule",
+      "VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11_Granule"
+     ]
+    },
+    {
+     "t": "2026-09-04T00:36:00Z",
      "sat": "N20",
      "layers": [
       "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
@@ -40,23 +48,15 @@
      ]
     },
     {
-     "t": "2026-09-03T20:54:00Z",
-     "sat": "SNPP",
+     "t": "2026-09-04T00:42:00Z",
+     "sat": "N20",
      "layers": [
-      "VIIRS_SNPP_CorrectedReflectance_TrueColor_Granule",
-      "VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11_Granule"
+      "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
+      "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11_Granule"
      ]
     },
     {
-     "t": "2026-09-03T21:00:00Z",
-     "sat": "SNPP",
-     "layers": [
-      "VIIRS_SNPP_CorrectedReflectance_TrueColor_Granule",
-      "VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11_Granule"
-     ]
-    },
-    {
-     "t": "2026-09-03T21:18:00Z",
+     "t": "2026-09-04T02:24:00Z",
      "sat": "N20",
      "layers": [
       "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
@@ -65,7 +65,7 @@
     }
    ],
    "zoom": {
-    "time": "2026-09-03T21:18:00Z",
+    "time": "2026-09-04T02:24:00Z",
     "layers": [
      "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
      "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11_Granule"
@@ -84,7 +84,7 @@
    "mode": "granule",
    "granules": [
     {
-     "t": "2026-09-03T19:36:00Z",
+     "t": "2026-09-03T21:18:00Z",
      "sat": "N20",
      "layers": [
       "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
@@ -92,7 +92,7 @@
      ]
     },
     {
-     "t": "2026-09-03T20:54:00Z",
+     "t": "2026-09-03T22:36:00Z",
      "sat": "SNPP",
      "layers": [
       "VIIRS_SNPP_CorrectedReflectance_TrueColor_Granule",
@@ -100,15 +100,15 @@
      ]
     },
     {
-     "t": "2026-09-03T21:00:00Z",
-     "sat": "SNPP",
+     "t": "2026-09-03T22:54:00Z",
+     "sat": "N20",
      "layers": [
-      "VIIRS_SNPP_CorrectedReflectance_TrueColor_Granule",
-      "VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11_Granule"
+      "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
+      "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11_Granule"
      ]
     },
     {
-     "t": "2026-09-03T21:18:00Z",
+     "t": "2026-09-03T23:00:00Z",
      "sat": "N20",
      "layers": [
       "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
@@ -117,7 +117,7 @@
     }
    ],
    "zoom": {
-    "time": "2026-09-03T21:18:00Z",
+    "time": "2026-09-03T23:00:00Z",
     "layers": [
      "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
      "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11_Granule"
@@ -136,7 +136,7 @@
    "mode": "granule",
    "granules": [
     {
-     "t": "2026-09-03T19:18:00Z",
+     "t": "2026-09-03T20:54:00Z",
      "sat": "SNPP",
      "layers": [
       "VIIRS_SNPP_CorrectedReflectance_TrueColor_Granule",
@@ -144,15 +144,7 @@
      ]
     },
     {
-     "t": "2026-09-03T19:36:00Z",
-     "sat": "N20",
-     "layers": [
-      "VIIRS_NOAA20_CorrectedReflectance_TrueColor_Granule",
-      "VIIRS_NOAA20_CorrectedReflectance_BandsM3-I3-M11_Granule"
-     ]
-    },
-    {
-     "t": "2026-09-03T20:54:00Z",
+     "t": "2026-09-03T21:00:00Z",
      "sat": "SNPP",
      "layers": [
       "VIIRS_SNPP_CorrectedReflectance_TrueColor_Granule",
