@@ -1,89 +1,93 @@
 By downloading data from the ECMWF open data dataset, you agree to the terms: Attribution 4.0 International (CC BY 4.0). Please attribute ECMWF when downloading this data.
 By downloading data from the ECMWF open data dataset, you agree to the terms: Attribution 4.0 International (CC BY 4.0). Please attribute ECMWF when downloading this data.
 EGPB-BIRK-LEG-BRIEFING  EGPB -> Faeroer -> BIRK
-erzeugt 2026-11-08 22:59 UTC | Quelle ECMWF oper 20261108 12Z
+erzeugt 2026-11-09 18:05 UTC | Quelle ECMWF oper 20261109 00Z
 Strategie: Gegenwind-Leg WNW; tiefes Level = weniger Wind; on-top ueber
-mariner St. Levels FL80/100/120/140. Zielfenster 09.11. 12-18Z
+mariner St. Levels FL80/100/120/140. Zielfenster 10.11. 12-18Z
 HINWEIS: RH-basierte Ice-Flags = notwendige Bedingung, bewusst
 ueberwarnend (ECMWF-Glazierungs-Bias). Karten bleiben Pflicht:
 WAFS-Grids FL080/100/140, SIGWX, IMO/CFPS, Satellit Faeroer.
 
 GATES (automatisch, je Zeitschritt schlechtester Punkt)
 ============================================================
-09. 12Z  G1-Eisfrei-Lvl: OK   G2-OnTop080: OK   G3-Wind: OK   => [OK]  Best: FL080 HWmax +5kt
-09. 15Z  G1-Eisfrei-Lvl: OK   G2-OnTop080: OK   G3-Wind: OK   => [OK]  Best: FL140 HWmax +4kt
-09. 18Z  G1-Eisfrei-Lvl: OK   G2-OnTop080: OK   G3-Wind: OK   => [OK]  Best: FL140 HWmax +6kt
+10. 12Z  G1-Eisfrei-Lvl: OK   G2-OnTop080: OK   G3-Wind: OK   => [OK]  Best: FL080 HWmax +16kt
+10. 15Z  G1-Eisfrei-Lvl: OK   G2-OnTop080: OK   G3-Wind: OK   => [OK]  Best: FL080 HWmax +16kt
+10. 18Z  G1-Eisfrei-Lvl: OK   G2-OnTop080: OK   G3-Wind: OK   => [OK]  Best: FL080 HWmax +14kt
 
 G1: eisfreies Level vorhanden | G2: FZLVL<=FL080 oder FL080 trocken | G3: bestes eisfreies Level HWmax<=30kt
 
 
---- 09.11. 12Z (Step +24h) ---
+--- 10.11. 12Z (Step +36h) ---
 Punkt               FZLVL |  FL080 T/RH/ICE  HW |  FL100 T/RH/ICE  HW |  FL120 T/RH/ICE  HW |  FL140 T/RH/ICE  HW |
-EGPB Sumburgh       2500ft | -14.9C  90% ICE?   +5 | -18.5C  97% -      +5 | -21.8C  90% -      +5 | -25.3C  82% -      +5 |
-Faeroer/EKVG        2500ft | -16.0C  55% -      -4 | -18.5C  27% -      -3 | -21.8C  25% -      -1 | -25.1C  23% -      +0 |
-Mid-Ocean           2500ft | -16.5C  61% -      -5 | -19.1C  41% -      -5 | -22.4C  36% -      -2 | -25.8C  30% -      +1 |
-BIRK Reykjavik      2500ft | -17.5C  94% -      -9 | -19.9C  89% -      -7 | -23.4C  75% -      -5 | -26.9C  61% -      -2 |
+EGPB Sumburgh       2500ft | -16.7C  69% -     +16 | -20.9C  77% -     +16 | -23.8C  64% -     +18 | -26.8C  52% -     +20 |
+Faeroer/EKVG        2500ft | -17.8C  95% -      +6 | -21.1C  96% -      +9 | -24.6C  94% -     +10 | -28.2C  91% -     +10 |
+Mid-Ocean           2500ft | -17.7C  58% -      +3 | -20.7C  45% -      +3 | -24.5C  57% -      +3 | -28.3C  69% -      +4 |
+BIRK Reykjavik      2500ft | -18.3C  60% -      -4 | -20.7C  37% -      -4 | -24.5C  52% -      -6 | -28.3C  68% -      -8 |
 Punkt               Track |  FL080 dir/spd |  FL100 dir/spd |  FL120 dir/spd |  FL140 dir/spd |
-EGPB Sumburgh       309T |   009/09kt |   008/09kt |   009/10kt |   010/11kt |
-Faeroer/EKVG        290T |   040/12kt |   039/09kt |   029/08kt |   018/08kt |
-Mid-Ocean           291T |   042/14kt |   048/12kt |   034/10kt |   016/09kt |
-BIRK Reykjavik      291T |   046/22kt |   045/18kt |   037/17kt |   028/17kt |
---- 09.11. 15Z (Step +27h) ---
+EGPB Sumburgh       309T |   325/16kt |   306/16kt |   307/18kt |   307/20kt |
+Faeroer/EKVG        290T |   000/17kt |   344/16kt |   343/16kt |   342/15kt |
+Mid-Ocean           291T |   012/18kt |   010/14kt |   007/14kt |   004/14kt |
+BIRK Reykjavik      291T |   032/23kt |   031/22kt |   038/21kt |   046/20kt |
+--- 10.11. 15Z (Step +39h) ---
 Punkt               FZLVL |  FL080 T/RH/ICE  HW |  FL100 T/RH/ICE  HW |  FL120 T/RH/ICE  HW |  FL140 T/RH/ICE  HW |
-EGPB Sumburgh       2500ft | -14.7C  54% -      +5 | -17.4C  33% -      +5 | -21.0C  41% -      +5 | -24.6C  49% -      +4 |
-Faeroer/EKVG        2500ft | -15.9C  67% -      -8 | -19.3C  48% -      -7 | -22.4C  41% -      -2 | -25.5C  35% -      +2 |
-Mid-Ocean           2500ft | -17.0C  80% -      -5 | -20.4C  72% -      -6 | -23.6C  59% -      -3 | -26.8C  47% -      +1 |
-BIRK Reykjavik      2500ft | -17.9C 101% -      -9 | -20.7C 101% -      -8 | -24.2C  86% -      -7 | -27.7C  72% -      -6 |
+EGPB Sumburgh       2500ft | -16.8C  82% -     +16 | -20.3C  80% -     +18 | -23.5C  66% -     +19 | -26.6C  52% -     +21 |
+Faeroer/EKVG        2500ft | -17.7C  65% -      +7 | -20.9C  51% -     +11 | -24.6C  62% -     +11 | -28.3C  72% -     +12 |
+Mid-Ocean           2500ft | -18.1C  91% -      +3 | -21.4C  97% -      +2 | -25.1C  97% -      +3 | -28.9C  97% -      +4 |
+BIRK Reykjavik      2500ft | -18.7C  55% -      -4 | -20.9C  29% -      -3 | -24.3C  41% -      -5 | -27.9C  53% -      -8 |
 Punkt               Track |  FL080 dir/spd |  FL100 dir/spd |  FL120 dir/spd |  FL140 dir/spd |
-EGPB Sumburgh       309T |   358/08kt |   003/09kt |   007/09kt |   011/09kt |
-Faeroer/EKVG        290T |   056/13kt |   067/09kt |   040/06kt |   359/06kt |
-Mid-Ocean           291T |   054/10kt |   074/08kt |   048/06kt |   014/06kt |
-BIRK Reykjavik      291T |   051/19kt |   053/15kt |   049/15kt |   044/15kt |
---- 09.11. 18Z (Step +30h) ---
+EGPB Sumburgh       309T |   328/17kt |   318/18kt |   317/20kt |   316/21kt |
+Faeroer/EKVG        290T |   357/18kt |   341/17kt |   339/17kt |   337/17kt |
+Mid-Ocean           291T |   014/21kt |   016/19kt |   012/17kt |   008/15kt |
+BIRK Reykjavik      291T |   030/24kt |   028/24kt |   035/22kt |   044/20kt |
+--- 10.11. 18Z (Step +42h) ---
 Punkt               FZLVL |  FL080 T/RH/ICE  HW |  FL100 T/RH/ICE  HW |  FL120 T/RH/ICE  HW |  FL140 T/RH/ICE  HW |
-EGPB Sumburgh       2500ft | -14.7C  52% -      +7 | -17.3C  24% -      +8 | -20.9C  37% -      +7 | -24.5C  50% -      +6 |
-Faeroer/EKVG        2500ft | -16.7C  95% -      -7 | -20.7C  94% -      -6 | -23.6C  77% -      -1 | -26.6C  60% -      +3 |
-Mid-Ocean           2500ft | -17.8C  98% -      -1 | -21.7C  97% -      +1 | -24.6C  79% -      +3 | -27.6C  61% -      +5 |
-BIRK Reykjavik      2500ft | -17.9C 100% -      -7 | -20.5C 100% -      -7 | -24.2C  99% -      -7 | -28.0C  98% -      -8 |
+EGPB Sumburgh       2500ft | -16.9C  79% -     +14 | -20.4C  78% -     +15 | -23.6C  66% -     +17 | -26.8C  54% -     +19 |
+Faeroer/EKVG        2500ft | -18.3C  85% -      +6 | -21.9C  85% -      +9 | -25.4C  86% -     +11 | -29.0C  88% -     +12 |
+Mid-Ocean           2500ft | -18.6C  67% -      +1 | -21.9C  58% -      -1 | -25.4C  63% -      -2 | -28.9C  68% -      -2 |
+BIRK Reykjavik      2500ft | -18.6C  50% -      -6 | -21.1C  32% -      -4 | -24.4C  47% -      -5 | -27.7C  63% -      -7 |
 Punkt               Track |  FL080 dir/spd |  FL100 dir/spd |  FL120 dir/spd |  FL140 dir/spd |
-EGPB Sumburgh       309T |   356/10kt |   346/10kt |   346/09kt |   346/08kt |
-Faeroer/EKVG        290T |   048/15kt |   055/11kt |   030/09kt |   358/09kt |
-Mid-Ocean           291T |   026/08kt |   003/03kt |   345/05kt |   338/07kt |
-BIRK Reykjavik      291T |   045/19kt |   048/15kt |   050/15kt |   051/15kt |
+EGPB Sumburgh       309T |   336/16kt |   328/16kt |   324/18kt |   320/19kt |
+Faeroer/EKVG        290T |   360/17kt |   340/14kt |   336/16kt |   333/17kt |
+Mid-Ocean           291T |   019/22kt |   025/21kt |   026/18kt |   028/16kt |
+BIRK Reykjavik      291T |   035/24kt |   030/25kt |   035/22kt |   042/19kt |
 
 METAR/TAF (aviationweather.gov)
 ============================================================
-METAR EGPB 082250Z AUTO 18007KT 9999 SCT015/// 09/06 Q1021
-METAR EGPB 082220Z AUTO 17007KT 9999 BKN015/// 09/06 Q1021
-METAR EGPB 082150Z AUTO 16008KT 9999 SCT018/// BKN029/// 09/05 Q1021
-METAR EGPB 082120Z AUTO 17008KT 9999 BKN019/// 09/06 Q1021
-METAR EGPC 082250Z AUTO 26002KT 9999 NCD 06/05 Q1020
-METAR EGPC 082220Z AUTO VRB01KT 9999 NCD 06/04 Q1020
-METAR EGPC 082150Z AUTO 00000KT 9999 NCD 07/04 Q1020
-METAR EGPC 082120Z AUTO 00000KT 9999 SCT047/// 07/05 Q1021
-METAR EKVG 082250Z AUTO 23009KT 200V260 9999 SCT013/// OVC031/// 09/06 Q1018 RMK OVC017/// WIND SKEID VRB03KT
-METAR EKVG 082220Z AUTO 23008KT 200V280 9999 SCT013/// OVC034/// 09/06 Q1018 RMK OVC016/// WIND SKEID 27006G18KT 190V360
-METAR EKVG 082150Z AUTO 23011KT 9999 BKN013/// BKN043/// 09/06 Q1018 RMK BKN015/// WIND SKEID 26008G18KT 150V320
-METAR EKVG 082120Z AUTO 23012KT 9999 OVC014/// 09/06 Q1018 RMK OVC015/// WIND SKEID 26007KT 190V350
-METAR BIKF 082230Z 29002KT 9999 FEW014 BKN030 04/03 Q1011
-METAR BIKF 082201Z 31002KT 9999 -DZRA SCT013 BKN026 OVC060 04/03 Q1010
-METAR BIKF 082130Z 31002KT 9999 -RA SCT015 BKN035 OVC060 04/03 Q1010
-METAR BIKF 082102Z 33003KT 9999 -RA SCT019 BKN037 BKN070 04/03 Q1010
-METAR BIRK 082200Z 32004KT 9999 -RA OVC017 05/03 Q1010
+METAR BIKF 091800Z 35008KT 9999 BKN024 01/M02 Q1020
+METAR BIKF 091730Z 35009KT 9999 SCT021 BKN025 01/M02 Q1020
+METAR BIKF 091700Z 35006KT 9999 FEW021 01/M02 Q1020
+METAR BIKF 091630Z 35008KT 9999 FEW024 01/M02 Q1020
+METAR BIRK 091800Z 34008KT 9999 FEW020 01/M04 Q1020
+METAR BIRK 091700Z 36007KT 9999 FEW020 01/M03 Q1020
+METAR EGPC 091750Z AUTO 26005KT 5000 -RA OVC049/// 05/03 Q1017 RERA
+METAR EGPC 091720Z AUTO 25004KT 3700 -RA NCD 06/04 Q1017 RERA
+METAR EGPC 091650Z 24002KT 9999 FEW015 07/04 Q1017
+METAR EGPC 091620Z 22001KT 9999 FEW015 07/04 Q1017
+METAR EKVG 091750Z AUTO 30009KT 9999 BKN011/// BKN044/// 07/06 Q1013 REDZRA RMK FEW010/// FEW017/// SCT045/// BKN061/// WIND SKEID 29017KT
+METAR EKVG 091720Z AUTO 29010KT 9999 DZRA OVC018/// 08/07 Q1013 RMK OVC006/// WIND SKEID 30022KT
+METAR EKVG 091650Z AUTO 28013KT 8000 DZRA OVC008/// 08/07 Q1013 RMK OVC004/// WIND SKEID 29021KT
+METAR EKVG 091620Z AUTO 26013KT 9999 -DZRA OVC005/// 08/07 Q1013 REDZRA RMK OVC006/// WIND SKEID 27022KT
+METAR EGPB 091750Z COR 23006KT 9999 FEW040 08/05 Q1016 NOSIG
+METAR EGPB 091720Z COR 24005KT 9999 FEW025 BKN044 08/05 Q1016 NOSIG
+METAR EGPB 091650Z COR 22004KT 9999 FEW025 BKN046 08/04 Q1016 NOSIG
+METAR EGPB 091620Z 22004KT 9999 VCSH FEW025 BKN047 08/04 Q1016 TEMPO SHRA
 
-TAF BIKF 082256Z 0900/1000 31006KT 9999 FEW014 OVC030 TX03/0900Z TNM01/1000Z 
-  BECMG 0901/0903 BKN030 
-  BECMG 0908/0910 02010KT 
-  BECMG 0915/0917 36005KT
-TAF BIRK 082258Z 0900/1000 31004KT 9999 BKN014 OVC030 TX05/0900Z TN01/0922Z 
-  BECMG 0901/0903 BKN030 
-  BECMG 0913/0915 02010KT 
-  BECMG 0921/0923 35005KT
-TAF EGPB 081955Z 0821/0906 20009KT 9999 SCT020 BKN040 
+TAF BIKF 091651Z 0918/1018 35010KT 9999 FEW025 SCT035 TX06/1013Z TNM02/1002Z 
+  BECMG 0920/0922 VRB02KT 
+  BECMG 1002/1004 26010KT 
+  PROB40 
+  TEMPO 1009/1014 BKN014 
+  BECMG 1009/1011 26020KT 
+  BECMG 1013/1015 30020KT
+TAF BIRK 091651Z 0918/1018 01008KT 9999 FEW025 SCT040 TX06/1015Z TNM02/1003Z 
+  BECMG 1004/1006 24013KT 
+  PROB40 
+  TEMPO 1009/1014 BKN014 
+  BECMG 1013/1015 30018KT
+TAF EGPB 091658Z 0918/1003 21006KT 9999 SCT020 
+  BECMG 0920/0923 27010KT 
   PROB30 
-  TEMPO 0821/0824 BKN012
-TAF EGPC 081955Z 0821/0906 VRB02KT 9999 FEW020 BKN040 
-  PROB30 
-  TEMPO 0821/0903 4000 DZ
-TAF EKVG 081427Z 0815/0821 23008KT 9999 BKN035 
-  TEMPO 0815/0821 DZRA BKN012
+  TEMPO 1000/1003 6000 SHRA
+TAF EGPC 091658Z 0918/1003 27005KT 9999 FEW020 SCT045
+TAF EKVG 091427Z 0915/0921 24012KT 9999 BKN015 
+  TEMPO 0915/0921 4000 SHRA BKN008TCU
